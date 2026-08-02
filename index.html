@@ -68,7 +68,13 @@
     padding:22px 20px 16px;
     border-bottom:1px solid var(--border);
     background: linear-gradient(180deg, rgba(255,198,51,0.05), transparent 70%), var(--bg-alt);
-    display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;
+    display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  @media (max-width:480px){
+    header{padding:16px 16px 14px;gap:10px;}
+    .brand{gap:10px;}
+    .brand h1{font-size:20px;gap:8px;}
+    .brand p{font-size:11.5px;}
   }
   .brand{display:flex;align-items:center;gap:14px;}
   .brand-mark{
@@ -1435,7 +1441,7 @@
           </div>
           <div class="triangle-visual gl-visual-wrap" id="glSkizzeWrap"><div id="glSkizze"></div></div>
           <div id="glZuschnittliste"></div>
-          <p class="note">Pfosten werden gleichmäßig über die Kern-Länge (schräg + waagerechte Verlängerung) verteilt — der Handlauf-Überstand am Anfang zählt nicht mit. Bei Industrie max. 1500 mm Pfostenabstand (Mittellinie) einhalten. Zeichnung mit +/− zoombar und per Fingerwisch verschiebbar (Smartphone), ersetzt aber keine Freigabezeichnung für genehmigungspflichtige Anlagen — Rohr-Ø/Kantenlängen sind vereinfachte Bauhilfe, keine statische Bemessung der Wandstärke.</p>
+          <p class="note">Pfosten werden ausschließlich über die reine Schräge verteilt — waagerechte Verlängerung und Handlauf-Überstand ändern die Pfostenzahl/-lage nicht. Bei Industrie max. 1500 mm Pfostenabstand (Mittellinie) einhalten. <strong>Farbcodierung der Bemaßung</strong> (fest, unabhängig vom gewählten Farbthema): Gold = Geländerhöhe, Cyan = Schräge/Winkel, Amber = waagerechte Verlängerung, Violett = Überstand, Grün = Pfostenabstände. Zeichnung mit +/− zoombar und per Fingerwisch verschiebbar (Smartphone), ersetzt aber keine Freigabezeichnung für genehmigungspflichtige Anlagen — Rohr-Ø/Kantenlängen sind vereinfachte Bauhilfe, keine statische Bemessung der Wandstärke.</p>
         </div>
 
         <details class="card collapsible">
@@ -3939,16 +3945,23 @@ function glMaterialLabel(groesse, rohrart){
 }
 function buildZuschnittlisteHtml(d){
   const rows = [];
-  rows.push(['Handlauf, schräg', '1 Stück', `${d.schraegLaengeMM.toFixed(0).wmZahl()} mm`, `Sägewinkel ${d.winkelGrad.toFixed(1).wmZahl()}° · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
+  const schraegMassText = d.ueberstandStart > 0
+    ? `${d.handlaufSchraegGesamtMM.toFixed(0).wmZahl()} mm`
+    : `${d.schraegLaengeMM.toFixed(0).wmZahl()} mm`;
+  const schraegHinweis = d.ueberstandStart > 0
+    ? `EIN durchgehendes Stück (Überstand ${d.ueberstandStart.toFixed(0).wmZahl()} mm horiz. bereits mit eingerechnet, gleicher Winkel — nicht separat sägen) · Sägewinkel ${d.winkelGrad.toFixed(1).wmZahl()}° · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`
+    : `Sägewinkel ${d.winkelGrad.toFixed(1).wmZahl()}° · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`;
+  rows.push(['Handlauf, schräg', '1 Stück', schraegMassText, schraegHinweis]);
   if(d.waagerechtL > 0){
-    rows.push(['Handlauf, waagerecht', '1 Stück', `${d.waagerechtL.toFixed(0).wmZahl()} mm`, `90° Anschluss · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
+    rows.push(['Handlauf, waagerecht', '1 Stück', `${d.waagerechtL.toFixed(0).wmZahl()} mm`, `eigenes Stück — anderer Winkel als Schräge, braucht Gehrung/Verbinder · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
   }
-  if(d.ueberstandStart > 0){
-    rows.push(['Handlauf-Überstand (Anfang)', '1 Stück', `${d.ueberstandStart.toFixed(0).wmZahl()} mm`, `gleicher Winkel wie Schräge · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
-  }
-  rows.push(['Pfosten', `${d.pfostenAnzahl} Stück`, `${d.pfostenlaengeMM.toFixed(0).wmZahl()} mm`, `bis UK Handlauf · ${glMaterialLabel(d.pfostenGroesse, d.rohrart)}`]);
+  rows.push(['Pfosten', `${d.pfostenAnzahl} Stück`, `${d.pfostenlaengeMM.toFixed(0).wmZahl()} mm`, `bis UK Handlauf, nur auf der Schräge verteilt (Verlängerung/Überstand ändern die Pfostenlage nicht) · ${glMaterialLabel(d.pfostenGroesse, d.rohrart)}`]);
   if(d.zeigeKnie){
-    rows.push(['Knieleiste', `${d.pfostenAnzahl-1} Stück`, `${d.lichterPfostenabstandMM.toFixed(0).wmZahl()} mm`, `lichtes Maß zw. Pfosten · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
+    rows.push(['Knieleiste, schräg', `${d.pfostenAnzahl-1} Stück`, `${d.lichterPfostenabstandMM.toFixed(0).wmZahl()} mm`, `lichtes Maß zw. Pfosten · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
+    if(d.waagerechtL > 0){
+      const knieWaagerechtMM = Math.max(d.waagerechtL - d.pfostenGroesse/2, 0);
+      rows.push(['Knieleiste, waagerecht', '1 Stück', `${knieWaagerechtMM.toFixed(0).wmZahl()} mm`, `Eckpfosten bis Wandhalter — halbe Pfostenbreite am Übergang abgezogen, wandseitig ggf. anpassen · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
+    }
   }
   const rowsHtml = rows.map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td><td style="white-space:normal;">${r[3]}</td></tr>`).join('');
   return `<div class="table-wrap" style="margin-top:14px;">
@@ -3992,67 +4005,85 @@ function calcGelaender(){
 }
 function glBerechneZahlen(p){
   const schraegLaengeMM = Math.sqrt(p.schraegL*p.schraegL + p.schraegH*p.schraegH);
-  const kernLaengeMM = schraegLaengeMM + p.waagerechtL; // Überstand zählt NICHT zur Pfostenverteilung
-  const gesamtLaengeMM = kernLaengeMM + p.ueberstandStart;
-  const pfostenabstandMM = kernLaengeMM / (p.pfostenAnzahl - 1);
+  const winkelGrad = p.schraegL > 0 ? Math.atan2(p.schraegH, p.schraegL) * 180/Math.PI : 0;
+  const winkelRad = winkelGrad * Math.PI/180;
+  // Überstand-Eingabe ist horizontal gemeint (einfacher zu messen) -> in Rohr-Diagonallänge umrechnen, da gleicher Neigungswinkel wie die Schräge
+  const ueberstandDiagonalMM = p.ueberstandStart > 0
+    ? (winkelGrad > 0 ? p.ueberstandStart / Math.cos(winkelRad) : p.ueberstandStart)
+    : 0;
+  const handlaufSchraegGesamtMM = schraegLaengeMM + ueberstandDiagonalMM; // ein durchgehendes Stück, da gleicher Winkel
+  const gesamtLaengeMM = handlaufSchraegGesamtMM + p.waagerechtL;
+  // Pfosten werden NUR über die reine Schräge verteilt — Verlängerung/Überstand ändern die Pfostenlage nicht (auf Wunsch von René)
+  const pfostenabstandMM = p.pfostenAnzahl > 1 ? schraegLaengeMM / (p.pfostenAnzahl - 1) : 0;
   const pfostenlaengeMM = p.hoeheMM - p.handlaufGroesse;
   const lichterPfostenabstandMM = pfostenabstandMM - p.pfostenGroesse;
-  const winkelGrad = p.schraegL > 0 ? Math.atan2(p.schraegH, p.schraegL) * 180/Math.PI : 0;
-  return {schraegLaengeMM, kernLaengeMM, gesamtLaengeMM, pfostenabstandMM, pfostenlaengeMM, lichterPfostenabstandMM, winkelGrad};
+  return {schraegLaengeMM, winkelGrad, ueberstandDiagonalMM, handlaufSchraegGesamtMM, gesamtLaengeMM, pfostenabstandMM, pfostenlaengeMM, lichterPfostenabstandMM};
 }
 function drawGelaenderSkizze(opts, treppeObj){
   const {schraegL, schraegH, waagerechtL, hoeheMM, pfostenAnzahl, kniehoeheMM, zeigeKnie, ueberstandStart} = opts;
-  const gesamtBreiteMM = Math.max(schraegL + waagerechtL, 1);
+  // Feste Bemaßungsfarben je Maß-Art — bewusst NICHT von var(--yellow)/var(--steel) abhängig,
+  // damit die Zeichnung bei jedem Farbthema gleich eindeutig lesbar bleibt.
+  const COL_HOEHE = '#FFC633', COL_SCHRAEG = '#5fb8d9', COL_WAAGERECHT = '#e0a458',
+        COL_PFOSTEN = '#7bc47f', COL_UEBERSTAND = '#b3a0e0', COL_GEO = '#6E97B3', COL_NEUTRAL = '#9AA0A6';
+
+  const winkelGrad = schraegL > 0 ? Math.atan2(schraegH, schraegL) * 180/Math.PI : 0;
+  const winkelRad = winkelGrad * Math.PI/180;
+  const ueberstandDiagonalMM = ueberstandStart > 0 ? (winkelGrad>0 ? ueberstandStart/Math.cos(winkelRad) : ueberstandStart) : 0;
+  const gesamtBreiteMM = Math.max(schraegL + waagerechtL + ueberstandStart, 1);
   const gesamtHoeheMM = Math.max(schraegH + hoeheMM, 1);
-  const W = 680, Hh = 340;
-  const mL=75, mB=60, mT=45, mR=35;
+  const W = 720, Hh = 460;
+  const mL=100, mB=100, mT=90, mR=40;
   const availW = W-mL-mR, availH = Hh-mT-mB;
   const scale = Math.min(availW/gesamtBreiteMM, availH/gesamtHoeheMM);
   const x0 = mL, y0 = Hh-mB;
 
   const xKnick = x0 + schraegL*scale, yKnick = y0 - schraegH*scale;
   const xEnd = xKnick + waagerechtL*scale, yEnd = yKnick;
-
   const offsetPx = hoeheMM*scale;
   const rx0=x0, ry0=y0-offsetPx, rxKnick=xKnick, ryKnick=yKnick-offsetPx, rxEnd=xEnd, ryEnd=yEnd-offsetPx;
 
-  // Handlauf-Überstand am Anfang: reine Verlängerung der Handlauf-Linie vor rx0/ry0, parallel zur ersten Segment-Richtung, ohne Pfosten
+  const schraegLenPx = Math.hypot(xKnick-x0, yKnick-y0);
+  const ux = schraegL>0 ? (xKnick-x0)/schraegLenPx : 1;
+  const uy = schraegL>0 ? (yKnick-y0)/schraegLenPx : 0;
+  // Senkrecht zur Schräge, zeigt nach oben-links (weg von der Konstruktion) — Basis für alle Offset-Bemaßungslinien
+  const perpX = uy, perpY = -ux;
+
+  // ---------- Handlauf-Überstand am Anfang (violett) ----------
   let ueberstandSvg = '';
   let rx0Sichtbar = rx0, ry0Sichtbar = ry0;
   if(ueberstandStart > 0){
-    const ersteRichtungLenPx = schraegL>0 ? Math.hypot(xKnick-x0, yKnick-y0) : Math.max(waagerechtL*scale, 1);
-    const ux = schraegL>0 ? (xKnick-x0)/ersteRichtungLenPx : 1;
-    const uy = schraegL>0 ? (yKnick-y0)/ersteRichtungLenPx : 0;
-    const overhangPx = ueberstandStart*scale;
+    const overhangPx = ueberstandDiagonalMM*scale;
     rx0Sichtbar = rx0 - ux*overhangPx;
     ry0Sichtbar = ry0 - uy*overhangPx;
-    ueberstandSvg = `<line x1="${rx0Sichtbar.toFixed(1)}" y1="${ry0Sichtbar.toFixed(1)}" x2="${rx0.toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="#6E97B3" stroke-width="3" stroke-dasharray="1 0"/>
-    <text x="${((rx0Sichtbar+rx0)/2).toFixed(1)}" y="${(Math.min(ry0Sichtbar,ry0)-8).toFixed(1)}" fill="#9AA0A6" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandStart.toFixed(0).wmZahl()}</text>`;
+    const off = 24;
+    const p1x = rx0Sichtbar + perpX*off, p1y = ry0Sichtbar + perpY*off;
+    const p2x = rx0 + perpX*off, p2y = ry0 + perpY*off;
+    ueberstandSvg = `<line x1="${rx0Sichtbar.toFixed(1)}" y1="${ry0Sichtbar.toFixed(1)}" x2="${rx0.toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="${COL_GEO}" stroke-width="3"/>
+    <line x1="${rx0Sichtbar.toFixed(1)}" y1="${ry0Sichtbar.toFixed(1)}" x2="${p1x.toFixed(1)}" y2="${p1y.toFixed(1)}" stroke="${COL_UEBERSTAND}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${rx0.toFixed(1)}" y1="${ry0.toFixed(1)}" x2="${p2x.toFixed(1)}" y2="${p2y.toFixed(1)}" stroke="${COL_UEBERSTAND}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${p1x.toFixed(1)}" y1="${p1y.toFixed(1)}" x2="${p2x.toFixed(1)}" y2="${p2y.toFixed(1)}" stroke="${COL_UEBERSTAND}" stroke-width="1"/>
+    <line x1="${(p1x-ux*4).toFixed(1)}" y1="${(p1y-uy*4).toFixed(1)}" x2="${(p1x+ux*4).toFixed(1)}" y2="${(p1y+uy*4).toFixed(1)}" stroke="${COL_UEBERSTAND}" stroke-width="1"/>
+    <line x1="${(p2x-ux*4).toFixed(1)}" y1="${(p2y-uy*4).toFixed(1)}" x2="${(p2x+ux*4).toFixed(1)}" y2="${(p2y+uy*4).toFixed(1)}" stroke="${COL_UEBERSTAND}" stroke-width="1"/>
+    <text x="${((p1x+p2x)/2).toFixed(1)}" y="${((p1y+p2y)/2-6).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandStart.toFixed(0).wmZahl()} mm horiz. (Überstand, im Handlauf-Maß enthalten)</text>`;
   }
 
-  const schraegLenPx = Math.hypot(xKnick-x0, yKnick-y0);
-  const waagerechtLenPx = xEnd-xKnick;
-  const totalLenPx = schraegLenPx + waagerechtLenPx;
+  // ---------- Pfosten (nur auf der Schräge verteilt) ----------
   let posts = '';
+  const postXs = [], postYs = [];
   for(let i=0;i<pfostenAnzahl;i++){
-    const distEntlang = pfostenAnzahl>1 ? (i/(pfostenAnzahl-1))*totalLenPx : 0;
-    let px, pyBase;
-    if(distEntlang <= schraegLenPx){
-      const t = schraegLenPx>0 ? distEntlang/schraegLenPx : 0;
-      px = x0 + (xKnick-x0)*t; pyBase = y0 + (yKnick-y0)*t;
-    } else {
-      const t = waagerechtLenPx>0 ? (distEntlang-schraegLenPx)/waagerechtLenPx : 0;
-      px = xKnick + (xEnd-xKnick)*t; pyBase = yKnick;
-    }
+    const t = pfostenAnzahl>1 ? i/(pfostenAnzahl-1) : 0;
+    const px = x0 + (xKnick-x0)*t;
+    const pyBase = y0 + (yKnick-y0)*t;
     const pyTop = pyBase - offsetPx;
-    posts += `<line x1="${px.toFixed(1)}" y1="${pyBase.toFixed(1)}" x2="${px.toFixed(1)}" y2="${pyTop.toFixed(1)}" stroke="#6E97B3" stroke-width="2.5"/>`;
+    posts += `<line x1="${px.toFixed(1)}" y1="${pyBase.toFixed(1)}" x2="${px.toFixed(1)}" y2="${pyTop.toFixed(1)}" stroke="${COL_GEO}" stroke-width="2.5"/>`;
+    postXs.push(px); postYs.push(pyBase);
   }
 
   let knieSvg = '';
   if(zeigeKnie && kniehoeheMM){
     const kOffsetPx = kniehoeheMM*scale;
-    knieSvg = `<line x1="${x0.toFixed(1)}" y1="${(y0-kOffsetPx).toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${(yKnick-kOffsetPx).toFixed(1)}" stroke="#6E97B3" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <line x1="${xKnick.toFixed(1)}" y1="${(yKnick-kOffsetPx).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(yEnd-kOffsetPx).toFixed(1)}" stroke="#6E97B3" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+    knieSvg = `<line x1="${x0.toFixed(1)}" y1="${(y0-kOffsetPx).toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${(yKnick-kOffsetPx).toFixed(1)}" stroke="${COL_GEO}" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${(yKnick-kOffsetPx).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(yEnd-kOffsetPx).toFixed(1)}" stroke="${COL_GEO}" stroke-width="1.5" stroke-dasharray="4 3"/>`;
   }
 
   let basisSvg = '';
@@ -4072,34 +4103,83 @@ function drawGelaenderSkizze(opts, treppeObj){
   }
 
   const schraegLaengeMM = Math.sqrt(schraegL*schraegL + schraegH*schraegH);
-  const kernLaengeMM = schraegLaengeMM + waagerechtL;
-  const pfostenabstandMM = kernLaengeMM / (pfostenAnzahl-1);
-  const winkelGrad = schraegL > 0 ? Math.atan2(schraegH, schraegL) * 180/Math.PI : 0;
 
+  // ---------- Schräge Handlauflänge: eigene Kettenbemaßung parallel zur Schräge, cyan ----------
+  let schraegBemassung = '';
+  if(schraegL > 0){
+    const off = 22;
+    const q1x = x0 + perpX*off, q1y = y0 + perpY*off;
+    const q2x = xKnick + perpX*off, q2y = yKnick + perpY*off;
+    schraegBemassung = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${q1x.toFixed(1)}" y2="${q1y.toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${yKnick.toFixed(1)}" x2="${q2x.toFixed(1)}" y2="${q2y.toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${q1x.toFixed(1)}" y1="${q1y.toFixed(1)}" x2="${q2x.toFixed(1)}" y2="${q2y.toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="1"/>
+    <line x1="${(q1x-ux*4).toFixed(1)}" y1="${(q1y-uy*4).toFixed(1)}" x2="${(q1x+ux*4).toFixed(1)}" y2="${(q1y+uy*4).toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="1"/>
+    <line x1="${(q2x-ux*4).toFixed(1)}" y1="${(q2y-uy*4).toFixed(1)}" x2="${(q2x+ux*4).toFixed(1)}" y2="${(q2y+uy*4).toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="1"/>
+    <text x="${((q1x+q2x)/2).toFixed(1)}" y="${((q1y+q2y)/2-6).toFixed(1)}" fill="${COL_SCHRAEG}" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${schraegLaengeMM.toFixed(0).wmZahl()} mm (schräg, Rohrlänge)</text>`;
+  }
+
+  // ---------- Winkel-Bogen: genau am Fußpunkt, zwischen Horizontale und Schräge ----------
+  let winkelSvg = '';
+  if(schraegL > 0 && schraegH > 0){
+    const r = 30;
+    const bisektorRad = winkelRad/2;
+    const labelX = x0 + (r+16)*Math.cos(bisektorRad);
+    const labelY = y0 - (r+16)*Math.sin(bisektorRad);
+    winkelSvg = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0+r+6).toFixed(1)}" y2="${y0.toFixed(1)}" stroke="${COL_SCHRAEG}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <path d="M ${(x0+r).toFixed(1)},${y0.toFixed(1)} A ${r},${r} 0 0 0 ${(x0+r*ux).toFixed(1)},${(y0+r*uy).toFixed(1)}" fill="none" stroke="${COL_SCHRAEG}" stroke-width="1.5"/>
+    <text x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" fill="${COL_SCHRAEG}" font-size="12" font-family="JetBrains Mono, monospace" text-anchor="middle" font-weight="600">α=${winkelGrad.toFixed(1).wmZahl()}°</text>`;
+  }
+
+  // ---------- Waagerechte Verlängerung: eigene Kettenbemaßung, amber ----------
   let waagerechtBemassung = '';
   if(waagerechtL > 0){
-    waagerechtBemassung = `<line x1="${xKnick.toFixed(1)}" y1="${(y0+22).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(y0+22).toFixed(1)}" stroke="#6E97B3" stroke-width="1"/>
-    <text x="${((xKnick+xEnd)/2).toFixed(1)}" y="${(y0+36).toFixed(1)}" fill="#ECEAE4" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${waagerechtL.toFixed(0).wmZahl()} mm</text>`;
+    const y = y0 + 22;
+    waagerechtBemassung = `<line x1="${xKnick.toFixed(1)}" y1="${yKnick.toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${(y+5).toFixed(1)}" stroke="${COL_WAAGERECHT}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${xEnd.toFixed(1)}" y1="${yEnd.toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(y+5).toFixed(1)}" stroke="${COL_WAAGERECHT}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${(y-4).toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${(y+4).toFixed(1)}" stroke="${COL_WAAGERECHT}" stroke-width="1"/>
+    <line x1="${xEnd.toFixed(1)}" y1="${(y-4).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(y+4).toFixed(1)}" stroke="${COL_WAAGERECHT}" stroke-width="1"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${y.toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${COL_WAAGERECHT}" stroke-width="1"/>
+    <text x="${((xKnick+xEnd)/2).toFixed(1)}" y="${(y+14).toFixed(1)}" fill="${COL_WAAGERECHT}" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${waagerechtL.toFixed(0).wmZahl()} mm (waagerecht, eigenes Stück)</text>`;
   }
 
-  let winkelSvg = '';
-  if(schraegL > 0){
-    winkelSvg = `<text x="${(x0+18).toFixed(1)}" y="${(y0-12).toFixed(1)}" fill="#FFC633" font-size="10.5" font-family="JetBrains Mono, monospace">α=${winkelGrad.toFixed(1).wmZahl()}°</text>`;
+  // ---------- Pfostenabstände: horizontale Kettenbemaßung, grün — eigene Zeile unterhalb der waagerechten Bemaßung ----------
+  const bemLineY = y0 + (waagerechtL>0 ? 55 : 40);
+  let pfostenBemassung = '';
+  if(postXs.length >= 2){
+    postXs.forEach((px,i)=>{
+      pfostenBemassung += `<line x1="${px.toFixed(1)}" y1="${postYs[i].toFixed(1)}" x2="${px.toFixed(1)}" y2="${(bemLineY+5).toFixed(1)}" stroke="${COL_PFOSTEN}" stroke-width="0.75" stroke-dasharray="2 2"/>`;
+    });
+    pfostenBemassung += `<line x1="${postXs[0].toFixed(1)}" y1="${bemLineY.toFixed(1)}" x2="${postXs[postXs.length-1].toFixed(1)}" y2="${bemLineY.toFixed(1)}" stroke="${COL_PFOSTEN}" stroke-width="1"/>`;
+    postXs.forEach((px,i)=>{
+      pfostenBemassung += `<line x1="${px.toFixed(1)}" y1="${(bemLineY-4).toFixed(1)}" x2="${px.toFixed(1)}" y2="${(bemLineY+4).toFixed(1)}" stroke="${COL_PFOSTEN}" stroke-width="1"/>`;
+      if(i>0){
+        const segMM = (px-postXs[i-1])/scale;
+        const midX = (px+postXs[i-1])/2;
+        pfostenBemassung += `<text x="${midX.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_PFOSTEN}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">${segMM.toFixed(0).wmZahl()}</text>`;
+      }
+    });
+    pfostenBemassung += `<text x="${postXs[0].toFixed(1)}" y="${(bemLineY+27).toFixed(1)}" fill="${COL_NEUTRAL}" font-size="9.5" font-family="JetBrains Mono, monospace">Pfostenabstände, horizontal gemessen (mm)</text>`;
   }
+
+  // ---------- Höhe: vertikale Kettenbemaßung, gold ----------
+  const hoeheSvg = `<line x1="${(x0-20).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0-20).toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="${COL_HOEHE}" stroke-width="1"/>
+    <line x1="${(x0-24).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0-16).toFixed(1)}" y2="${y0.toFixed(1)}" stroke="${COL_HOEHE}" stroke-width="1"/>
+    <line x1="${(x0-24).toFixed(1)}" y1="${ry0.toFixed(1)}" x2="${(x0-16).toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="${COL_HOEHE}" stroke-width="1"/>
+    <text x="${(x0-30).toFixed(1)}" y="${((y0+ry0)/2).toFixed(1)}" fill="${COL_HOEHE}" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-90 ${(x0-30).toFixed(1)} ${((y0+ry0)/2).toFixed(1)})">H=${hoeheMM} mm (OK Handlauf)</text>`;
 
   return `<svg viewBox="0 0 ${W} ${Hh}" width="${W}" height="${Hh}">
     ${basisSvg}
     ${knieSvg}
     ${ueberstandSvg}
-    <line x1="${rx0.toFixed(1)}" y1="${ry0.toFixed(1)}" x2="${rxKnick.toFixed(1)}" y2="${ryKnick.toFixed(1)}" stroke="#6E97B3" stroke-width="3"/>
-    <line x1="${rxKnick.toFixed(1)}" y1="${ryKnick.toFixed(1)}" x2="${rxEnd.toFixed(1)}" y2="${ryEnd.toFixed(1)}" stroke="#6E97B3" stroke-width="3"/>
+    <line x1="${rx0.toFixed(1)}" y1="${ry0.toFixed(1)}" x2="${rxKnick.toFixed(1)}" y2="${ryKnick.toFixed(1)}" stroke="${COL_GEO}" stroke-width="3"/>
+    <line x1="${rxKnick.toFixed(1)}" y1="${ryKnick.toFixed(1)}" x2="${rxEnd.toFixed(1)}" y2="${ryEnd.toFixed(1)}" stroke="${COL_GEO}" stroke-width="3"/>
     ${posts}
+    ${pfostenBemassung}
+    ${schraegBemassung}
     ${winkelSvg}
-    <line x1="${(x0-20).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0-20).toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="#FFC633" stroke-width="1"/>
-    <text x="${(x0-28).toFixed(1)}" y="${((y0+ry0)/2).toFixed(1)}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-90 ${(x0-28).toFixed(1)} ${((y0+ry0)/2).toFixed(1)})">H=${hoeheMM} mm (OK Handlauf)</text>
-    <text x="${((x0+xKnick)/2).toFixed(1)}" y="${((y0+yKnick)/2-8).toFixed(1)}" fill="#ECEAE4" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${schraegLaengeMM.toFixed(0).wmZahl()} mm</text>
+    ${hoeheSvg}
     ${waagerechtBemassung}
-    <text x="${x0.toFixed(1)}" y="16" fill="#9AA0A6" font-size="11" font-family="JetBrains Mono, monospace">${pfostenAnzahl} Pfosten · Abstand ≈ ${pfostenabstandMM.toFixed(0).wmZahl()} mm · genaue Maße s. Zuschnittliste</text>
+    <text x="${x0.toFixed(1)}" y="16" fill="${COL_NEUTRAL}" font-size="11" font-family="JetBrains Mono, monospace">${pfostenAnzahl} Pfosten — genaue Zuschnittmaße s. Liste unten</text>
   </svg>`;
 }
 function calcKomplettSet(){
