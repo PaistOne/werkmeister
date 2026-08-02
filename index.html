@@ -346,6 +346,16 @@
     content:'';position:absolute;width:6px;height:6px;border-radius:50%;
     background:radial-gradient(circle at 35% 35%, #565c64, #1c1e21);top:8px;
   }
+  .card.collapsible{padding:0;}
+  .card.collapsible summary{
+    padding:20px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .card.collapsible summary::-webkit-details-marker{display:none;}
+  .card.collapsible summary::marker{content:'';}
+  .card.collapsible summary h3{margin:0;}
+  .card.collapsible .card-chevron{flex-shrink:0;color:var(--yellow);transition:transform .2s ease;}
+  .card.collapsible[open] .card-chevron{transform:rotate(180deg);}
+  .card.collapsible .card-body{padding:0 20px 20px;}
   body.light-mode .card::before, body.light-mode .card::after{
     background:radial-gradient(circle at 35% 35%, #d8cfb8, #b8ac8c);
   }
@@ -363,8 +373,8 @@
     padding:10px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;
   }
   input:focus, select:focus{border-color:var(--yellow);}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;align-items:end;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;align-items:end;}
   @media (max-width:520px){ .row3{grid-template-columns:1fr 1fr;} }
   .field{margin-bottom:0;}
 
@@ -401,6 +411,10 @@
   .pill.warn{background:rgba(232,101,76,0.15);color:var(--danger);border:1px solid rgba(232,101,76,0.4);}
   .pill.ok{background:rgba(123,174,127,0.15);color:var(--ok);border:1px solid rgba(123,174,127,0.4);}
 
+  #vgMaterial optgroup{color:var(--yellow);font-weight:600;}
+  #vgMaterial option{color:var(--text);font-weight:400;}
+  #vgMaterial.material-gewaehlt{border-color:var(--steel);box-shadow:0 0 0 1px var(--steel);}
+
   .search{margin-bottom:14px;}
   .search input{width:100%;}
   .note{font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.5;border-left:2px solid var(--yellow-dim);padding-left:10px;}
@@ -414,6 +428,12 @@
     padding:10px;margin-top:14px;display:flex;justify-content:center;
   }
   .triangle-visual svg{max-width:100%;height:auto;}
+
+  .gl-zoom-controls{display:flex;gap:8px;margin-top:12px;}
+  .gl-zoom-controls .btn{padding:8px 16px;margin:0;}
+  .gl-visual-wrap{overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;justify-content:flex-start;max-height:60vh;}
+  .gl-visual-wrap > div{transform-origin:top left;transition:transform .15s ease;}
+  .gl-visual-wrap svg{max-width:none;}
 
   .placeholder-list{list-style:none;margin:0;padding:0;}
   .placeholder-task{
@@ -639,12 +659,15 @@
             <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-duebel')"><span class="pt-dot"></span>Dübel &amp; Anker nach Hersteller →</li>
             <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
             <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-schrauben')"><span class="pt-dot"></span>Schraubentabelle (SW, Innensechskant) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-profile')"><span class="pt-dot"></span>Stahlprofile (IPE/HEA/HEB/UPN) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-werkstoffe')"><span class="pt-dot"></span>Blechdicken &amp; Werkstoffkennwerte →</li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-drehmoment')"><span class="pt-dot"></span>Drehmoment-Rechner →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schlosser')"><span class="pt-dot"></span>Treppe &amp; Geländer →</li>
           </ul>
         </div>
       </div>
@@ -706,6 +729,94 @@
           <p class="note">Machbarkeits-Beispiel mit drei Herstellern (SPAX, Würth ASSY, HECO), recherchiert aus öffentlich zugänglichen Produktdatenblättern. Auch hier gilt: Bei tragenden Holzverbindungen die zugehörige ETA-Zulassung und Bemessungstabelle des Herstellers für Randabstände und Tragfähigkeit beachten.</p>
         </div>
       </div>
+
+      <div class="subsection" id="s-profile">
+        <div class="card">
+          <h3>IPE-Träger <span class="tag">I-Träger, mittelbreite Ausführung, DIN EN 10034</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table collapsible">
+              <thead><tr><th>Profil</th><th>Höhe h</th><th>Breite b</th><th>Gewicht</th></tr></thead>
+              <tr><td class="mono" data-label="Profil">IPE 100</td><td class="mono" data-label="Höhe">100 mm</td><td class="mono" data-label="Breite">55 mm</td><td class="mono" data-label="Gewicht">8,3 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 120</td><td class="mono" data-label="Höhe">120 mm</td><td class="mono" data-label="Breite">64 mm</td><td class="mono" data-label="Gewicht">10,7 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 140</td><td class="mono" data-label="Höhe">140 mm</td><td class="mono" data-label="Breite">73 mm</td><td class="mono" data-label="Gewicht">13,2 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 160</td><td class="mono" data-label="Höhe">160 mm</td><td class="mono" data-label="Breite">82 mm</td><td class="mono" data-label="Gewicht">16,2 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 180</td><td class="mono" data-label="Höhe">180 mm</td><td class="mono" data-label="Breite">91 mm</td><td class="mono" data-label="Gewicht">19,3 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 200</td><td class="mono" data-label="Höhe">200 mm</td><td class="mono" data-label="Breite">100 mm</td><td class="mono" data-label="Gewicht">23,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 220</td><td class="mono" data-label="Höhe">220 mm</td><td class="mono" data-label="Breite">110 mm</td><td class="mono" data-label="Gewicht">26,9 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 240</td><td class="mono" data-label="Höhe">240 mm</td><td class="mono" data-label="Breite">120 mm</td><td class="mono" data-label="Gewicht">31,5 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 270</td><td class="mono" data-label="Höhe">270 mm</td><td class="mono" data-label="Breite">135 mm</td><td class="mono" data-label="Gewicht">37,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">IPE 300</td><td class="mono" data-label="Höhe">300 mm</td><td class="mono" data-label="Breite">150 mm</td><td class="mono" data-label="Gewicht">43,3 kg/m</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>HEA / HEB-Träger <span class="tag">Breitflanschträger, DIN EN 10034</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table collapsible">
+              <thead><tr><th>Nennmaß</th><th>HEA Höhe×Breite</th><th>HEA Gewicht</th><th>HEB Höhe×Breite</th><th>HEB Gewicht</th></tr></thead>
+              <tr><td class="mono" data-label="Nennmaß">100</td><td class="mono" data-label="HEA-Maß">96 × 100 mm</td><td class="mono" data-label="HEA-Gewicht">17,1 kg/m</td><td class="mono" data-label="HEB-Maß">100 × 100 mm</td><td class="mono" data-label="HEB-Gewicht">20,9 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">120</td><td class="mono" data-label="HEA-Maß">114 × 120 mm</td><td class="mono" data-label="HEA-Gewicht">20,4 kg/m</td><td class="mono" data-label="HEB-Maß">120 × 120 mm</td><td class="mono" data-label="HEB-Gewicht">27,4 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">140</td><td class="mono" data-label="HEA-Maß">133 × 140 mm</td><td class="mono" data-label="HEA-Gewicht">25,3 kg/m</td><td class="mono" data-label="HEB-Maß">140 × 140 mm</td><td class="mono" data-label="HEB-Gewicht">34,5 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">160</td><td class="mono" data-label="HEA-Maß">152 × 160 mm</td><td class="mono" data-label="HEA-Gewicht">31,2 kg/m</td><td class="mono" data-label="HEB-Maß">160 × 160 mm</td><td class="mono" data-label="HEB-Gewicht">43,7 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">180</td><td class="mono" data-label="HEA-Maß">171 × 180 mm</td><td class="mono" data-label="HEA-Gewicht">36,4 kg/m</td><td class="mono" data-label="HEB-Maß">180 × 180 mm</td><td class="mono" data-label="HEB-Gewicht">52,5 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">200</td><td class="mono" data-label="HEA-Maß">190 × 200 mm</td><td class="mono" data-label="HEA-Gewicht">43,0 kg/m</td><td class="mono" data-label="HEB-Maß">200 × 200 mm</td><td class="mono" data-label="HEB-Gewicht">63,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">220</td><td class="mono" data-label="HEA-Maß">210 × 220 mm</td><td class="mono" data-label="HEA-Gewicht">52,0 kg/m</td><td class="mono" data-label="HEB-Maß">220 × 220 mm</td><td class="mono" data-label="HEB-Gewicht">73,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">240</td><td class="mono" data-label="HEA-Maß">230 × 240 mm</td><td class="mono" data-label="HEA-Gewicht">62,0 kg/m</td><td class="mono" data-label="HEB-Maß">240 × 240 mm</td><td class="mono" data-label="HEB-Gewicht">85,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">260</td><td class="mono" data-label="HEA-Maß">250 × 260 mm</td><td class="mono" data-label="HEA-Gewicht">70,0 kg/m</td><td class="mono" data-label="HEB-Maß">260 × 260 mm</td><td class="mono" data-label="HEB-Gewicht">95,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">280</td><td class="mono" data-label="HEA-Maß">270 × 280 mm</td><td class="mono" data-label="HEA-Gewicht">78,0 kg/m</td><td class="mono" data-label="HEB-Maß">280 × 280 mm</td><td class="mono" data-label="HEB-Gewicht">106,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Nennmaß">300</td><td class="mono" data-label="HEA-Maß">290 × 300 mm</td><td class="mono" data-label="HEA-Gewicht">90,0 kg/m</td><td class="mono" data-label="HEB-Maß">300 × 300 mm</td><td class="mono" data-label="HEB-Gewicht">120,0 kg/m</td></tr>
+            </table>
+          </div>
+          <p class="note">HEA = leichtere Ausführung (dünnere Stege/Flansche), HEB = normale Ausführung, HEM (hier nicht gelistet) = schwere Ausführung für hochbelastete Konstruktionen. Alle Angaben Handelsgewichte für unlegierten Baustahl (S235JR).</p>
+        </div>
+        <div class="card">
+          <h3>UPN-Profile <span class="tag">U-Stahl, rundkantig, DIN EN 10279</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Profil</th><th>Höhe</th><th>Gewicht</th></tr></thead>
+              <tr><td class="mono" data-label="Profil">UPN 80</td><td class="mono" data-label="Höhe">80 mm</td><td class="mono" data-label="Gewicht">8,9 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 100</td><td class="mono" data-label="Höhe">100 mm</td><td class="mono" data-label="Gewicht">10,9 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 120</td><td class="mono" data-label="Höhe">120 mm</td><td class="mono" data-label="Gewicht">13,7 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 140</td><td class="mono" data-label="Höhe">140 mm</td><td class="mono" data-label="Gewicht">16,4 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 160</td><td class="mono" data-label="Höhe">160 mm</td><td class="mono" data-label="Gewicht">18,8 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 180</td><td class="mono" data-label="Höhe">180 mm</td><td class="mono" data-label="Gewicht">22,0 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 200</td><td class="mono" data-label="Höhe">200 mm</td><td class="mono" data-label="Gewicht">25,3 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 220</td><td class="mono" data-label="Höhe">220 mm</td><td class="mono" data-label="Gewicht">29,4 kg/m</td></tr>
+              <tr><td class="mono" data-label="Profil">UPN 240</td><td class="mono" data-label="Höhe">240 mm</td><td class="mono" data-label="Gewicht">33,2 kg/m</td></tr>
+            </table>
+          </div>
+          <p class="note">Alle Profil-Tabellen sind Handelsgewichte/-maße zur Vorplanung und Materialbestellung (z.B. Gewichtsabschätzung für Transport/Kran). Für tragende Konstruktionen (Statik, Trägerauswahl nach Last/Spannweite) immer die vollständige statische Berechnung mit Trägheitsmoment/Widerstandsmoment durch einen Tragwerksplaner heranziehen — diese Tabelle liefert nur Geometrie und Gewicht.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="s-werkstoffe">
+        <div class="card">
+          <h3>Blechdicken-Normreihe <span class="tag">gängige Lagerdicken</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th colspan="2">Dünnblech (mm)</th><th colspan="2">Mittel-/Grobblech (mm)</th></tr></thead>
+              <tr><td class="mono">0,5</td><td class="mono">1,0</td><td class="mono">3,0</td><td class="mono">8,0</td></tr>
+              <tr><td class="mono">0,6</td><td class="mono">1,25</td><td class="mono">4,0</td><td class="mono">10,0</td></tr>
+              <tr><td class="mono">0,7</td><td class="mono">1,5</td><td class="mono">5,0</td><td class="mono">12,0</td></tr>
+              <tr><td class="mono">0,8</td><td class="mono">2,0</td><td class="mono">6,0</td><td class="mono">15,0</td></tr>
+              <tr><td class="mono">0,9</td><td class="mono">2,5</td><td class="mono">—</td><td class="mono">20,0</td></tr>
+            </table>
+          </div>
+          <p class="note">Übliche Lagerdicken im Stahlhandel (Richtwerte, nicht jede Dicke bei jedem Händler/Werkstoff verfügbar). Verbindliche Toleranzen für Warmband nach DIN EN 10051, für Kaltband nach DIN EN 10131/10143. Sonderdicken meist nur auf Anfrage/mit Aufpreis.</p>
+        </div>
+        <div class="card">
+          <h3>Werkstoffkennwerte gängiger Baustähle <span class="tag">DIN EN 10025-2</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Stahlsorte</th><th>Alte Bez.</th><th>Streckgrenze Re</th><th>Zugfestigkeit Rm</th></tr></thead>
+              <tr><td data-label="Sorte">S235JR (1.0038)</td><td class="mono" data-label="Alt">St37</td><td class="mono" data-label="Re">235 N/mm² (≤16mm)</td><td class="mono" data-label="Rm">360–510 N/mm²</td></tr>
+              <tr><td data-label="Sorte">S275JR (1.0044)</td><td class="mono" data-label="Alt">St44</td><td class="mono" data-label="Re">275 N/mm² (≤16mm)</td><td class="mono" data-label="Rm">410–560 N/mm²</td></tr>
+              <tr><td data-label="Sorte">S355JR (1.0045)</td><td class="mono" data-label="Alt">St52</td><td class="mono" data-label="Re">355 N/mm² (≤16mm)</td><td class="mono" data-label="Rm">470–630 N/mm²</td></tr>
+            </table>
+          </div>
+          <p class="note">Streckgrenze sinkt mit zunehmender Bauteildicke (z.B. S355 fällt bei 100–150mm auf ca. 295 N/mm²) — bei dickeren Querschnitten immer die dickenabhängige Tabelle im Werksprüfzeugnis (MTC) prüfen, nicht den Nennwert. E-Modul für alle unlegierten Baustähle ca. 210.000 N/mm², Dichte ca. 7.850 kg/m³ (nutzbar im Volumen &amp; Gewicht-Rechner). "JR" = Gütegruppe mit Mindest-Kerbschlagarbeit 27 J bei 20°C; für tiefere Einsatztemperaturen (Stahlbau im Freien, Winter) ggf. J0 (0°C) oder J2 (-20°C) wählen.</p>
+        </div>
+      </div>
     </section>
 
     <!-- ============ 02 SCHWEISSER ============ -->
@@ -737,6 +848,12 @@
           <h3>⚙️ MAG / MIG <span class="tag">Schutzgas-Schweißen</span></h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-magmig')"><span class="pt-dot"></span>Drahtelektrode, Schutzgas & Parameter →</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🧮 Rechner</h3>
+          <ul class="placeholder-list">
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schweisser')"><span class="pt-dot"></span>Treppe &amp; Geländer →</li>
           </ul>
         </div>
       </div>
@@ -948,6 +1065,7 @@
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-kabel')"><span class="pt-dot"></span>Kabelquerschnitt-Richtwerte →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ls-drehstrom')"><span class="pt-dot"></span>LS-Schalter-Charakteristik &amp; Drehstrom-Grundlagen →</li>
           </ul>
         </div>
         <div class="card">
@@ -955,6 +1073,7 @@
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ohm')"><span class="pt-dot"></span>Ohm'sches Gesetz &amp; Leistung →</li>
             <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-schaltungen')"><span class="pt-dot"></span>Schaltungen (Reihe/Parallel/Stern-Dreieck) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-spannungsfall')"><span class="pt-dot"></span>Spannungsfall-Rechner →</li>
           </ul>
         </div>
       </div>
@@ -985,32 +1104,41 @@
       <div class="subsection" id="e-schaltungen">
         <div class="grid2">
           <div class="card">
-            <h3>Reihenschaltung</h3>
-            <table>
-              <tr><td>Widerstand</td><td class="mono">R = R₁+R₂+…</td></tr>
-              <tr><td>Strom</td><td class="mono">I gleich überall</td></tr>
-              <tr><td>Spannung</td><td class="mono">U teilt sich auf</td></tr>
-            </table>
+            <h3>Reihenschaltung <span class="tag">R = R₁+R₂+…</span></h3>
+            <div class="field"><label>Widerstände (Ω), getrennt durch Leerzeichen oder Semikolon</label><input type="text" id="rsWerte" placeholder="z.B. 100 220 330"></div>
+            <button class="btn" onclick="calcReihe()">Rges berechnen</button>
+            <div class="readout" id="rsOut" style="display:none;"><div class="item"><div class="rlabel">Rges</div><div class="rvalue" id="rsErgebnis">—</div></div></div>
+            <p class="note">Strom gleich überall, Spannung teilt sich auf die einzelnen Widerstände auf.</p>
           </div>
           <div class="card">
-            <h3>Parallelschaltung</h3>
-            <table>
-              <tr><td>Widerstand</td><td class="mono">1/R = 1/R₁+1/R₂+…</td></tr>
-              <tr><td>Spannung</td><td class="mono">U gleich überall</td></tr>
-              <tr><td>Strom</td><td class="mono">I teilt sich auf</td></tr>
-            </table>
+            <h3>Parallelschaltung <span class="tag">1/R = 1/R₁+1/R₂+…</span></h3>
+            <div class="field"><label>Widerstände (Ω), getrennt durch Leerzeichen oder Semikolon</label><input type="text" id="psWerte" placeholder="z.B. 100 220 330"></div>
+            <button class="btn" onclick="calcParallel()">Rges berechnen</button>
+            <div class="readout" id="psOut" style="display:none;"><div class="item"><div class="rlabel">Rges</div><div class="rvalue" id="psErgebnis">—</div></div></div>
+            <p class="note">Spannung gleich überall, Strom teilt sich auf die einzelnen Widerstände auf.</p>
           </div>
         </div>
         <div class="card">
           <h3>Stern-Dreieck-Umwandlung</h3>
-          <div class="table-wrap">
-            <table>
-              <tr><td>Stern → Dreieck</td><td class="mono">R∆ = (R1R2+R2R3+R3R1)/Rgegenüber</td></tr>
-              <tr><td>Dreieck → Stern</td><td class="mono">RY = (Ra·Rb)/(Ra+Rb+Rc)</td></tr>
-              <tr><td>Symmetrisch (alle R gleich)</td><td class="mono">R∆ = 3 · RY</td></tr>
-            </table>
+          <div class="field">
+            <label>Richtung</label>
+            <select id="sdRichtung" onchange="updateSdLabels()">
+              <option value="sternZuDreieck">Stern → Dreieck</option>
+              <option value="dreieckZuStern">Dreieck → Stern</option>
+            </select>
           </div>
-          <p class="note">Bei Motoren: Stern-Anlauf reduziert Anlaufstrom &amp; -moment auf ⅓, Dreieck = volle Leistung im Betrieb.</p>
+          <div class="row3">
+            <div class="field"><label id="sdLabel1">R_A (Ω)</label><input type="number" id="sdR1" step="0.01"></div>
+            <div class="field"><label id="sdLabel2">R_B (Ω)</label><input type="number" id="sdR2" step="0.01"></div>
+            <div class="field"><label id="sdLabel3">R_C (Ω)</label><input type="number" id="sdR3" step="0.01"></div>
+          </div>
+          <button class="btn" onclick="calcSternDreieck()">Berechnen</button>
+          <div class="readout" id="sdOut" style="display:none;">
+            <div class="item"><div class="rlabel" id="sdOutLabel1">—</div><div class="rvalue" id="sdOut1">—</div></div>
+            <div class="item"><div class="rlabel" id="sdOutLabel2">—</div><div class="rvalue" id="sdOut2">—</div></div>
+            <div class="item"><div class="rlabel" id="sdOutLabel3">—</div><div class="rvalue" id="sdOut3">—</div></div>
+          </div>
+          <p class="note">Stern→Dreieck: R∆ = (R_A·R_B + R_B·R_C + R_C·R_A) / R_gegenüber. Dreieck→Stern: R_Y = (R_a·R_b) / (R_a+R_b+R_c), jeweils die zwei am gemeinsamen Knoten anliegenden Dreieck-Widerstände. Bei Motoren: Stern-Anlauf reduziert Anlaufstrom &amp; -moment auf ⅓, Dreieck = volle Leistung im Betrieb.</p>
         </div>
       </div>
 
@@ -1031,6 +1159,66 @@
             </table>
           </div>
           <p class="note"><strong>Wichtig:</strong> Diese Tabelle ist eine Vorplanungs-Orientierung für Standardfälle bei ca. 25°C Umgebungstemperatur, Verlegung im Installationsrohr, ohne Häufung mehrerer Leitungen. Die tatsächlich zulässige Absicherung hängt zusätzlich von Verlegeart, Häufung, Umgebungstemperatur, Leitungslänge (Spannungsfall) und Leitungstyp ab — verbindlich geregelt in DIN VDE 0298-4 und DIN VDE 0100-520. Bei längeren Leitungen (z.B. über 18 m) oder Bündelung mehrerer Kabel immer die vollständige Berechnung durchführen, nicht nur diese Tabelle nutzen.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="e-ls-drehstrom">
+        <div class="card">
+          <h3>LS-Schalter-Charakteristik <span class="tag">B / C / D nach DIN EN 60898-1</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Typ</th><th>Magnetische Auslösung</th><th>Typischer Einsatz</th></tr></thead>
+              <tr><td class="mono" data-label="Typ">B</td><td class="mono" data-label="Auslösung">3–5 × Iₙ</td><td data-label="Einsatz">Standard für Wohnbereich, Beleuchtung, Steckdosen — ohmsche Lasten ohne nennenswerten Einschaltstrom</td></tr>
+              <tr><td class="mono" data-label="Typ">C</td><td class="mono" data-label="Auslösung">5–10 × Iₙ</td><td data-label="Einsatz">Verbraucher mit mäßigem Einschaltstrom: Motoren, Kompressoren, Klimageräte, Wallbox, Leuchtstoffröhren</td></tr>
+              <tr><td class="mono" data-label="Typ">D</td><td class="mono" data-label="Auslösung">10–20 × Iₙ</td><td data-label="Einsatz">Hohe Einschaltströme: Transformatoren, Schweißgeräte, große Motoren — in der Industrie, selten im Haushalt</td></tr>
+            </table>
+          </div>
+          <p class="note">Der Buchstabe (B/C/D) bestimmt nur den <strong>magnetischen</strong> Schnellauslöser (Kurzschlussschutz). Der thermische Überlastschutz (Bimetall) ist bei allen drei Typen gleich geregelt: Auslösung zwischen 1,13 und 1,45 × Iₙ. Faustregel: 90% der Wohnungs-Stromkreise brauchen Typ B — Typ C nur, wenn ein Gerät mit hohem Einschaltstrom (z.B. Waschmaschine beim Schleudern) einen B-Automaten ungewollt auslöst. Für Personenschutz zusätzlich immer FI/RCD einplanen — der LS-Schalter schützt nur die Leitung, nicht den Menschen.</p>
+        </div>
+        <div class="card">
+          <h3>Drehstrom-Grundlagen <span class="tag">230 V / 400 V</span></h3>
+          <div class="table-wrap">
+            <table>
+              <tr><td>Sternspannung (Außenleiter ↔ Neutralleiter)</td><td class="mono">U = 230 V</td></tr>
+              <tr><td>Außenleiterspannung (Leiter ↔ Leiter)</td><td class="mono">U = 400 V</td></tr>
+              <tr><td>Zusammenhang</td><td class="mono">U_Leiter = √3 · U_Strang ≈ 1,732 × 230 V ≈ 400 V</td></tr>
+            </table>
+          </div>
+          <p class="note">Einphasige Verbraucher (Steckdosen, Beleuchtung) hängen zwischen einem Außenleiter (L1/L2/L3) und dem Neutralleiter (N) → 230 V. Drehstromverbraucher (Herd, große Motoren, Wallbox 11/22 kW) nutzen alle drei Außenleiter gegeneinander → 400 V. Bei ungleicher Lastverteilung auf die drei Phasen (Schieflast) sollte der Neutralleiter-Strom im Blick behalten werden — starke Schieflast kann zu erhöhter N-Leiter-Belastung führen.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="e-spannungsfall">
+        <div class="card">
+          <h3>Spannungsfall-Rechner <span class="tag">nach DIN VDE 0100-520</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Prüft, ob eine Leitung bei gegebener Länge, Strom und Querschnitt innerhalb der zulässigen 3%/5%-Grenze bleibt.</p>
+          <div class="row3">
+            <div class="field"><label>Leitungslänge (m, einfache Strecke)</label><input type="number" id="sfLaenge" step="0.1" placeholder="z.B. 25"></div>
+            <div class="field"><label>Stromstärke (A)</label><input type="number" id="sfStrom" step="0.1" placeholder="z.B. 16"></div>
+            <div class="field"><label>Querschnitt (mm²)</label><input type="number" id="sfQuerschnitt" step="0.1" placeholder="z.B. 2.5"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Material</label>
+              <select id="sfMaterial">
+                <option value="56">Kupfer (κ = 56)</option>
+                <option value="35">Aluminium (κ = 35)</option>
+              </select>
+            </div>
+            <div class="field"><label>Phasenart</label>
+              <select id="sfPhase">
+                <option value="2">Einphasig (230 V)</option>
+                <option value="1.732">Dreiphasig (400 V)</option>
+              </select>
+            </div>
+            <div class="field"><label>cos φ</label><input type="number" id="sfCosPhi" step="0.01" value="1"></div>
+          </div>
+          <button class="btn" onclick="calcSpannungsfall()">Berechnen</button>
+          <div class="readout" id="sfOut" style="display:none;">
+            <div class="item"><div class="rlabel">Spannungsfall ΔU</div><div class="rvalue" id="sfDeltaU">—</div></div>
+            <div class="item"><div class="rlabel">Spannungsfall in %</div><div class="rvalue" id="sfProzent">—</div></div>
+            <div class="item"><div class="rlabel">Bewertung</div><div class="rvalue" id="sfBewertung" style="font-size:15px;">—</div></div>
+          </div>
+          <p class="note">Formel: ΔU = (Faktor × L × I × cos φ) / (κ × A) — Faktor 2 einphasig, √3 (≈1,732) dreiphasig. Grenzwerte nach VDE 0100-520: max. 3% für Beleuchtungsstromkreise, max. 5% für sonstige Verbraucher (jeweils vom Zähler bis zum Verbraucher). Für Überschlagsrechnungen cos φ = 1 annehmen — bei induktiven Lasten (Motoren) liegt der reale Spannungsfall dann etwas niedriger als berechnet, die Rechnung liegt also auf der sicheren Seite.</p>
         </div>
       </div>
     </section>
@@ -1185,13 +1373,74 @@
           </div>
           <button class="btn" onclick="calcTreppe()">Beste Lösungen berechnen</button>
           <div id="treppeErgebnisse" style="margin-top:16px;"></div>
-          <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">👆 Auf eine Karte klicken, um die Treppe maßstäblich als Skizze anzuzeigen.</p>
+          <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">👆 Auf eine Karte klicken, um die Treppe maßstäblich als Skizze anzuzeigen. Passendes Geländer weiter unten eigenständig konfigurierbar.</p>
           <div class="triangle-visual" id="treppeSkizze"></div>
           <p class="note">Grenzwerte: Steigung 140–190 mm (Gebäude allgemein) bzw. 140–200 mm (Wohngebäude ≤2 WE); Auftritt 260–370 mm (allgemein) bzw. 230–370 mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650 mm, ideal 630 mm. "Steigungen" = Anzahl der Stufen von Boden zu Boden; "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Alle Maße sind Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen (Rettungsweg, öffentliche Gebäude) zusätzlich die jeweilige Landesbauordnung prüfen.</p>
         </div>
 
         <div class="card">
-          <h3>Handlauf &amp; Geländer <span class="tag">3 Regelwerke im Vergleich</span></h3>
+          <h3>Geländer-Rechner <span class="tag">mit bemaßter Zeichnung &amp; Zuschnittliste</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Eigenständig konfigurierbar — auch wenn das Geländer oben nicht an der letzten Stufe endet, sondern noch waagerecht weiterläuft (z.B. bis zur Wandbefestigung auf dem Podest).</p>
+          <div class="row3">
+            <div class="field"><label>Regelwerk</label>
+              <select id="glRegelwerk" onchange="glSetPreset()">
+                <option value="privat">Privat / Wohnbau</option>
+                <option value="arbeit">Arbeitsstätten</option>
+                <option value="industrie">Industrie / Maschinen</option>
+              </select>
+            </div>
+            <div class="field"><label>Geländerhöhe (mm, bis Oberkante Handlauf)</label><input type="number" id="glHoehe" step="1" value="900"></div>
+            <div class="field"><label>Pfostenanzahl (inkl. Anfang &amp; Ende)</label><input type="number" id="glPfosten" step="1" value="4"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Schräge Länge (mm)</label><input type="number" id="glSchraegL" step="1" placeholder="z.B. 1500"></div>
+            <div class="field"><label>Schräge Höhe / Steigung (mm)</label><input type="number" id="glSchraegH" step="1" placeholder="z.B. 1000"></div>
+            <div class="field"><label>Waagerechte Verlängerung (mm)</label><input type="number" id="glWaagerecht" step="1" value="0"></div>
+          </div>
+          <button class="btn secondary" onclick="glAusTreppeUebernehmen()" style="margin-bottom:10px;">↳ Schräge Maße von berechneter Treppe übernehmen</button>
+
+          <div class="field" style="margin-top:4px;max-width:260px;"><label>Handlauf-Überstand am Anfang (mm)</label><input type="number" id="glUeberstandStart" step="1" value="0" placeholder="0 = kein Überstand"></div>
+          <p class="note" style="margin-top:6px;">Reiner Handlauf-Überstand vor dem ersten Pfosten (z.B. Griffverlängerung am Treppenfuß) — zählt NICHT zur Pfostenanzahl/-verteilung, kommt zusätzlich obendrauf.</p>
+
+          <div class="row3" style="margin-top:12px;">
+            <div class="field"><label>Rohrart</label>
+              <select id="glRohrart" onchange="glUpdateRohrartLabels()">
+                <option value="rund">Rundrohr (Ø)</option>
+                <option value="vierkant">Vierkantrohr (Kantenlänge)</option>
+              </select>
+            </div>
+            <div class="field"><label id="glHandlaufGroesseLabel">Handlauf Ø (mm)</label><input type="number" id="glHandlaufGroesse" step="1" value="40"></div>
+            <div class="field"><label id="glPfostenGroesseLabel">Pfosten Ø (mm)</label><input type="number" id="glPfostenGroesse" step="1" value="40"></div>
+          </div>
+
+          <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-bottom:0;margin-top:6px;">
+            <input type="checkbox" id="glKnieleisteAn" style="width:auto;" onchange="glToggleKnie()"> Knieleiste
+          </label>
+          <div class="row" id="glKnieleisteFields" style="display:none;margin-top:8px;">
+            <div class="field"><label>Kniehöhe (mm)</label><input type="number" id="glKniehoehe" step="1" value="450"></div>
+            <div class="field"><label id="glKnieleisteGroesseLabel">Knieleiste Ø (mm)</label><input type="number" id="glKnieleisteGroesse" step="1" value="30"></div>
+          </div>
+
+          <button class="btn" onclick="calcGelaender()" style="margin-top:10px;">Geländer zeichnen</button>
+          <div class="readout" id="glOut" style="display:none;">
+            <div class="item"><div class="rlabel">Handlauf gesamt</div><div class="rvalue" id="glGesamtlaenge">—</div></div>
+            <div class="item"><div class="rlabel">Pfostenlänge (bis UK Handlauf)</div><div class="rvalue" id="glPfostenlaenge">—</div></div>
+            <div class="item"><div class="rlabel">Pfostenabstand (Mitte)</div><div class="rvalue" id="glPfostenabstand">—</div></div>
+            <div class="item"><div class="rlabel">Sägewinkel Neigung</div><div class="rvalue" id="glWinkel">—</div></div>
+          </div>
+          <div class="gl-zoom-controls" id="glZoomControls" style="display:none;">
+            <button class="btn secondary" onclick="glZoom(0.8)" type="button">−</button>
+            <button class="btn secondary" onclick="glZoom(1.25)" type="button">+</button>
+            <button class="btn secondary" onclick="glZoomReset()" type="button">Zurücksetzen</button>
+          </div>
+          <div class="triangle-visual gl-visual-wrap" id="glSkizzeWrap"><div id="glSkizze"></div></div>
+          <div id="glZuschnittliste"></div>
+          <p class="note">Pfosten werden gleichmäßig über die Kern-Länge (schräg + waagerechte Verlängerung) verteilt — der Handlauf-Überstand am Anfang zählt nicht mit. Bei Industrie max. 1500 mm Pfostenabstand (Mittellinie) einhalten. Zeichnung mit +/− zoombar und per Fingerwisch verschiebbar (Smartphone), ersetzt aber keine Freigabezeichnung für genehmigungspflichtige Anlagen — Rohr-Ø/Kantenlängen sind vereinfachte Bauhilfe, keine statische Bemessung der Wandstärke.</p>
+        </div>
+
+        <details class="card collapsible">
+          <summary><h3>Handlauf &amp; Geländer <span class="tag">3 Regelwerke im Vergleich</span></h3><svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+          <div class="card-body">
           <div class="table-wrap">
             <table class="responsive-table compare-table">
               <thead><tr><th></th><th>Privat / Wohnbau</th><th>Arbeitsstätten allgemein</th><th>Industrieanlagen / Maschinen</th></tr></thead>
@@ -1207,6 +1456,21 @@
           </div>
           <p class="note"><strong>Das erklärt auch, warum in der Industrie fast ausschließlich Knieleisten zu sehen sind:</strong> Bei Maschinenzugängen, Bühnen und Laufstegen nach DIN EN ISO 14122-3 ist die Knieleiste zwingend (nicht nur eine Option wie im Wohn- oder Bürobau), und die Geländerhöhe liegt mit ≥110 cm auch höher als die 90 cm im privaten Treppenbau. Die 500-mm-Abstandsregel ist in beiden Regelwerken (ASR und ISO 14122-3) fast identisch, stammt aber aus unterschiedlichen Normen mit unterschiedlichem Geltungsbereich.</p>
           <p class="note">Öffnungen im Geländer allgemein: DIN 18065 fordert max. 12 cm Kugeldurchgang bis ca. 70 cm Höhe (wo Kinder Zugang haben), max. 6 cm direkt an der Stufen-/Podestkante. Bei genehmigungspflichtigen oder gewerblichen Anlagen vor der Ausführung immer mit Bauamt, Berufsgenossenschaft bzw. einem Sicherheitsingenieur abstimmen — diese Tabelle ersetzt keine Einzelfallprüfung.</p>
+          </div>
+        </details>
+
+        <div class="card">
+          <h3>Komplett-Set: Treppe + Geländer <span class="tag">bemaßte Gesamtzeichnung</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Fasst die oben ausgewählte Treppe und das konfigurierte Geländer in einer bemaßten Zeichnung zusammen — praktisch als Referenz beim Bau/Zuschnitt.</p>
+          <button class="btn" onclick="calcKomplettSet()">Komplettzeichnung erstellen</button>
+          <div class="gl-zoom-controls" id="komplettZoomControls" style="display:none;">
+            <button class="btn secondary" onclick="komplettZoom(0.8)" type="button">−</button>
+            <button class="btn secondary" onclick="komplettZoom(1.25)" type="button">+</button>
+            <button class="btn secondary" onclick="komplettZoomReset()" type="button">Zurücksetzen</button>
+          </div>
+          <div class="triangle-visual gl-visual-wrap" id="komplettSkizzeWrap"><div id="komplettSkizze"></div></div>
+          <div id="komplettZuschnittliste"></div>
+          <p class="note">Setzt voraus, dass oben sowohl eine Treppen-Karte angeklickt als auch das Geländer einmal gezeichnet wurde. Die schräge Länge/Höhe des Geländers wird für diese Zeichnung automatisch von der ausgewählten Treppe übernommen, damit beide Teile exakt zueinander passen — waagerechte Verlängerung, Höhe, Pfostenanzahl und Knieleiste bleiben wie im Geländer-Rechner eingestellt.</p>
         </div>
       </div>
 
@@ -1260,24 +1524,24 @@
               <select id="vgMaterial" onchange="calcVolumenGewicht()">
                 <option value="">— nur Volumen —</option>
                 <optgroup label="Schüttgüter">
-                  <option value="1500">Sand (≈1.500 kg/m³)</option>
-                  <option value="1600">Kies (≈1.600 kg/m³)</option>
-                  <option value="1550">Splitt (≈1.550 kg/m³)</option>
-                  <option value="1800">Schotter (≈1.800 kg/m³)</option>
-                  <option value="1400">Mutterboden / Erde (≈1.400 kg/m³)</option>
-                  <option value="1500">Rasentragschicht / Vegetationssubstrat (≈1.500 kg/m³)</option>
-                  <option value="450">Rindenmulch (≈450 kg/m³)</option>
-                  <option value="2400">Frischbeton (≈2.400 kg/m³)</option>
+                  <option value="sand" data-dichte="1500" data-kat="schuett">Sand (≈1.500 kg/m³)</option>
+                  <option value="kies" data-dichte="1600" data-kat="schuett">Kies (≈1.600 kg/m³)</option>
+                  <option value="splitt" data-dichte="1550" data-kat="schuett">Splitt (≈1.550 kg/m³)</option>
+                  <option value="schotter" data-dichte="1800" data-kat="schuett">Schotter (≈1.800 kg/m³)</option>
+                  <option value="mutterboden" data-dichte="1400" data-kat="schuett">Mutterboden / Erde (≈1.400 kg/m³)</option>
+                  <option value="rasen" data-dichte="1500" data-kat="schuett">Rasentragschicht / Vegetationssubstrat (≈1.500 kg/m³)</option>
+                  <option value="mulch" data-dichte="450" data-kat="schuett">Rindenmulch (≈450 kg/m³)</option>
+                  <option value="frischbeton" data-dichte="2400" data-kat="schuett">Frischbeton (≈2.400 kg/m³)</option>
                 </optgroup>
                 <optgroup label="Estrich">
-                  <option value="2000">Zementestrich (≈2.000 kg/m³)</option>
-                  <option value="2200">Anhydrit-/Fließestrich (≈2.200 kg/m³)</option>
+                  <option value="zementestrich" data-dichte="2000" data-kat="estrich">Zementestrich (≈2.000 kg/m³)</option>
+                  <option value="anhydrit" data-dichte="2200" data-kat="estrich">Anhydrit-/Fließestrich (≈2.200 kg/m³)</option>
                 </optgroup>
                 <optgroup label="Naturstein & Sonstiges">
-                  <option value="2700">Granit (≈2.700 kg/m³)</option>
-                  <option value="2300">Sandstein (≈2.300 kg/m³)</option>
-                  <option value="2700">Marmor (≈2.700 kg/m³)</option>
-                  <option value="2500">Glas / Flachglas (≈2.500 kg/m³)</option>
+                  <option value="granit" data-dichte="2700" data-kat="stein">Granit (≈2.700 kg/m³)</option>
+                  <option value="sandstein" data-dichte="2300" data-kat="stein">Sandstein (≈2.300 kg/m³)</option>
+                  <option value="marmor" data-dichte="2700" data-kat="stein">Marmor (≈2.700 kg/m³)</option>
+                  <option value="glas" data-dichte="2500" data-kat="stein">Glas / Flachglas (≈2.500 kg/m³)</option>
                 </optgroup>
               </select>
             </div>
@@ -1662,7 +1926,7 @@
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'estrichleger')"><span class="pt-dot"></span>Estrich-Materialbedarf nach Aufbauhöhe und Fläche →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'zementestrich', 'estrichleger')"><span class="pt-dot"></span>Estrich-Materialbedarf nach Aufbauhöhe und Fläche →</li>
           </ul>
         </div>
       </div>
@@ -1746,9 +2010,9 @@
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Erdaushub-Volumen berechnen (Länge × Breite × Tiefe) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Kies-/Schüttgutmenge inkl. Gewicht nach Schüttdichte →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'kies', 'galabau')"><span class="pt-dot"></span>Kies-/Schüttgutmenge inkl. Gewicht nach Schüttdichte →</li>
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','galabau')"><span class="pt-dot"></span>Pflasterstein-Bedarf nach genormtem Steinformat →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Rasen-/Substratmenge berechnen (Fläche × Schichtdicke, inkl. Gewicht) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'rasen', 'galabau')"><span class="pt-dot"></span>Rasen-/Substratmenge berechnen (Fläche × Schichtdicke, inkl. Gewicht) →</li>
           </ul>
         </div>
       </div>
@@ -1794,7 +2058,7 @@
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'glaser')"><span class="pt-dot"></span>Glasgewicht berechnen (Fläche × Dicke × Dichte) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'glas', 'glaser')"><span class="pt-dot"></span>Glasgewicht berechnen (Fläche × Dicke × Dichte) →</li>
             <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-zuschnitt')"><span class="pt-dot"></span>Zuschnitt-/Verschnittoptimierung →</li>
           </ul>
         </div>
@@ -2139,7 +2403,7 @@
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gefaelle', null, 'strassenbau')"><span class="pt-dot"></span>Gefälle berechnen (nutzt den Gefälle-Rechner unter Installateur) →</li>
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','strassenbau')"><span class="pt-dot"></span>Pflaster-/Bordstein-Bedarf berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'strassenbau')"><span class="pt-dot"></span>Schüttgutmenge für den Unterbau →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'schotter', 'strassenbau')"><span class="pt-dot"></span>Schüttgutmenge für den Unterbau →</li>
           </ul>
         </div>
       </div>
@@ -2524,6 +2788,26 @@
 <div class="ad-side"><span>Anzeige</span></div>
 
 <script>
+// ---------- DEUTSCHES ZAHLENFORMAT ----------
+// Wandelt das Ergebnis von X.toFixed(N) in deutsche Schreibweise um: Komma statt Punkt als
+// Dezimaltrenner, Punkt als Tausendertrenner, überflüssige Nachkommanullen entfernt
+// (z.B. "1.000" -> "1", "14762.00" -> "14.762", "3.20" -> "3,2"). Verhindert, dass z.B. ein
+// 1×1×1m-Volumen als "1,000 m³" angezeigt wird, was wie "eintausend" gelesen werden könnte.
+String.prototype.wmZahl = function(){
+  let s = this.toString();
+  const neg = s.startsWith('-');
+  if(neg) s = s.slice(1);
+  const parts = s.split('.');
+  let intPart = parts[0];
+  let decPart = parts[1];
+  if(decPart !== undefined){
+    decPart = decPart.replace(/0+$/, '');
+  }
+  intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const result = intPart + (decPart ? ',' + decPart : '');
+  return (neg ? '-' : '') + result;
+};
+
 // ---------- PREMIUM TOGGLE ----------
 function setPremium(on){
   document.body.classList.toggle('premium', on);
@@ -2724,6 +3008,8 @@ const toolIndex = [
   {cat:'schlosser', sub:'s-drehmoment', label:'Drehmoment-Rechner (Kraft am Hebel)', kw:'drehmoment kraft hebel schlüssellänge nm'},
   {cat:'schlosser', sub:'s-duebel', label:'Dübel & Anker nach Hersteller', kw:'dübel anker fischer hilti würth heco sx fu hud shark multi-monti beton mauerwerk porenbeton bohrloch sx6x30 sx8x40 fu8x50 faz2 faz-ii schwerlast bolzenanker hud1 hud2 universaldübel hit-hy injektionsmörtel verbundanker shark pro twist multi-monti-plus schraubanker'},
   {cat:'schlosser', sub:'s-holzschrauben', label:'Holzschrauben nach Hersteller', kw:'holzschrauben spax assy topix vorbohren würth heco universalschraube 4cut assy4 assyplus vg heco-topix-plus'},
+  {cat:'schlosser', sub:'s-profile', label:'Stahlprofile (IPE/HEA/HEB/UPN)', kw:'stahlprofile ipe hea heb upn träger breitflanschträger i-träger u-profil gewicht kg/m din en 10034 10279'},
+  {cat:'schlosser', sub:'s-werkstoffe', label:'Blechdicken & Werkstoffkennwerte', kw:'blechdicke normreihe werkstoffkennwerte s235jr s275jr s355jr st37 st44 st52 streckgrenze zugfestigkeit baustahl din en 10025'},
   {cat:'schweisser', sub:'schweisser-uebersicht', label:'Schweißer — Übersicht', kw:'schweißer elektroschweißen wig mag e-hand mma übersicht'},
   {cat:'schweisser', sub:'w-elektroden', label:'Elektroden nach Typ', kw:'elektroden rutil basisch zellulose edelstahl guss hartauftrag typ ampere'},
   {cat:'schweisser', sub:'w-hersteller', label:'Elektroden nach Hersteller', kw:'elektroden böhler welding fox phoenix spezial d thermanit x ewm se6013 se6010 se7016 se7018 sehard lincoln electric fleetweld omnia basic jetweld e7024 ampere hersteller ohv spe cel eti sus ev50 rc bh5 mo br 300p'},
@@ -2737,6 +3023,8 @@ const toolIndex = [
   {cat:'elektriker', sub:'e-ohm', label:"Ohm'sches Gesetz & Leistung", kw:'ohm spannung strom widerstand leistung volt ampere watt u i r p'},
   {cat:'elektriker', sub:'e-schaltungen', label:'Schaltungen (Reihe/Parallel/Stern-Dreieck)', kw:'reihenschaltung parallelschaltung stern dreieck widerstand motor anlauf'},
   {cat:'elektriker', sub:'e-kabel', label:'Kabelquerschnitt-Richtwerte', kw:'kabelquerschnitt leitungsquerschnitt absicherung strombelastbarkeit vde 0298 nym sicherung ampere'},
+  {cat:'elektriker', sub:'e-ls-drehstrom', label:'LS-Schalter-Charakteristik & Drehstrom-Grundlagen', kw:'leitungsschutzschalter ls-schalter charakteristik b c d sicherungsautomat auslösestrom drehstrom sternspannung außenleiterspannung 230v 400v fi rcd'},
+  {cat:'elektriker', sub:'e-spannungsfall', label:'Spannungsfall-Rechner', kw:'spannungsfall spannungsabfall vde 0100-520 kabellänge querschnitt kupfer aluminium dreiphasig einphasig cos phi'},
   {cat:'rechner', sub:'r-flaeche', label:'Fläche (Rechteck & Kreis)', kw:'fläche rechteck quadrat kreis kreisfläche umfang m2 radius durchmesser'},
   {cat:'rechner', sub:'r-dreieck', label:'Dreieck (Winkel & Pythagoras)', kw:'dreieck winkel winkelsumme pythagoras kathete hypotenuse rechtwinklig'},
   {cat:'rechner', sub:'r-prozent', label:'Prozent-Rechner', kw:'prozent rabatt aufschlag anteil'},
@@ -2746,7 +3034,7 @@ const toolIndex = [
   {cat:'rechner', sub:'r-mischung', label:'Mischungsverhältnis-Rechner (Mörtel, Beton, Verdünnung)', kw:'mischungsverhältnis mörtel beton verdünnung zement sand kies teile mischen maurer maler'},
   {cat:'rechner', sub:'r-kalkulation', label:'Kalkulationsrechner (Kosten, MwSt., Aufschlag, Gewinn)', kw:'kalkulation kosten mehrwertsteuer mwst aufschlag gewinn verkaufspreis angebot premium'},
   {cat:'rechner', sub:'r-trig', label:'Sinus/Cosinus/Tangens & Dachneigung', kw:'sinus cosinus tangens trigonometrie dachneigung rampe steigung winkelfunktionen'},
-  {cat:'rechner', sub:'r-treppe', label:'Treppe & Geländer', kw:'treppe stufen steigung auftritt geländer handlauf knieleiste din 18065 iso 14122'},
+  {cat:'rechner', sub:'r-treppe', label:'Treppe & Geländer', kw:'treppe stufen steigung auftritt geländer handlauf knieleiste din 18065 iso 14122 pfosten pfostenabstand waagerecht komplettset bemaßt'},
   {cat:'rechner', sub:'r-umrechner', label:'mm ↔ Zoll', kw:'mm zoll inch umrechner zollbruch'},
   {cat:'installateur', sub:'installateur-uebersicht', label:'Installateur — Übersicht', kw:'installateur übersicht rohrbogen gefälle rohrgewinde'},
   {cat:'installateur', sub:'i-rohrbogen', label:'Rohrbogen-Rechner', kw:'rohrbogen biegeradius bogenlänge schenkellänge rohr biegen installateur'},
@@ -2809,6 +3097,12 @@ function goToTool(cat, sub, preset, fromProfession, carrySearch){
   if(sub === 'r-bedarfsmenge' && preset){
     const sel = document.getElementById('bmAnwendung');
     if(sel){ sel.value = preset; bmSetPreset(preset); }
+  }
+  // Volumen & Gewicht wird von mehreren Berufen mit unterschiedlicher Absicht angesprungen
+  // (z.B. GaLaBau: Erdaushub vs. Kies vs. Rasen) — bei jedem Berufs-Sprung frisch zurücksetzen,
+  // damit keine Werte/Material aus einer vorherigen, fachlich unabhängigen Berechnung stehenbleiben.
+  if(sub === 'r-volumen' && fromProfession){
+    resetVolumenGewicht(preset);
   }
   addRecent(cat, sub);
   activeTool = {cat, sub};
@@ -3018,7 +3312,7 @@ function calcDrehmoment(){
   const l = parseFloat(document.getElementById('dmHebel').value);
   if(!md || !l){ alert('Bitte Drehmoment und Hebelarm eingeben.'); return; }
   const kraftN = md / (l/100);
-  document.getElementById('dmKraft').innerHTML = kraftN.toFixed(1) + ' <small>N</small>';
+  document.getElementById('dmKraft').innerHTML = kraftN.toFixed(1).wmZahl() + ' <small>N</small>';
   document.getElementById('dmOut').style.display='flex';
 }
 
@@ -3222,7 +3516,7 @@ function calcDrehzahl(){
   const vc = parseFloat(document.getElementById('zVc').value);
   if(!d || !vc){ alert('Bitte Durchmesser und vc eingeben.'); return; }
   const n = (vc*1000)/(Math.PI*d);
-  document.getElementById('zOutN').innerHTML = n.toFixed(0) + ' <small>1/min</small>';
+  document.getElementById('zOutN').innerHTML = n.toFixed(0).wmZahl() + ' <small>1/min</small>';
   document.getElementById('zOut1').style.display='flex'; document.getElementById('zOut2').style.display='none';
 }
 function calcVc(){
@@ -3230,7 +3524,7 @@ function calcVc(){
   const n = parseFloat(document.getElementById('zN').value);
   if(!d || !n){ alert('Bitte Durchmesser und Drehzahl eingeben.'); return; }
   const vc = (Math.PI*d*n)/1000;
-  document.getElementById('zOutVc').innerHTML = vc.toFixed(1) + ' <small>m/min</small>';
+  document.getElementById('zOutVc').innerHTML = vc.toFixed(1).wmZahl() + ' <small>m/min</small>';
   document.getElementById('zOut2').style.display='flex'; document.getElementById('zOut1').style.display='none';
 }
 function calcVorschub(){
@@ -3239,7 +3533,7 @@ function calcVorschub(){
   const z = parseFloat(document.getElementById('vfZ').value);
   if(!f || !n){ alert('Bitte f und n eingeben.'); return; }
   const vf = z ? f*n*z : f*n;
-  document.getElementById('vfOutVal').innerHTML = vf.toFixed(1) + ' <small>mm/min</small>';
+  document.getElementById('vfOutVal').innerHTML = vf.toFixed(1).wmZahl() + ' <small>mm/min</small>';
   document.getElementById('vfOut').style.display='flex';
 }
 
@@ -3257,10 +3551,10 @@ function calcOhm(){
   else if(!isNaN(I) && !isNaN(R)){ U = I*R; P = U*I; }
   else if(!isNaN(I) && !isNaN(P)){ U = P/I; R = U/I; }
   else if(!isNaN(R) && !isNaN(P)){ U = Math.sqrt(P*R); I = U/R; }
-  document.getElementById('ohmOutU').innerHTML = U.toFixed(3) + ' <small>V</small>';
-  document.getElementById('ohmOutI').innerHTML = I.toFixed(3) + ' <small>A</small>';
-  document.getElementById('ohmOutR').innerHTML = R.toFixed(3) + ' <small>Ω</small>';
-  document.getElementById('ohmOutP').innerHTML = P.toFixed(3) + ' <small>W</small>';
+  document.getElementById('ohmOutU').innerHTML = U.toFixed(3).wmZahl() + ' <small>V</small>';
+  document.getElementById('ohmOutI').innerHTML = I.toFixed(3).wmZahl() + ' <small>A</small>';
+  document.getElementById('ohmOutR').innerHTML = R.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('ohmOutP').innerHTML = P.toFixed(3).wmZahl() + ' <small>W</small>';
   document.getElementById('ohmOut').style.display='flex';
 }
 function clearOhm(){
@@ -3268,12 +3562,93 @@ function clearOhm(){
   document.getElementById('ohmOut').style.display='none';
 }
 
+// ---------- REIHEN-/PARALLELSCHALTUNG ----------
+function parseWiderstandsliste(raw){
+  return raw.split(/[\s;]+/).map(s=>parseFloat(s.trim().replace(',','.'))).filter(v=>!isNaN(v) && v>0);
+}
+function calcReihe(){
+  const vals = parseWiderstandsliste(document.getElementById('rsWerte').value);
+  if(vals.length===0){ alert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
+  const sum = vals.reduce((a,b)=>a+b,0);
+  document.getElementById('rsErgebnis').innerHTML = sum.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('rsOut').style.display='flex';
+}
+function calcParallel(){
+  const vals = parseWiderstandsliste(document.getElementById('psWerte').value);
+  if(vals.length===0){ alert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
+  const kehrwertSumme = vals.reduce((a,b)=>a+1/b,0);
+  const rges = 1/kehrwertSumme;
+  document.getElementById('psErgebnis').innerHTML = rges.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('psOut').style.display='flex';
+}
+
+// ---------- STERN-DREIECK-UMWANDLUNG ----------
+function updateSdLabels(){
+  const dir = document.getElementById('sdRichtung').value;
+  const l1=document.getElementById('sdLabel1'), l2=document.getElementById('sdLabel2'), l3=document.getElementById('sdLabel3');
+  if(dir==='sternZuDreieck'){
+    l1.textContent='R_A (Ω)'; l2.textContent='R_B (Ω)'; l3.textContent='R_C (Ω)';
+  } else {
+    l1.textContent='R_AB (Ω)'; l2.textContent='R_BC (Ω)'; l3.textContent='R_CA (Ω)';
+  }
+  document.getElementById('sdOut').style.display='none';
+}
+function calcSternDreieck(){
+  const r1 = parseFloat(document.getElementById('sdR1').value);
+  const r2 = parseFloat(document.getElementById('sdR2').value);
+  const r3 = parseFloat(document.getElementById('sdR3').value);
+  if(!r1 || !r2 || !r3){ alert('Bitte alle drei Widerstände eingeben.'); return; }
+  const dir = document.getElementById('sdRichtung').value;
+  let out1, out2, out3, lbl1, lbl2, lbl3;
+  if(dir === 'sternZuDreieck'){
+    const summe = r1*r2 + r2*r3 + r3*r1;
+    out1 = summe / r3; out2 = summe / r1; out3 = summe / r2;
+    lbl1 = 'R_AB'; lbl2 = 'R_BC'; lbl3 = 'R_CA';
+  } else {
+    const summe = r1 + r2 + r3;
+    out1 = (r1*r3) / summe; out2 = (r1*r2) / summe; out3 = (r2*r3) / summe;
+    lbl1 = 'R_A'; lbl2 = 'R_B'; lbl3 = 'R_C';
+  }
+  document.getElementById('sdOutLabel1').textContent = lbl1;
+  document.getElementById('sdOutLabel2').textContent = lbl2;
+  document.getElementById('sdOutLabel3').textContent = lbl3;
+  document.getElementById('sdOut1').innerHTML = out1.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('sdOut2').innerHTML = out2.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('sdOut3').innerHTML = out3.toFixed(3).wmZahl() + ' <small>Ω</small>';
+  document.getElementById('sdOut').style.display = 'flex';
+}
+
+// ---------- SPANNUNGSFALL ----------
+function calcSpannungsfall(){
+  const L = parseFloat(document.getElementById('sfLaenge').value);
+  const I = parseFloat(document.getElementById('sfStrom').value);
+  const A = parseFloat(document.getElementById('sfQuerschnitt').value);
+  const kappa = parseFloat(document.getElementById('sfMaterial').value);
+  const faktor = parseFloat(document.getElementById('sfPhase').value);
+  const cosPhi = parseFloat(document.getElementById('sfCosPhi').value) || 1;
+  if(!L || !I || !A){ alert('Bitte Leitungslänge, Stromstärke und Querschnitt eingeben.'); return; }
+  const deltaU = (faktor * L * I * cosPhi) / (kappa * A);
+  const nennspannung = faktor === 2 ? 230 : 400;
+  const prozent = (deltaU / nennspannung) * 100;
+  document.getElementById('sfDeltaU').innerHTML = deltaU.toFixed(2).wmZahl() + ' <small>V</small>';
+  document.getElementById('sfProzent').innerHTML = prozent.toFixed(2).wmZahl() + ' <small>%</small>';
+  const bewertung = document.getElementById('sfBewertung');
+  if(prozent <= 3){
+    bewertung.innerHTML = '<span class="pill ok">✓ OK, auch für Beleuchtung</span>';
+  } else if(prozent <= 5){
+    bewertung.innerHTML = '<span class="pill warn">~ OK für Steckdosen, zu viel für Beleuchtung</span>';
+  } else {
+    bewertung.innerHTML = '<span class="pill warn" style="color:var(--danger);border-color:var(--danger);">✗ Über 5% — Querschnitt erhöhen</span>';
+  }
+  document.getElementById('sfOut').style.display = 'flex';
+}
+
 // ---------- FLÄCHE ----------
 function calcFlaeche(){
   const l = parseFloat(document.getElementById('flLaenge').value);
   const b = parseFloat(document.getElementById('flBreite').value);
   if(!l || !b){ alert('Bitte Länge und Breite eingeben.'); return; }
-  document.getElementById('flOutVal').innerHTML = (l*b).toFixed(2) + ' <small>m²</small>';
+  document.getElementById('flOutVal').innerHTML = (l*b).toFixed(2).wmZahl() + ' <small>m²</small>';
   document.getElementById('flOut').style.display='flex';
   document.getElementById('rechteckVisual').innerHTML = drawRechteck(l, b);
 }
@@ -3299,8 +3674,8 @@ function calcKreis(){
   if(!d) d = r*2;
   const flaeche = Math.PI * r * r;
   const umfang = 2 * Math.PI * r;
-  document.getElementById('krFlaeche').innerHTML = flaeche.toFixed(3) + ' <small>m²</small>';
-  document.getElementById('krUmfang').innerHTML = umfang.toFixed(3) + ' <small>m</small>';
+  document.getElementById('krFlaeche').innerHTML = flaeche.toFixed(3).wmZahl() + ' <small>m²</small>';
+  document.getElementById('krUmfang').innerHTML = umfang.toFixed(3).wmZahl() + ' <small>m</small>';
   document.getElementById('krOut').style.display='flex';
   document.getElementById('kreisVisual').innerHTML = drawKreis(r, d);
 }
@@ -3360,7 +3735,7 @@ function calcWinkel(){
   if(isNaN(a) || isNaN(b)){ alert('Bitte beide Winkel eingeben.'); return; }
   const g = 180 - a - b;
   if(g<=0){ alert('Diese Winkel ergeben kein gültiges Dreieck.'); return; }
-  document.getElementById('wOutVal').innerHTML = g.toFixed(1) + ' <small>°</small>';
+  document.getElementById('wOutVal').innerHTML = g.toFixed(1).wmZahl() + ' <small>°</small>';
   document.getElementById('wOut').style.display='flex';
   document.getElementById('triGeneral').innerHTML = drawTriangleGeneral(a,b,g,true);
 }
@@ -3373,7 +3748,7 @@ function calcPythagoras(){
   else if(!isNaN(a) && !isNaN(c)){ if(c<=a){alert('c muss größer als a sein.');return;} result = Math.sqrt(c*c-a*a); label='Kathete b'; fb=result; }
   else if(!isNaN(b) && !isNaN(c)){ if(c<=b){alert('c muss größer als b sein.');return;} result = Math.sqrt(c*c-b*b); label='Kathete a'; fa=result; }
   else { alert('Bitte genau zwei Seiten eingeben.'); return; }
-  document.getElementById('pytOutVal').innerHTML = result.toFixed(2) + ' <small>(' + label + ')</small>';
+  document.getElementById('pytOutVal').innerHTML = result.toFixed(2).wmZahl() + ' <small>(' + label + ')</small>';
   document.getElementById('pytOut').style.display='flex';
   document.getElementById('triRight').innerHTML = drawTriangleRight(fa,fb,fc,true);
 }
@@ -3384,16 +3759,16 @@ function calcProzent(){
   const p = parseFloat(document.getElementById('pzProzent').value);
   if(isNaN(g) || isNaN(p)){ alert('Bitte Grundwert und Prozentsatz eingeben.'); return; }
   const wert = g*p/100;
-  document.getElementById('pzWert').innerHTML = wert.toFixed(2);
-  document.getElementById('pzPlus').innerHTML = (g+wert).toFixed(2);
-  document.getElementById('pzMinus').innerHTML = (g-wert).toFixed(2);
+  document.getElementById('pzWert').innerHTML = wert.toFixed(2).wmZahl();
+  document.getElementById('pzPlus').innerHTML = (g+wert).toFixed(2).wmZahl();
+  document.getElementById('pzMinus').innerHTML = (g-wert).toFixed(2).wmZahl();
   document.getElementById('pzOut').style.display='flex';
 }
 function calcProzentAnteil(){
   const a = parseFloat(document.getElementById('pzA').value);
   const b = parseFloat(document.getElementById('pzB').value);
   if(!a || !b){ alert('Bitte beide Werte eingeben.'); return; }
-  document.getElementById('pzAnteilVal').innerHTML = (a/b*100).toFixed(2) + ' <small>%</small>';
+  document.getElementById('pzAnteilVal').innerHTML = (a/b*100).toFixed(2).wmZahl() + ' <small>%</small>';
   document.getElementById('pzOut2').style.display='flex';
 }
 
@@ -3402,10 +3777,10 @@ function calcTrig(){
   const deg = parseFloat(document.getElementById('trigWinkel').value);
   if(isNaN(deg)){ alert('Bitte einen Winkel eingeben.'); return; }
   const rad = deg*Math.PI/180;
-  document.getElementById('trigSin').textContent = Math.sin(rad).toFixed(4);
-  document.getElementById('trigCos').textContent = Math.cos(rad).toFixed(4);
-  document.getElementById('trigTan').textContent = Math.tan(rad).toFixed(4);
-  document.getElementById('trigCot').textContent = (1/Math.tan(rad)).toFixed(4);
+  document.getElementById('trigSin').textContent = Math.sin(rad).toFixed(4).wmZahl();
+  document.getElementById('trigCos').textContent = Math.cos(rad).toFixed(4).wmZahl();
+  document.getElementById('trigTan').textContent = Math.tan(rad).toFixed(4).wmZahl();
+  document.getElementById('trigCot').textContent = (1/Math.tan(rad)).toFixed(4).wmZahl();
   document.getElementById('trigOut').style.display='flex';
 }
 function calcSteigung(){
@@ -3415,8 +3790,8 @@ function calcSteigung(){
   const rad = deg*Math.PI/180;
   const gegen = ank*Math.tan(rad);
   const hyp = ank/Math.cos(rad);
-  document.getElementById('steigGegen').innerHTML = gegen.toFixed(2);
-  document.getElementById('steigHyp').innerHTML = hyp.toFixed(2);
+  document.getElementById('steigGegen').innerHTML = gegen.toFixed(2).wmZahl();
+  document.getElementById('steigHyp').innerHTML = hyp.toFixed(2).wmZahl();
   document.getElementById('steigOut').style.display='flex';
 }
 
@@ -3472,10 +3847,10 @@ function calcTreppe(){
       <div class="readout" style="margin-top:0;">
         <div class="item"><div class="rlabel">Steigungen</div><div class="rvalue">${c.n}</div></div>
         <div class="item"><div class="rlabel">Auftritte</div><div class="rvalue">${c.n-1}</div></div>
-        <div class="item"><div class="rlabel">Steigung s</div><div class="rvalue">${c.s.toFixed(0)}<small> mm</small></div></div>
-        <div class="item"><div class="rlabel">Auftritt a</div><div class="rvalue">${c.a.toFixed(0)}<small> mm</small></div></div>
+        <div class="item"><div class="rlabel">Steigung s</div><div class="rvalue">${c.s.toFixed(0).wmZahl()}<small> mm</small></div></div>
+        <div class="item"><div class="rlabel">Auftritt a</div><div class="rvalue">${c.a.toFixed(0).wmZahl()}<small> mm</small></div></div>
       </div>
-      <p style="margin:10px 0 0;font-size:13px;color:var(--text-dim);">Schrittmaß: ${c.schrittmass.toFixed(0)} mm ${badge}</p>
+      <p style="margin:10px 0 0;font-size:13px;color:var(--text-dim);">Schrittmaß: ${c.schrittmass.toFixed(0).wmZahl()} mm ${badge}</p>
     </div>`;
   }
 
@@ -3521,23 +3896,257 @@ function drawTreppenSkizze(n, s, a, H, L){
     <line x1="${xEnd}" y1="${y0+14}" x2="${xEnd}" y2="${y0+22}" stroke="#6E97B3" stroke-width="1"/>
     <text x="${(x0+xEnd)/2}" y="${y0+34}" fill="#ECEAE4" font-size="12" font-family="JetBrains Mono, monospace" text-anchor="middle">L = ${L} mm</text>
     <!-- erste Stufe beschriften -->
-    <text x="${s1x0+4}" y="${(s1y0+s1y1)/2}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace">s=${s.toFixed(0)}</text>
-    ${pts[2] ? `<text x="${(s1x0+s1x1)/2}" y="${s1y1-6}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">a=${a.toFixed(0)}</text>` : ''}
+    <text x="${s1x0+4}" y="${(s1y0+s1y1)/2}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace">s=${s.toFixed(0).wmZahl()}</text>
+    ${pts[2] ? `<text x="${(s1x0+s1x1)/2}" y="${s1y1-6}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">a=${a.toFixed(0).wmZahl()}</text>` : ''}
     <text x="${x0}" y="${mT-8}" fill="#9AA0A6" font-size="11" font-family="JetBrains Mono, monospace">${n} Steigungen · ${n-1} Auftritte</text>
   </svg>`;
 }
+let treppeAktuellN=0, treppeAktuellS=0, treppeAktuellA=0;
 function selectTreppe(n, s, a){
+  treppeAktuellN=n; treppeAktuellS=s; treppeAktuellA=a;
   document.getElementById('treppeSkizze').innerHTML = drawTreppenSkizze(n, s, a, treppeH, treppeL);
+}
+
+// ---------- GELÄNDER-RECHNER (eigenständig, mit bemaßter Zeichnung) ----------
+let letzteGelaenderParams = null;
+function glSetPreset(){
+  const reg = document.getElementById('glRegelwerk').value;
+  const hoehen = {privat:900, arbeit:1000, industrie:1100};
+  document.getElementById('glHoehe').value = hoehen[reg];
+  if(reg === 'industrie'){
+    document.getElementById('glKnieleisteAn').checked = true;
+    glToggleKnie();
+  }
+}
+function glToggleKnie(){
+  const on = document.getElementById('glKnieleisteAn').checked;
+  document.getElementById('glKnieleisteFields').style.display = on ? 'flex' : 'none';
+}
+function glUpdateRohrartLabels(){
+  const istVierkant = document.getElementById('glRohrart').value === 'vierkant';
+  const einheit = istVierkant ? 'Kantenlänge (mm)' : 'Ø (mm)';
+  document.getElementById('glHandlaufGroesseLabel').textContent = 'Handlauf ' + einheit;
+  document.getElementById('glPfostenGroesseLabel').textContent = 'Pfosten ' + einheit;
+  document.getElementById('glKnieleisteGroesseLabel').textContent = 'Knieleiste ' + einheit;
+}
+function glAusTreppeUebernehmen(){
+  if(!treppeAktuellN){ alert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
+  document.getElementById('glSchraegL').value = treppeL;
+  document.getElementById('glSchraegH').value = treppeH;
+}
+function glMaterialLabel(groesse, rohrart){
+  return rohrart === 'vierkant' ? `${groesse}×${groesse} mm Vierkant` : `Ø ${groesse} mm Rundrohr`;
+}
+function buildZuschnittlisteHtml(d){
+  const rows = [];
+  rows.push(['Handlauf, schräg', '1 Stück', `${d.schraegLaengeMM.toFixed(0).wmZahl()} mm`, `Sägewinkel ${d.winkelGrad.toFixed(1).wmZahl()}° · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
+  if(d.waagerechtL > 0){
+    rows.push(['Handlauf, waagerecht', '1 Stück', `${d.waagerechtL.toFixed(0).wmZahl()} mm`, `90° Anschluss · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
+  }
+  if(d.ueberstandStart > 0){
+    rows.push(['Handlauf-Überstand (Anfang)', '1 Stück', `${d.ueberstandStart.toFixed(0).wmZahl()} mm`, `gleicher Winkel wie Schräge · ${glMaterialLabel(d.handlaufGroesse, d.rohrart)}`]);
+  }
+  rows.push(['Pfosten', `${d.pfostenAnzahl} Stück`, `${d.pfostenlaengeMM.toFixed(0).wmZahl()} mm`, `bis UK Handlauf · ${glMaterialLabel(d.pfostenGroesse, d.rohrart)}`]);
+  if(d.zeigeKnie){
+    rows.push(['Knieleiste', `${d.pfostenAnzahl-1} Stück`, `${d.lichterPfostenabstandMM.toFixed(0).wmZahl()} mm`, `lichtes Maß zw. Pfosten · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
+  }
+  const rowsHtml = rows.map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td><td style="white-space:normal;">${r[3]}</td></tr>`).join('');
+  return `<div class="table-wrap" style="margin-top:14px;">
+    <table class="responsive-table">
+      <thead><tr><th>Bauteil</th><th>Anzahl</th><th>Maß</th><th>Hinweis / Material</th></tr></thead>
+      ${rowsHtml}
+    </table>
+  </div>`;
+}
+function glReadForm(){
+  const schraegL = parseFloat(document.getElementById('glSchraegL').value) || 0;
+  const schraegH = parseFloat(document.getElementById('glSchraegH').value) || 0;
+  const waagerechtL = parseFloat(document.getElementById('glWaagerecht').value) || 0;
+  const hoeheMM = parseFloat(document.getElementById('glHoehe').value) || 900;
+  const pfostenAnzahl = Math.max(2, Math.round(parseFloat(document.getElementById('glPfosten').value) || 4));
+  const zeigeKnie = document.getElementById('glKnieleisteAn').checked;
+  const kniehoeheMM = zeigeKnie ? (parseFloat(document.getElementById('glKniehoehe').value) || 450) : null;
+  const ueberstandStart = parseFloat(document.getElementById('glUeberstandStart').value) || 0;
+  const rohrart = document.getElementById('glRohrart').value;
+  const handlaufGroesse = parseFloat(document.getElementById('glHandlaufGroesse').value) || 40;
+  const pfostenGroesse = parseFloat(document.getElementById('glPfostenGroesse').value) || 40;
+  const knieleisteGroesse = zeigeKnie ? (parseFloat(document.getElementById('glKnieleisteGroesse').value) || 30) : null;
+  return {schraegL, schraegH, waagerechtL, hoeheMM, pfostenAnzahl, kniehoeheMM, zeigeKnie, ueberstandStart, rohrart, handlaufGroesse, pfostenGroesse, knieleisteGroesse};
+}
+function calcGelaender(){
+  const p = glReadForm();
+  if(!p.schraegL && !p.waagerechtL){ alert('Bitte mindestens die schräge Länge oder eine waagerechte Verlängerung eingeben.'); return; }
+  if(p.schraegL && !p.schraegH){ alert('Bitte bei schräger Länge auch die schräge Höhe/Steigung eingeben.'); return; }
+
+  letzteGelaenderParams = p;
+  const zahlen = glBerechneZahlen(p);
+  document.getElementById('glGesamtlaenge').innerHTML = zahlen.gesamtLaengeMM.toFixed(0).wmZahl() + ' <small>mm</small>';
+  document.getElementById('glPfostenlaenge').innerHTML = zahlen.pfostenlaengeMM.toFixed(0).wmZahl() + ' <small>mm</small>';
+  document.getElementById('glPfostenabstand').innerHTML = zahlen.pfostenabstandMM.toFixed(0).wmZahl() + ' <small>mm</small>';
+  document.getElementById('glWinkel').innerHTML = zahlen.winkelGrad.toFixed(1).wmZahl() + ' <small>°</small>';
+  document.getElementById('glOut').style.display = 'flex';
+  document.getElementById('glSkizze').innerHTML = drawGelaenderSkizze(p);
+  document.getElementById('glZuschnittliste').innerHTML = buildZuschnittlisteHtml(Object.assign({}, p, zahlen));
+  document.getElementById('glZoomControls').style.display = 'flex';
+  glZoomReset();
+}
+function glBerechneZahlen(p){
+  const schraegLaengeMM = Math.sqrt(p.schraegL*p.schraegL + p.schraegH*p.schraegH);
+  const kernLaengeMM = schraegLaengeMM + p.waagerechtL; // Überstand zählt NICHT zur Pfostenverteilung
+  const gesamtLaengeMM = kernLaengeMM + p.ueberstandStart;
+  const pfostenabstandMM = kernLaengeMM / (p.pfostenAnzahl - 1);
+  const pfostenlaengeMM = p.hoeheMM - p.handlaufGroesse;
+  const lichterPfostenabstandMM = pfostenabstandMM - p.pfostenGroesse;
+  const winkelGrad = p.schraegL > 0 ? Math.atan2(p.schraegH, p.schraegL) * 180/Math.PI : 0;
+  return {schraegLaengeMM, kernLaengeMM, gesamtLaengeMM, pfostenabstandMM, pfostenlaengeMM, lichterPfostenabstandMM, winkelGrad};
+}
+function drawGelaenderSkizze(opts, treppeObj){
+  const {schraegL, schraegH, waagerechtL, hoeheMM, pfostenAnzahl, kniehoeheMM, zeigeKnie, ueberstandStart} = opts;
+  const gesamtBreiteMM = Math.max(schraegL + waagerechtL, 1);
+  const gesamtHoeheMM = Math.max(schraegH + hoeheMM, 1);
+  const W = 680, Hh = 340;
+  const mL=75, mB=60, mT=45, mR=35;
+  const availW = W-mL-mR, availH = Hh-mT-mB;
+  const scale = Math.min(availW/gesamtBreiteMM, availH/gesamtHoeheMM);
+  const x0 = mL, y0 = Hh-mB;
+
+  const xKnick = x0 + schraegL*scale, yKnick = y0 - schraegH*scale;
+  const xEnd = xKnick + waagerechtL*scale, yEnd = yKnick;
+
+  const offsetPx = hoeheMM*scale;
+  const rx0=x0, ry0=y0-offsetPx, rxKnick=xKnick, ryKnick=yKnick-offsetPx, rxEnd=xEnd, ryEnd=yEnd-offsetPx;
+
+  // Handlauf-Überstand am Anfang: reine Verlängerung der Handlauf-Linie vor rx0/ry0, parallel zur ersten Segment-Richtung, ohne Pfosten
+  let ueberstandSvg = '';
+  let rx0Sichtbar = rx0, ry0Sichtbar = ry0;
+  if(ueberstandStart > 0){
+    const ersteRichtungLenPx = schraegL>0 ? Math.hypot(xKnick-x0, yKnick-y0) : Math.max(waagerechtL*scale, 1);
+    const ux = schraegL>0 ? (xKnick-x0)/ersteRichtungLenPx : 1;
+    const uy = schraegL>0 ? (yKnick-y0)/ersteRichtungLenPx : 0;
+    const overhangPx = ueberstandStart*scale;
+    rx0Sichtbar = rx0 - ux*overhangPx;
+    ry0Sichtbar = ry0 - uy*overhangPx;
+    ueberstandSvg = `<line x1="${rx0Sichtbar.toFixed(1)}" y1="${ry0Sichtbar.toFixed(1)}" x2="${rx0.toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="#6E97B3" stroke-width="3" stroke-dasharray="1 0"/>
+    <text x="${((rx0Sichtbar+rx0)/2).toFixed(1)}" y="${(Math.min(ry0Sichtbar,ry0)-8).toFixed(1)}" fill="#9AA0A6" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandStart.toFixed(0).wmZahl()}</text>`;
+  }
+
+  const schraegLenPx = Math.hypot(xKnick-x0, yKnick-y0);
+  const waagerechtLenPx = xEnd-xKnick;
+  const totalLenPx = schraegLenPx + waagerechtLenPx;
+  let posts = '';
+  for(let i=0;i<pfostenAnzahl;i++){
+    const distEntlang = pfostenAnzahl>1 ? (i/(pfostenAnzahl-1))*totalLenPx : 0;
+    let px, pyBase;
+    if(distEntlang <= schraegLenPx){
+      const t = schraegLenPx>0 ? distEntlang/schraegLenPx : 0;
+      px = x0 + (xKnick-x0)*t; pyBase = y0 + (yKnick-y0)*t;
+    } else {
+      const t = waagerechtLenPx>0 ? (distEntlang-schraegLenPx)/waagerechtLenPx : 0;
+      px = xKnick + (xEnd-xKnick)*t; pyBase = yKnick;
+    }
+    const pyTop = pyBase - offsetPx;
+    posts += `<line x1="${px.toFixed(1)}" y1="${pyBase.toFixed(1)}" x2="${px.toFixed(1)}" y2="${pyTop.toFixed(1)}" stroke="#6E97B3" stroke-width="2.5"/>`;
+  }
+
+  let knieSvg = '';
+  if(zeigeKnie && kniehoeheMM){
+    const kOffsetPx = kniehoeheMM*scale;
+    knieSvg = `<line x1="${x0.toFixed(1)}" y1="${(y0-kOffsetPx).toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${(yKnick-kOffsetPx).toFixed(1)}" stroke="#6E97B3" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${(yKnick-kOffsetPx).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(yEnd-kOffsetPx).toFixed(1)}" stroke="#6E97B3" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  }
+
+  let basisSvg = '';
+  if(treppeObj){
+    const {n, s, a} = treppeObj;
+    let x=x0, y=y0, pts=[[x,y]];
+    for(let i=1;i<=n;i++){
+      y -= s*scale; pts.push([x,y]);
+      if(i<n){ x += a*scale; pts.push([x,y]); }
+    }
+    const outline = pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L ');
+    basisSvg = `<path d="M ${outline} L ${x.toFixed(1)},${y0.toFixed(1)} Z" fill="rgba(255,198,51,0.10)" stroke="#FFC633" stroke-width="2" stroke-linejoin="round"/>`;
+    if(waagerechtL>0) basisSvg += `<line x1="${xKnick.toFixed(1)}" y1="${yKnick.toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="#3a3f47" stroke-width="2"/>`;
+  } else {
+    basisSvg = `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${xKnick.toFixed(1)}" y2="${yKnick.toFixed(1)}" stroke="#3a3f47" stroke-width="2"/>
+    <line x1="${xKnick.toFixed(1)}" y1="${yKnick.toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${yEnd.toFixed(1)}" stroke="#3a3f47" stroke-width="2"/>`;
+  }
+
+  const schraegLaengeMM = Math.sqrt(schraegL*schraegL + schraegH*schraegH);
+  const kernLaengeMM = schraegLaengeMM + waagerechtL;
+  const pfostenabstandMM = kernLaengeMM / (pfostenAnzahl-1);
+  const winkelGrad = schraegL > 0 ? Math.atan2(schraegH, schraegL) * 180/Math.PI : 0;
+
+  let waagerechtBemassung = '';
+  if(waagerechtL > 0){
+    waagerechtBemassung = `<line x1="${xKnick.toFixed(1)}" y1="${(y0+22).toFixed(1)}" x2="${xEnd.toFixed(1)}" y2="${(y0+22).toFixed(1)}" stroke="#6E97B3" stroke-width="1"/>
+    <text x="${((xKnick+xEnd)/2).toFixed(1)}" y="${(y0+36).toFixed(1)}" fill="#ECEAE4" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${waagerechtL.toFixed(0).wmZahl()} mm</text>`;
+  }
+
+  let winkelSvg = '';
+  if(schraegL > 0){
+    winkelSvg = `<text x="${(x0+18).toFixed(1)}" y="${(y0-12).toFixed(1)}" fill="#FFC633" font-size="10.5" font-family="JetBrains Mono, monospace">α=${winkelGrad.toFixed(1).wmZahl()}°</text>`;
+  }
+
+  return `<svg viewBox="0 0 ${W} ${Hh}" width="${W}" height="${Hh}">
+    ${basisSvg}
+    ${knieSvg}
+    ${ueberstandSvg}
+    <line x1="${rx0.toFixed(1)}" y1="${ry0.toFixed(1)}" x2="${rxKnick.toFixed(1)}" y2="${ryKnick.toFixed(1)}" stroke="#6E97B3" stroke-width="3"/>
+    <line x1="${rxKnick.toFixed(1)}" y1="${ryKnick.toFixed(1)}" x2="${rxEnd.toFixed(1)}" y2="${ryEnd.toFixed(1)}" stroke="#6E97B3" stroke-width="3"/>
+    ${posts}
+    ${winkelSvg}
+    <line x1="${(x0-20).toFixed(1)}" y1="${y0.toFixed(1)}" x2="${(x0-20).toFixed(1)}" y2="${ry0.toFixed(1)}" stroke="#FFC633" stroke-width="1"/>
+    <text x="${(x0-28).toFixed(1)}" y="${((y0+ry0)/2).toFixed(1)}" fill="#FFC633" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-90 ${(x0-28).toFixed(1)} ${((y0+ry0)/2).toFixed(1)})">H=${hoeheMM} mm (OK Handlauf)</text>
+    <text x="${((x0+xKnick)/2).toFixed(1)}" y="${((y0+yKnick)/2-8).toFixed(1)}" fill="#ECEAE4" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">${schraegLaengeMM.toFixed(0).wmZahl()} mm</text>
+    ${waagerechtBemassung}
+    <text x="${x0.toFixed(1)}" y="16" fill="#9AA0A6" font-size="11" font-family="JetBrains Mono, monospace">${pfostenAnzahl} Pfosten · Abstand ≈ ${pfostenabstandMM.toFixed(0).wmZahl()} mm · genaue Maße s. Zuschnittliste</text>
+  </svg>`;
+}
+function calcKomplettSet(){
+  if(!treppeAktuellN){ alert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
+  if(!letzteGelaenderParams){ alert('Bitte zuerst das Geländer weiter oben konfigurieren und auf "Geländer zeichnen" klicken.'); return; }
+  const treppeObj = {n:treppeAktuellN, s:treppeAktuellS, a:treppeAktuellA};
+  // Schräge Maße für die Kombi-Zeichnung immer von der ausgewählten Treppe übernehmen, damit beide Teile exakt zueinander passen
+  const opts = Object.assign({}, letzteGelaenderParams, {schraegL: treppeL, schraegH: treppeH});
+  const zahlen = glBerechneZahlen(opts);
+  document.getElementById('komplettSkizze').innerHTML = drawGelaenderSkizze(opts, treppeObj);
+  document.getElementById('komplettZuschnittliste').innerHTML = buildZuschnittlisteHtml(Object.assign({}, opts, zahlen));
+  document.getElementById('komplettZoomControls').style.display = 'flex';
+  komplettZoomReset();
+}
+// ---------- ZOOM/PAN FÜR GELÄNDER-ZEICHNUNGEN (Smartphone: pinch/scroll zum Verschieben, +/- zum Zoomen) ----------
+let glZoomFaktor = 1, komplettZoomFaktor = 1;
+function glZoom(faktor){
+  glZoomFaktor = Math.min(Math.max(glZoomFaktor*faktor, 0.5), 4);
+  document.querySelector('#glSkizzeWrap > div').style.transform = `scale(${glZoomFaktor})`;
+}
+function glZoomReset(){
+  glZoomFaktor = 1;
+  const el = document.querySelector('#glSkizzeWrap > div');
+  if(el) el.style.transform = 'scale(1)';
+  const wrap = document.getElementById('glSkizzeWrap');
+  if(wrap) wrap.scrollLeft = 0;
+}
+function komplettZoom(faktor){
+  komplettZoomFaktor = Math.min(Math.max(komplettZoomFaktor*faktor, 0.5), 4);
+  document.querySelector('#komplettSkizzeWrap > div').style.transform = `scale(${komplettZoomFaktor})`;
+}
+function komplettZoomReset(){
+  komplettZoomFaktor = 1;
+  const el = document.querySelector('#komplettSkizzeWrap > div');
+  if(el) el.style.transform = 'scale(1)';
+  const wrap = document.getElementById('komplettSkizzeWrap');
+  if(wrap) wrap.scrollLeft = 0;
 }
 
 // ---------- MM <-> ZOLL ----------
 function umrechnenMm(){
   const mm = parseFloat(document.getElementById('umMm').value);
-  if(!isNaN(mm)) document.getElementById('umZoll').value = (mm/25.4).toFixed(4);
+  if(!isNaN(mm)) document.getElementById('umZoll').value = (mm/25.4).toFixed(4).wmZahl();
 }
 function umrechnenZoll(){
   const zoll = parseFloat(document.getElementById('umZoll').value);
-  if(!isNaN(zoll)) document.getElementById('umMm').value = (zoll*25.4).toFixed(2);
+  if(!isNaN(zoll)) document.getElementById('umMm').value = (zoll*25.4).toFixed(2).wmZahl();
 }
 const zollBrueche = [
   {b:'1/16"', d:0.0625}, {b:'1/8"', d:0.125}, {b:'3/16"', d:0.1875}, {b:'1/4"', d:0.25},
@@ -3546,7 +4155,7 @@ const zollBrueche = [
   {b:'7/8"', d:0.875}, {b:'1"', d:1.0},
 ];
 document.querySelector('#zollTable tbody').innerHTML = zollBrueche.map(z=>`
-  <tr><td class="mono" data-label="Zoll (Bruch)" style="color:var(--yellow);">${z.b}</td><td class="mono" data-label="Zoll (Dezimal)">${z.d.toFixed(4)}</td><td class="mono" data-label="mm">${(z.d*25.4).toFixed(2)} mm</td></tr>
+  <tr><td class="mono" data-label="Zoll (Bruch)" style="color:var(--yellow);">${z.b}</td><td class="mono" data-label="Zoll (Dezimal)">${z.d.toFixed(4).wmZahl()}</td><td class="mono" data-label="mm">${(z.d*25.4).toFixed(2).wmZahl()} mm</td></tr>
 `).join('');
 
 // ---------- ROHRBOGEN ----------
@@ -3558,8 +4167,8 @@ function calcRohrbogen(){
   let bogenlaenge = R * Math.PI * alpha / 180;
   if(hand) bogenlaenge *= 0.955; // ~5% kürzer, entspricht 1,5R statt 1,571R bei 90°
   const schenkellaenge = R * Math.tan((alpha/2) * Math.PI/180);
-  document.getElementById('rbBogenlaenge').innerHTML = bogenlaenge.toFixed(1) + ' <small>mm</small>';
-  document.getElementById('rbSchenkel').innerHTML = schenkellaenge.toFixed(1) + ' <small>mm</small>';
+  document.getElementById('rbBogenlaenge').innerHTML = bogenlaenge.toFixed(1).wmZahl() + ' <small>mm</small>';
+  document.getElementById('rbSchenkel').innerHTML = schenkellaenge.toFixed(1).wmZahl() + ' <small>mm</small>';
   document.getElementById('rbOut').style.display='flex';
   document.getElementById('rohrbogenVisual').innerHTML = drawRohrbogen(R, alpha);
 }
@@ -3589,8 +4198,8 @@ function calcGefaelle(){
   const h = parseFloat(document.getElementById('gfHoehe').value);
   if(!l || !h){ alert('Bitte Länge und Höhenunterschied eingeben.'); return; }
   const prozent = (h / (l*1000)) * 100;
-  document.getElementById('gfProzent').innerHTML = prozent.toFixed(2) + ' <small>%</small>';
-  document.getElementById('gfVerhaeltnis').innerHTML = '1 : ' + (100/prozent).toFixed(0);
+  document.getElementById('gfProzent').innerHTML = prozent.toFixed(2).wmZahl() + ' <small>%</small>';
+  document.getElementById('gfVerhaeltnis').innerHTML = '1 : ' + (100/prozent).toFixed(0).wmZahl();
   document.getElementById('gfOut').style.display='flex';
 }
 
@@ -3629,9 +4238,9 @@ function calcHolzgewicht(){
   const rM = d/2/100; // cm -> m Radius
   const volumen = Math.PI * rM * rM * l;
   const gewicht = volumen * dichte;
-  document.getElementById('fzVolumen').innerHTML = volumen.toFixed(3) + ' <small>m³</small>';
-  document.getElementById('fzGewicht').innerHTML = gewicht.toFixed(0) + ' <small>kg</small>';
-  document.getElementById('fzGewichtSicher').innerHTML = (gewicht*1.15).toFixed(0) + ' <small>kg</small>';
+  document.getElementById('fzVolumen').innerHTML = volumen.toFixed(3).wmZahl() + ' <small>m³</small>';
+  document.getElementById('fzGewicht').innerHTML = gewicht.toFixed(0).wmZahl() + ' <small>kg</small>';
+  document.getElementById('fzGewichtSicher').innerHTML = (gewicht*1.15).toFixed(0).wmZahl() + ' <small>kg</small>';
   document.getElementById('fzOut').style.display='flex';
 }
 
@@ -3644,20 +4253,20 @@ function umrechnenRaummeter(changed){
   if(changed === 'fm'){
     fm = parseFloat(fmEl.value);
     if(isNaN(fm)){ rmEl.value=''; srmEl.value=''; updateRaummeterGewicht(null); return; }
-    rmEl.value = (fm*1.4).toFixed(2);
-    srmEl.value = (fm*2.0).toFixed(2);
+    rmEl.value = (fm*1.4).toFixed(2).wmZahl();
+    srmEl.value = (fm*2.0).toFixed(2).wmZahl();
   } else if(changed === 'rm'){
     const rm = parseFloat(rmEl.value);
     if(isNaN(rm)){ fmEl.value=''; srmEl.value=''; updateRaummeterGewicht(null); return; }
     fm = rm*0.7;
-    fmEl.value = fm.toFixed(2);
-    srmEl.value = (rm*1.4).toFixed(2);
+    fmEl.value = fm.toFixed(2).wmZahl();
+    srmEl.value = (rm*1.4).toFixed(2).wmZahl();
   } else {
     const srm = parseFloat(srmEl.value);
     if(isNaN(srm)){ fmEl.value=''; rmEl.value=''; updateRaummeterGewicht(null); return; }
     fm = srm*0.5;
-    fmEl.value = fm.toFixed(2);
-    rmEl.value = (srm*0.7).toFixed(2);
+    fmEl.value = fm.toFixed(2).wmZahl();
+    rmEl.value = (srm*0.7).toFixed(2).wmZahl();
   }
   updateRaummeterGewicht(fm);
 }
@@ -3669,7 +4278,7 @@ function updateRaummeterGewicht(fm){
   const art = holzarten.find(h=>h.name===artName);
   const dichte = zustand === 'frisch' ? art.frisch : art.trocken;
   const gewicht = fm * dichte;
-  document.getElementById('rmGewichtVal').innerHTML = gewicht.toFixed(0) + ' <small>kg</small>';
+  document.getElementById('rmGewichtVal').innerHTML = gewicht.toFixed(0).wmZahl() + ' <small>kg</small>';
   out.style.display='flex';
 }
 document.getElementById('rmHolzart').addEventListener('change', ()=>umrechnenRaummeter(document.getElementById('rmFm').value ? 'fm' : (document.getElementById('rmRm').value ? 'rm' : 'srm')));
@@ -3708,10 +4317,10 @@ function bmStueckFuerFlaeche(f){
 function bmResultHtml(f){
   const m2 = bmSubtotalM2(f);
   if(bmMode === 'farbe' || bmMode === 'kleber'){
-    return m2!==null ? m2.toFixed(2)+' m²' : '— Fläche eingeben —';
+    return m2!==null ? m2.toFixed(2).wmZahl()+' m²' : '— Fläche eingeben —';
   }
   const stueck = bmStueckFuerFlaeche(f);
-  return (m2!==null ? m2.toFixed(2)+' m²' : '—') + (stueck!==null ? ' → <strong>'+stueck+' Stück</strong>' : (m2!==null ? ' — Format eingeben für Stückzahl' : ''));
+  return (m2!==null ? m2.toFixed(2).wmZahl()+' m²' : '—') + (stueck!==null ? ' → <strong>'+stueck+' Stück</strong>' : (m2!==null ? ' — Format eingeben für Stückzahl' : ''));
 }
 
 // Volle Neuaufbau — NUR bei Struktur-Änderungen (Zeile hinzufügen/entfernen/Preset) aufrufen,
@@ -3839,14 +4448,14 @@ function bmKleberSet(value){
 function bmUpdateSummaryNumbers(){
   const totalM2 = bmFlaechen.reduce((s,f)=> s + (bmSubtotalM2(f)||0), 0);
   const totalEl = document.getElementById('bm-total-m2');
-  if(totalEl) totalEl.innerHTML = totalM2.toFixed(2) + ' <small>m²</small>';
+  if(totalEl) totalEl.innerHTML = totalM2.toFixed(2).wmZahl() + ' <small>m²</small>';
 
   if(bmMode === 'farbe'){
     const erg = bmNum(bmErgiebigkeit);
     const literItem = document.getElementById('bm-liter-item');
     if(erg && totalM2){
       const liter = (totalM2/erg) * (bmNum(bmSchichten)||1);
-      document.getElementById('bm-liter-result').innerHTML = liter.toFixed(2) + ' <small>Liter</small>';
+      document.getElementById('bm-liter-result').innerHTML = liter.toFixed(2).wmZahl() + ' <small>Liter</small>';
       if(literItem) literItem.style.display = 'block';
     } else if(literItem){
       literItem.style.display = 'none';
@@ -3857,7 +4466,7 @@ function bmUpdateSummaryNumbers(){
     const sackItem = document.getElementById('bm-sack-item');
     if(rate && totalM2){
       const kg = totalM2 * rate;
-      document.getElementById('bm-kg-result').innerHTML = kg.toFixed(1) + ' <small>kg</small>';
+      document.getElementById('bm-kg-result').innerHTML = kg.toFixed(1).wmZahl() + ' <small>kg</small>';
       document.getElementById('bm-sack-result').innerHTML = Math.ceil(kg/25) + ' <small>Sack/-säcke</small>';
       if(kgItem) kgItem.style.display = 'block';
       if(sackItem) sackItem.style.display = 'block';
@@ -3916,7 +4525,11 @@ function calcVolumenGewicht(){
   const b = flexNum(document.getElementById('vgB').value);
   const t = flexNum(document.getElementById('vgT').value);
   const tEinheit = document.getElementById('vgTEinheit').value;
-  const materialDichte = parseFloat(document.getElementById('vgMaterial').value);
+  const materialSelect = document.getElementById('vgMaterial');
+  const gewaehlt = materialSelect.selectedOptions[0];
+  const materialDichte = gewaehlt ? parseFloat(gewaehlt.dataset.dichte) : NaN;
+
+  materialSelect.classList.toggle('material-gewaehlt', !!materialSelect.value);
 
   if(l===null || b===null || t===null){
     document.getElementById('vgVolumen').innerHTML = '—';
@@ -3928,15 +4541,25 @@ function calcVolumenGewicht(){
   if(tEinheit === 'mm') tiefeM = t/1000;
 
   const volumen = l * b * tiefeM;
-  document.getElementById('vgVolumen').innerHTML = volumen.toFixed(3) + ' <small>m³</small>';
+  document.getElementById('vgVolumen').innerHTML = volumen.toFixed(3).wmZahl() + ' <small>m³</small>';
 
   if(materialDichte){
     const kg = volumen * materialDichte;
     const tonnen = kg/1000;
-    document.getElementById('vgGewicht').innerHTML = kg.toFixed(0) + ' <small>kg</small> (' + tonnen.toFixed(2) + ' <small>t</small>)';
+    document.getElementById('vgGewicht').innerHTML = kg.toFixed(0).wmZahl() + ' <small>kg</small> (' + tonnen.toFixed(2).wmZahl() + ' <small>t</small>)';
   } else {
     document.getElementById('vgGewicht').innerHTML = '— Material wählen —';
   }
+}
+// Setzt den Rechner komplett zurück — wird bei jedem Sprung aus einem Berufs-Link aufgerufen (goToTool),
+// damit keine Werte/Material aus einer vorherigen, fachlich unabhängigen Berechnung stehenbleiben.
+function resetVolumenGewicht(presetMaterial){
+  ['vgL','vgB','vgT'].forEach(id=>{ const el = document.getElementById(id); if(el) el.value=''; });
+  const tEinheit = document.getElementById('vgTEinheit');
+  if(tEinheit) tEinheit.value = 'cm';
+  const materialSelect = document.getElementById('vgMaterial');
+  if(materialSelect) materialSelect.value = presetMaterial || '';
+  calcVolumenGewicht();
 }
 
 // ---------- GEHRUNGSWINKEL ----------
@@ -3944,7 +4567,7 @@ function calcGehrung(){
   const eck = flexNum(document.getElementById('ghEck').value);
   const out = document.getElementById('ghSaegewinkel');
   if(eck === null){ out.innerHTML = '—'; return; }
-  out.innerHTML = (eck/2).toFixed(2) + ' <small>°</small>';
+  out.innerHTML = (eck/2).toFixed(2).wmZahl() + ' <small>°</small>';
 }
 function calcGehrungVieleck(){
   const n = flexNum(document.getElementById('ghEcken').value);
@@ -3952,8 +4575,8 @@ function calcGehrungVieleck(){
   const saegeEl = document.getElementById('ghVieleckSaegewinkel');
   if(n === null || n < 3){ innenEl.innerHTML = '—'; saegeEl.innerHTML = '—'; return; }
   const innenwinkel = 180 * (n-2) / n;
-  innenEl.innerHTML = innenwinkel.toFixed(2) + ' <small>°</small>';
-  saegeEl.innerHTML = (innenwinkel/2).toFixed(2) + ' <small>°</small>';
+  innenEl.innerHTML = innenwinkel.toFixed(2).wmZahl() + ' <small>°</small>';
+  saegeEl.innerHTML = (innenwinkel/2).toFixed(2).wmZahl() + ' <small>°</small>';
 }
 
 // ---------- TISCHLER: KANTENUMLEIMER-BEDARF ----------
@@ -3966,8 +4589,8 @@ function calcKantenumleimer(){
   if(!l || !b){ alert('Bitte Plattenlänge und Plattenbreite eingeben.'); return; }
   const umfangM = 2*(l+b)/100;
   const gesamt = umfangM * stk * (1+zuschlag/100);
-  document.getElementById('keProPlatte').innerHTML = umfangM.toFixed(2) + ' <small>m</small>';
-  document.getElementById('keGesamt').innerHTML = gesamt.toFixed(2) + ' <small>m</small>';
+  document.getElementById('keProPlatte').innerHTML = umfangM.toFixed(2).wmZahl() + ' <small>m</small>';
+  document.getElementById('keGesamt').innerHTML = gesamt.toFixed(2).wmZahl() + ' <small>m</small>';
   document.getElementById('keOut').style.display='flex';
   const rolleItem = document.getElementById('keRolleItem');
   if(rolle){
@@ -4114,8 +4737,8 @@ function calcZuschnitt(){
   const verschnittProz = (1 - teileFlaecheM2/plattenFlaecheM2) * 100;
 
   document.getElementById('zsPlattenAnzahl').innerHTML = plates.length + ' <small>Stück</small>';
-  document.getElementById('zsTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2) + ' <small>m²</small>';
-  document.getElementById('zsVerschnitt').innerHTML = verschnittProz.toFixed(1) + ' <small>%</small>';
+  document.getElementById('zsTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2).wmZahl() + ' <small>m²</small>';
+  document.getElementById('zsVerschnitt').innerHTML = verschnittProz.toFixed(1).wmZahl() + ' <small>%</small>';
   document.getElementById('zsOut').style.display = 'flex';
 
   document.getElementById('zsVisual').innerHTML = plates.map((plate,i)=> renderZuschnittPlatte(plate, plateW, plateH, i, plates.length)).join('');
@@ -4192,8 +4815,8 @@ function calcGlasZuschnitt(){
   const verschnittProz = (1 - teileFlaecheM2/plattenFlaecheM2) * 100;
 
   document.getElementById('gzPlattenAnzahl').innerHTML = plates.length + ' <small>Stück</small>';
-  document.getElementById('gzTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2) + ' <small>m²</small>';
-  document.getElementById('gzVerschnitt').innerHTML = verschnittProz.toFixed(1) + ' <small>%</small>';
+  document.getElementById('gzTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2).wmZahl() + ' <small>m²</small>';
+  document.getElementById('gzVerschnitt').innerHTML = verschnittProz.toFixed(1).wmZahl() + ' <small>%</small>';
   document.getElementById('gzOut').style.display = 'flex';
 
   document.getElementById('gzVisual').innerHTML = plates.map((plate,i)=> renderZuschnittPlatte(plate, plateW, plateH, i, plates.length)).join('');
@@ -4233,10 +4856,10 @@ function calcMischung(){
     return;
   }
   const totalParts = a + b + (c || 0);
-  document.getElementById('msOutA').innerHTML = (ziel * a/totalParts).toFixed(2);
-  document.getElementById('msOutB').innerHTML = (ziel * b/totalParts).toFixed(2);
+  document.getElementById('msOutA').innerHTML = (ziel * a/totalParts).toFixed(2).wmZahl();
+  document.getElementById('msOutB').innerHTML = (ziel * b/totalParts).toFixed(2).wmZahl();
   if(c){
-    document.getElementById('msOutC').innerHTML = (ziel * c/totalParts).toFixed(2);
+    document.getElementById('msOutC').innerHTML = (ziel * c/totalParts).toFixed(2).wmZahl();
     itemC.style.display = 'block';
   } else {
     itemC.style.display = 'none';
@@ -4266,11 +4889,11 @@ function calcKalkulation(){
   const gewinn = verkaufNetto - kosten;
   const mwstBetrag = verkaufNetto * ((mwst||0)/100);
   const verkaufBrutto = verkaufNetto + mwstBetrag;
-  document.getElementById('kalkKosten').innerHTML = kosten.toFixed(2) + ' <small>€</small>';
-  document.getElementById('kalkGewinn').innerHTML = gewinn.toFixed(2) + ' <small>€</small>';
-  document.getElementById('kalkNetto').innerHTML = verkaufNetto.toFixed(2) + ' <small>€</small>';
-  document.getElementById('kalkMwstBetrag').innerHTML = mwstBetrag.toFixed(2) + ' <small>€</small>';
-  document.getElementById('kalkBrutto').innerHTML = verkaufBrutto.toFixed(2) + ' <small>€</small>';
+  document.getElementById('kalkKosten').innerHTML = kosten.toFixed(2).wmZahl() + ' <small>€</small>';
+  document.getElementById('kalkGewinn').innerHTML = gewinn.toFixed(2).wmZahl() + ' <small>€</small>';
+  document.getElementById('kalkNetto').innerHTML = verkaufNetto.toFixed(2).wmZahl() + ' <small>€</small>';
+  document.getElementById('kalkMwstBetrag').innerHTML = mwstBetrag.toFixed(2).wmZahl() + ' <small>€</small>';
+  document.getElementById('kalkBrutto').innerHTML = verkaufBrutto.toFixed(2).wmZahl() + ' <small>€</small>';
 }
 
 
@@ -4284,13 +4907,13 @@ function calcReifen(){
   const b2=flexNum(document.getElementById('rfB2').value), q2=flexNum(document.getElementById('rfQ2').value), f2=flexNum(document.getElementById('rfF2').value);
   const d1 = reifenDurchmesser(b1,q1,f1);
   const d2 = reifenDurchmesser(b2,q2,f2);
-  document.getElementById('rfD1').innerHTML = d1!==null ? (d1/10).toFixed(1)+' <small>cm</small>' : '—';
-  document.getElementById('rfD2').innerHTML = d2!==null ? (d2/10).toFixed(1)+' <small>cm</small>' : '—';
+  document.getElementById('rfD1').innerHTML = d1!==null ? (d1/10).toFixed(1).wmZahl()+' <small>cm</small>' : '—';
+  document.getElementById('rfD2').innerHTML = d2!==null ? (d2/10).toFixed(1).wmZahl()+' <small>cm</small>' : '—';
   if(d1!==null && d2!==null){
     const u1 = Math.PI*d1, u2 = Math.PI*d2;
     const diffProz = ((u2-u1)/u1)*100;
-    document.getElementById('rfDiff').innerHTML = (diffProz>=0?'+':'')+diffProz.toFixed(2)+' <small>%</small>';
-    document.getElementById('rfTacho').innerHTML = (diffProz>=0?'−':'+')+Math.abs(diffProz).toFixed(1)+' <small>% ca.</small>';
+    document.getElementById('rfDiff').innerHTML = (diffProz>=0?'+':'')+diffProz.toFixed(2).wmZahl()+' <small>%</small>';
+    document.getElementById('rfTacho').innerHTML = (diffProz>=0?'−':'+')+Math.abs(diffProz).toFixed(1).wmZahl()+' <small>% ca.</small>';
   } else {
     document.getElementById('rfDiff').innerHTML = '—';
     document.getElementById('rfTacho').innerHTML = '—';
@@ -4305,9 +4928,9 @@ function calcUebersetzung(){
   const n2Item = document.getElementById('uebNOutItem');
   if(!an || !ab){ document.getElementById('uebI').innerHTML='—'; n2Item.style.display='none'; return; }
   const i = ab/an;
-  document.getElementById('uebI').innerHTML = i.toFixed(3) + ' <small>: 1</small>';
+  document.getElementById('uebI').innerHTML = i.toFixed(3).wmZahl() + ' <small>: 1</small>';
   if(n1){
-    document.getElementById('uebN2').innerHTML = (n1/i).toFixed(0) + ' <small>1/min</small>';
+    document.getElementById('uebN2').innerHTML = (n1/i).toFixed(0).wmZahl() + ' <small>1/min</small>';
     n2Item.style.display = 'block';
   } else {
     n2Item.style.display = 'none';
@@ -4415,7 +5038,7 @@ function calcLattenabstand(){
   const out = document.getElementById('laErgebnis');
   if(sparren===null || ueberstand===null || first===null || !reihen){ out.innerHTML='—'; return; }
   const la = (sparren - ueberstand - first) / reihen;
-  out.innerHTML = la.toFixed(0) + ' <small>mm</small>';
+  out.innerHTML = la.toFixed(0).wmZahl() + ' <small>mm</small>';
 }
 
 setupInputAutoSave();
