@@ -728,11 +728,15 @@
           </ul>
         </div>
         <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Weitere Schweißverfahren als eigene Gruppe, sobald recherchiert.</p>
+          <h3>🔥 WIG <span class="tag">TIG / Wolfram-Inertgas</span></h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>WIG (TIG)</li>
-            <li class="placeholder-task"><span class="pt-dot"></span>MAG / MIG</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-wig')"><span class="pt-dot"></span>Wolframelektroden: Farbcode & Stromstärke →</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>⚙️ MAG / MIG <span class="tag">Schutzgas-Schweißen</span></h3>
+          <ul class="placeholder-list">
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-magmig')"><span class="pt-dot"></span>Drahtelektrode, Schutzgas & Parameter →</li>
           </ul>
         </div>
       </div>
@@ -761,6 +765,56 @@
             </table>
           </div>
           <p class="note">Als Machbarkeits-Beispiel bereits mit drei Herstellern befüllt — <strong>Böhler Welding</strong> (voestalpine, inkl. Produktlinien "Phoenix" und "Thermanit"), <strong>EWM</strong> und <strong>Lincoln Electric</strong> — recherchiert aus öffentlich zugänglichen Datenblättern und in eigenen Worten zusammengefasst. Bei FOX OHV, FOX CEL, FOX SPE und Phoenix Spezial D stehen bereits echte Ø-genaue Ampere-Werte drin. Bei EWM und Lincoln Electric war in den öffentlich einsehbaren Quellen nur die Klassifikation zu finden, keine Ø-genaue Stromtabelle — dort steht ehrlich "siehe Datenblatt", statt eine Zahl zu raten. Nach demselben Schema lassen sich beliebig weitere Hersteller und fehlende Werte ergänzen. Die verbindlichen Werte stehen immer auf der Verpackung der jeweiligen Elektrode.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="w-wig">
+        <div class="card">
+          <h3>Wolframelektroden: Farbcode & Zusammensetzung <span class="tag">DIN EN ISO 6848</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Farbe</th><th>Kurzz.</th><th>Zusammensetzung</th><th>Stromart</th><th>Haupteinsatz</th></tr></thead>
+              <tr><td data-label="Farbe">Grün</td><td class="mono" data-label="Kurzz.">WP</td><td data-label="Zusammensetzung">Reines Wolfram</td><td data-label="Stromart">AC (Wechselstrom)</td><td data-label="Einsatz">Aluminium, Magnesium — ruhiger Lichtbogen, schlechte Zündung bei DC</td></tr>
+              <tr><td data-label="Farbe">Grau</td><td class="mono" data-label="Kurzz.">WC20</td><td data-label="Zusammensetzung">W + 2% Ceroxid</td><td data-label="Stromart">DC &amp; AC</td><td data-label="Einsatz">Universell, gut im unteren/mittleren Strombereich — Klassiker für DC-Stahl</td></tr>
+              <tr><td data-label="Farbe">Gold</td><td class="mono" data-label="Kurzz.">WL15</td><td data-label="Zusammensetzung">W + 1,5% Lanthanoxid</td><td data-label="Stromart">DC &amp; AC</td><td data-label="Einsatz">Universell einsetzbar, gute Zündfreudigkeit, Standard-Alternative zu thoriert</td></tr>
+              <tr><td data-label="Farbe">Blau</td><td class="mono" data-label="Kurzz.">WL20</td><td data-label="Zusammensetzung">W + 2% Lanthanoxid</td><td data-label="Stromart">DC &amp; AC</td><td data-label="Einsatz">Höhere Strombelastbarkeit als WL15, für automatisiertes Schweißen</td></tr>
+              <tr><td data-label="Farbe">Weiß</td><td class="mono" data-label="Kurzz.">WZ8</td><td data-label="Zusammensetzung">W + 0,7–0,9% Zirkonoxid</td><td data-label="Stromart">AC</td><td data-label="Einsatz">Überwiegend Wechselstrom, stabile Kalotte, weniger geeignet für DC</td></tr>
+            </table>
+          </div>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Thorierte Elektroden (WT10–WT40, violett/rot/gelb/orange) sind wegen ihres radioaktiven Thoriumoxid-Zusatzes (Alphastrahlung beim Schleifstaub-Einatmen) gesundheitsschädlich und in vielen Ländern nicht mehr empfohlen bzw. reglementiert — deshalb hier bewusst nicht als Kaufempfehlung gelistet. WL- oder WC-Elektroden liefern vergleichbare Schweißeigenschaften ohne dieses Risiko.</p>
+        </div>
+        <div class="card">
+          <h3>Stromstärke nach Elektroden-Durchmesser <span class="tag">Richtwerte, Herstellerangabe Abicor Binzel</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table collapsible">
+              <thead><tr><th>Ø</th><th>DC− Rein-W (Stahl)</th><th>DC− Oxidiert (Stahl)</th><th>AC Rein-W (Alu)</th><th>AC Oxidiert (Alu)</th></tr></thead>
+              <tr><td class="mono" data-label="Ø">1,0 mm</td><td class="mono" data-label="DC− Rein">&lt; 65 A</td><td class="mono" data-label="DC− Oxidiert">&lt; 75 A</td><td class="mono" data-label="AC Rein">&lt; 25 A</td><td class="mono" data-label="AC Oxidiert">&lt; 30 A</td></tr>
+              <tr><td class="mono" data-label="Ø">1,6 mm</td><td class="mono" data-label="DC− Rein">45–90 A</td><td class="mono" data-label="DC− Oxidiert">60–160 A</td><td class="mono" data-label="AC Rein">30–90 A</td><td class="mono" data-label="AC Oxidiert">30–120 A</td></tr>
+              <tr><td class="mono" data-label="Ø">2,4 mm</td><td class="mono" data-label="DC− Rein">80–160 A</td><td class="mono" data-label="DC− Oxidiert">150–250 A</td><td class="mono" data-label="AC Rein">80–140 A</td><td class="mono" data-label="AC Oxidiert">100–210 A</td></tr>
+              <tr><td class="mono" data-label="Ø">3,2 mm</td><td class="mono" data-label="DC− Rein">150–290 A</td><td class="mono" data-label="DC− Oxidiert">220–330 A</td><td class="mono" data-label="AC Rein">130–190 A</td><td class="mono" data-label="AC Oxidiert">150–260 A</td></tr>
+              <tr><td class="mono" data-label="Ø">4,0 mm</td><td class="mono" data-label="DC− Rein">180–260 A</td><td class="mono" data-label="DC− Oxidiert">310–490 A</td><td class="mono" data-label="AC Rein">180–270 A</td><td class="mono" data-label="AC Oxidiert">240–350 A</td></tr>
+            </table>
+          </div>
+          <p class="note">DC− (Elektrode negativ) ist die Standard-Polung für Stahl, Edelstahl, Kupfer, Titan. AC (Wechselstrom) für Aluminium und Magnesium. Faustregel Werkstückdicke: ca. 45 A/mm Wanddicke bei DC-Stahl, ca. 40 A/mm bei AC-Aluminium. Schutzgas: Argon 4.6 (99,996%), Gasmenge ca. 6–12 l/min je nach Gasdüsengröße. Wolframelektroden immer in Längsrichtung schleifen, nie im Umfang — sonst streut der Lichtbogen. Werte sind Herstellerrichtwerte für Rundspitze; bei speziellen Spitzenformen, Impulsbetrieb oder Sonderwerkstoffen können abweichende Werte gelten.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="w-magmig">
+        <div class="card">
+          <h3>Drahtelektrode, Schutzgas & Parameter <span class="tag">Richtwerte für Massivdraht</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table collapsible">
+              <thead><tr><th>Material</th><th>Draht-Ø</th><th>Blechdicke</th><th>Stromstärke</th><th>Spannung</th><th>Drahtvorschub</th><th>Gasdurchfluss</th></tr></thead>
+              <tr><td data-label="Material">Stahl (M21, Kurzlichtbogen)</td><td class="mono" data-label="Draht-Ø">0,8 mm</td><td class="mono" data-label="Blechdicke">2–3 mm</td><td class="mono" data-label="Strom">90–120 A</td><td class="mono" data-label="Spannung">17–19 V</td><td class="mono" data-label="Vorschub">3,5–5,0 m/min</td><td class="mono" data-label="Gas">10–12 l/min</td></tr>
+              <tr><td data-label="Material">Stahl (M21, Übergang/Sprüh)</td><td class="mono" data-label="Draht-Ø">1,0 mm</td><td class="mono" data-label="Blechdicke">4–6 mm</td><td class="mono" data-label="Strom">130–180 A</td><td class="mono" data-label="Spannung">19–22 V</td><td class="mono" data-label="Vorschub">5,0–7,0 m/min</td><td class="mono" data-label="Gas">12–15 l/min</td></tr>
+              <tr><td data-label="Material">Stahl (M21, Sprüh/Impuls)</td><td class="mono" data-label="Draht-Ø">1,2 mm</td><td class="mono" data-label="Blechdicke">&gt; 6 mm</td><td class="mono" data-label="Strom">190–240 A</td><td class="mono" data-label="Spannung">22–26 V</td><td class="mono" data-label="Vorschub">7,0–9,0 m/min</td><td class="mono" data-label="Gas">14–18 l/min</td></tr>
+              <tr><td data-label="Material">Edelstahl (M12/M13, Kurz/Impuls)</td><td class="mono" data-label="Draht-Ø">0,8 mm</td><td class="mono" data-label="Blechdicke">2–3 mm</td><td class="mono" data-label="Strom">80–110 A</td><td class="mono" data-label="Spannung">17–19 V</td><td class="mono" data-label="Vorschub">3,0–4,5 m/min</td><td class="mono" data-label="Gas">10–12 l/min</td></tr>
+              <tr><td data-label="Material">Aluminium (Argon, Kurz/Impuls)</td><td class="mono" data-label="Draht-Ø">1,0 mm</td><td class="mono" data-label="Blechdicke">2–4 mm</td><td class="mono" data-label="Strom">110–150 A</td><td class="mono" data-label="Spannung">20–22 V</td><td class="mono" data-label="Vorschub">5,0–7,0 m/min</td><td class="mono" data-label="Gas">12–16 l/min</td></tr>
+              <tr><td data-label="Material">Aluminium (Ar/He, Sprüh/Impuls)</td><td class="mono" data-label="Draht-Ø">1,2 mm</td><td class="mono" data-label="Blechdicke">5–8 mm</td><td class="mono" data-label="Strom">160–220 A</td><td class="mono" data-label="Spannung">22–25 V</td><td class="mono" data-label="Vorschub">6,0–8,0 m/min</td><td class="mono" data-label="Gas">14–18 l/min</td></tr>
+            </table>
+          </div>
+          <p class="note"><strong>Schutzgas-Wahl:</strong> MAG/Stahl — CO₂ (Kennung C1) ist robust und günstig, erzeugt aber mehr Spritzer; Argon-CO₂-Mischgas M21 ("82/18") gibt stabileren Lichtbogen, weniger Spritzer, besseres Nahtbild. MIG/Aluminium — Argon (I1) ist Standard; Argon-Helium-Gemisch (I3) bei dickeren Querschnitten für mehr Wärmeeintrag und tieferen Einbrand.</p>
+          <p class="note">Anders als bei WIG/E-Hand ist bei MAG/MIG die <strong>Spannung die eingestellte Größe, der Strom ergibt sich aus dem Drahtvorschub</strong> (nicht umgekehrt). Fausteinstieg: Spannungsstufe grob passend zur Blechdicke wählen, dann Drahtvorschub hochregeln bis der Lichtbogen gleichmäßig "brutzelt" statt zu zischen (zu wenig Vorschub) oder zu knistern/spritzen (zu viel Vorschub) — die hier gelisteten Werte sind Startpunkte für die Probeschweißung, keine Festwerte. Bei sicherheitsrelevanten Verbindungen die Einstellung immer anhand eines Probeblechs und ggf. eines WPS verifizieren.</p>
         </div>
       </div>
     </section>
@@ -1166,8 +1220,10 @@
             <select id="bmAnwendung" onchange="bmSetPreset(this.value)">
               <option value="frei">Eigene Angabe (Stückzahl)</option>
               <option value="fliesen">Fliesen</option>
+              <option value="fliesenkleber">Fliesenkleber (Verbrauch nach Zahnung)</option>
               <option value="platten">Trockenbauplatten (Rigips)</option>
               <option value="pflaster">Pflaster-/Mauersteine</option>
+              <option value="verkleidung">Naturstein-Verkleidung (Fassade)</option>
               <option value="dachziegel">Dachziegel</option>
               <option value="daemmung">Dämmmaterial (Matten/Platten)</option>
               <option value="trockenestrich">Trockenestrich-Elemente</option>
@@ -1209,6 +1265,7 @@
                   <option value="1550">Splitt (≈1.550 kg/m³)</option>
                   <option value="1800">Schotter (≈1.800 kg/m³)</option>
                   <option value="1400">Mutterboden / Erde (≈1.400 kg/m³)</option>
+                  <option value="1500">Rasentragschicht / Vegetationssubstrat (≈1.500 kg/m³)</option>
                   <option value="450">Rindenmulch (≈450 kg/m³)</option>
                   <option value="2400">Frischbeton (≈2.400 kg/m³)</option>
                 </optgroup>
@@ -1646,13 +1703,7 @@
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesen','fliesenleger')"><span class="pt-dot"></span>Fliesenbedarf für eine Fläche berechnen (inkl. Verschnittzuschlag) →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Fliesenkleber-Bedarf berechnen</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesenkleber','fliesenleger')"><span class="pt-dot"></span>Fliesenkleber-Bedarf berechnen (nach Zahnung) →</li>
           </ul>
         </div>
       </div>
@@ -1697,13 +1748,7 @@
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Erdaushub-Volumen berechnen (Länge × Breite × Tiefe) →</li>
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Kies-/Schüttgutmenge inkl. Gewicht nach Schüttdichte →</li>
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','galabau')"><span class="pt-dot"></span>Pflasterstein-Bedarf nach genormtem Steinformat →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Rasen-/Substratmenge berechnen</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Rasen-/Substratmenge berechnen (Fläche × Schichtdicke, inkl. Gewicht) →</li>
           </ul>
         </div>
       </div>
@@ -1750,13 +1795,7 @@
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'glaser')"><span class="pt-dot"></span>Glasgewicht berechnen (Fläche × Dicke × Dichte) →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Zuschnitt-/Verschnittoptimierung</li>
+            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-zuschnitt')"><span class="pt-dot"></span>Zuschnitt-/Verschnittoptimierung →</li>
           </ul>
         </div>
       </div>
@@ -1774,6 +1813,42 @@
             </table>
           </div>
           <p class="note"><strong>Faustregel:</strong> Je größer die Fläche und je geringer die Auflage/Halterung, desto dicker das Glas. Für Schallschutz werden oft unterschiedliche Dicken kombiniert (z.B. 8 mm außen + 4 mm innen). <strong>Wichtig:</strong> Das sind grobe Orientierungswerte — bei sicherheitsrelevanten Anwendungen (Balkonverglasung, begehbares Glas, Brüstungen, Überkopfverglasung) ist eine statische Berechnung nach DIN 18008 zwingend vorgeschrieben, keine Faustregel ausreichend.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="glaser-zuschnitt">
+        <div class="card">
+          <h3>Zuschnitt-/Verschnittoptimierung <span class="tag">Schema-Verschnittoptimierung</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Wie viele Rohglas-Scheiben brauchst du für einen Stapel Zuschnittteile? Trag dein Rohglasmaß und alle benötigten Teile ein.</p>
+          <div class="row3">
+            <div class="field"><label>Rohglasmaß</label>
+              <select id="gzPreset" onchange="gzSetPreset(this.value)">
+                <option value="3210x2250">3210 × 2250 mm (Normalmaß)</option>
+                <option value="6000x3210">6000 × 3210 mm (Jumbo-Rohglasmaß)</option>
+                <option value="2550x1850">2550 × 1850 mm (Kleinformat)</option>
+                <option value="frei">Eigenes Format</option>
+              </select>
+            </div>
+            <div class="field"><label>Scheibenlänge (mm)</label><input type="number" id="gzPlatteL" value="3210" oninput="gzMarkCustom()"></div>
+            <div class="field"><label>Scheibenbreite (mm)</label><input type="number" id="gzPlatteB" value="2250" oninput="gzMarkCustom()"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Schnittverlust / Randzugabe (mm)</label><input type="number" id="gzFuge" value="5" step="1"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Benötigte Zuschnittteile</h3>
+          <div id="gzTeileListe"></div>
+          <button class="btn secondary" onclick="gzAddTeil()" style="margin-bottom:4px;">+ weiteres Teil</button>
+          <button class="btn" onclick="calcGlasZuschnitt()">Verschnitt berechnen</button>
+          <div class="readout" id="gzOut" style="display:none;">
+            <div class="item"><div class="rlabel">Benötigte Scheiben</div><div class="rvalue" id="gzPlattenAnzahl">—</div></div>
+            <div class="item"><div class="rlabel">Teile-Gesamtfläche</div><div class="rvalue" id="gzTeileFlaeche">—</div></div>
+            <div class="item"><div class="rlabel">Verschnitt</div><div class="rvalue" id="gzVerschnitt">—</div></div>
+          </div>
+          <div id="gzVisual"></div>
+          <p class="note">Gleiches Schema-Verfahren wie beim Korpuszuschnitt (Werkzeugkiste/Tischler): Teile werden zeilenweise, größtes zuerst, auf die Scheibe gepackt — praxisnah, aber nicht mathematisch optimal. "Nicht drehbar" bei gemustertem, bedrucktem oder beschichtetem Glas mit fester Richtung ankreuzen. <strong>Wichtig:</strong> Dieser Rechner plant nur die Flächenaufteilung — bei sicherheitsrelevanten Anwendungen (siehe Glasdicken-Faustregel oben) ersetzt das keine statische Berechnung nach DIN 18008, und Mindestrandabstände zu Bohrungen/Kanten sind hier nicht berücksichtigt.</p>
         </div>
       </div>
     </section>
@@ -1948,6 +2023,7 @@
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-steinformate')"><span class="pt-dot"></span>Steinformate (DF, NF & Co.) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-bewehrung')"><span class="pt-dot"></span>Bewehrungsbedarf, Grundlagen →</li>
           </ul>
         </div>
         <div class="card">
@@ -1955,13 +2031,6 @@
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-mischung', null, 'maurer')"><span class="pt-dot"></span>Mörtel-/Betonmischungsverhältnis →</li>
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','maurer')"><span class="pt-dot"></span>Steinbedarf pro m² Wand (nach Steinformat) →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Bewehrungsbedarf, Grundlagen</li>
           </ul>
         </div>
       </div>
@@ -1994,6 +2063,55 @@
             </table>
           </div>
           <p class="note">Werte gelten für Dünnbettmörtel (Auftrag mit Mörtelschlitten) bei üblicher Baustellenpraxis. Je nach Wandaufbau, Saugfähigkeit des Steins und Verarbeitung können reale Verbräuche abweichen — bei größeren Mengen immer einen Sicherheitsaufschlag einplanen, siehe Bedarfsmengen-Rechner.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="maurer-bewehrung">
+        <div class="card">
+          <h3>Betonstahl-Durchmesser <span class="tag">DIN 488, Stabstahl</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Nenndurchmesser</th><th>Querschnittsfläche</th><th>Gewicht</th></tr></thead>
+              <tr><td class="mono" data-label="Ø">6 mm</td><td class="mono" data-label="Fläche">0,283 cm²</td><td class="mono" data-label="Gewicht">0,222 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">8 mm</td><td class="mono" data-label="Fläche">0,503 cm²</td><td class="mono" data-label="Gewicht">0,395 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">10 mm</td><td class="mono" data-label="Fläche">0,785 cm²</td><td class="mono" data-label="Gewicht">0,617 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">12 mm</td><td class="mono" data-label="Fläche">1,131 cm²</td><td class="mono" data-label="Gewicht">0,888 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">14 mm</td><td class="mono" data-label="Fläche">1,539 cm²</td><td class="mono" data-label="Gewicht">1,208 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">16 mm</td><td class="mono" data-label="Fläche">2,011 cm²</td><td class="mono" data-label="Gewicht">1,578 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">20 mm</td><td class="mono" data-label="Fläche">3,142 cm²</td><td class="mono" data-label="Gewicht">2,466 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">25 mm</td><td class="mono" data-label="Fläche">4,909 cm²</td><td class="mono" data-label="Gewicht">3,853 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">28 mm</td><td class="mono" data-label="Fläche">6,158 cm²</td><td class="mono" data-label="Gewicht">4,834 kg/m</td></tr>
+              <tr><td class="mono" data-label="Ø">32 mm</td><td class="mono" data-label="Fläche">8,042 cm²</td><td class="mono" data-label="Gewicht">6,313 kg/m</td></tr>
+            </table>
+          </div>
+          <p class="note">Genormte Stabstahl-Durchmesser nach DIN 488 (Betonstahl B500). Gewicht auf Basis der Stahldichte 7.850 kg/m³.</p>
+        </div>
+        <div class="card">
+          <h3>Betonstahlmatten (Lagermatten) <span class="tag">Typ Q — quadratische Maschen</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Typ</th><th>Stabdurchmesser</th><th>Querschnittsfläche</th><th>Maschenweite</th></tr></thead>
+              <tr><td class="mono" data-label="Typ">Q131A</td><td class="mono" data-label="Ø">5,0 mm</td><td class="mono" data-label="Fläche">1,31 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
+              <tr><td class="mono" data-label="Typ">Q188A</td><td class="mono" data-label="Ø">6,0 mm</td><td class="mono" data-label="Fläche">1,88 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
+              <tr><td class="mono" data-label="Typ">Q257A</td><td class="mono" data-label="Ø">7,0 mm</td><td class="mono" data-label="Fläche">2,57 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
+              <tr><td class="mono" data-label="Typ">Q377A</td><td class="mono" data-label="Ø">8,5 mm</td><td class="mono" data-label="Fläche">3,77 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
+              <tr><td class="mono" data-label="Typ">Q524A</td><td class="mono" data-label="Ø">10,0 mm</td><td class="mono" data-label="Fläche">5,24 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
+            </table>
+          </div>
+          <p class="note">Standard-Lagermatten (Ausführung "A" = mit Übergreifungsrand für Überlappungsstöße), üblich für Bodenplatten, Fundamente und einfache Flächenbewehrung. Für tragende oder statisch anspruchsvolle Bauteile die genaue Mattengröße/-lage dem Bewehrungsplan entnehmen.</p>
+        </div>
+        <div class="card">
+          <h3>Betondeckung — Richtwerte <span class="tag">nach Expositionsklasse, DIN EN 1992-1-1 / DIN EN 206</span></h3>
+          <div class="table-wrap">
+            <table class="responsive-table">
+              <thead><tr><th>Umgebung</th><th>Expositionsklasse</th><th>Betondeckung (Richtwert)</th></tr></thead>
+              <tr><td data-label="Umgebung">Innenbauteile, trocken</td><td class="mono" data-label="Klasse">XC1</td><td class="mono" data-label="Deckung">ca. 20 mm</td></tr>
+              <tr><td data-label="Umgebung">Außenbauteile, Wechselfeuchte</td><td class="mono" data-label="Klasse">XC4</td><td class="mono" data-label="Deckung">ca. 30–40 mm</td></tr>
+              <tr><td data-label="Umgebung">Frost/Tausalz (z.B. Stellplätze, Randbereiche)</td><td class="mono" data-label="Klasse">XF2 / XF4</td><td class="mono" data-label="Deckung">ca. 40 mm</td></tr>
+              <tr><td data-label="Umgebung">Erdberührt, Bodenplatte auf Sauberkeitsschicht</td><td class="mono" data-label="Klasse">XC2</td><td class="mono" data-label="Deckung">ca. 40–50 mm</td></tr>
+            </table>
+          </div>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Diese Tabelle ist eine grobe Orientierung, keine Bemessungsgrundlage. Bewehrungsmenge, -durchmesser, -lage und die exakte Betondeckung (Vorhaltemaß, Verlegetoleranzen, Bauteilart, Betonfestigkeitsklasse) müssen für tragende oder sicherheitsrelevante Bauteile immer von einem Tragwerksplaner/Statiker festgelegt werden. Diese Seite ersetzt keine statische Berechnung.</p>
         </div>
       </div>
     </section>
@@ -2065,13 +2183,7 @@
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'steinmetz')"><span class="pt-dot"></span>Steingewicht berechnen (Volumen × Gesteinsdichte) →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Materialbedarf für Verkleidungen</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','verkleidung','steinmetz')"><span class="pt-dot"></span>Materialbedarf für Verkleidungen (Fläche → Plattenanzahl) →</li>
           </ul>
         </div>
       </div>
@@ -2119,14 +2231,8 @@
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('rechner','r-gehrung', null, 'tischler')"><span class="pt-dot"></span>Gehrungsschnitt-Winkel berechnen →</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Demnächst</h3>
-          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Diese Punkte kommen als Nächstes dazu und springen dann direkt zum passenden Rechner.</p>
-          <ul class="placeholder-list">
-            <li class="placeholder-task"><span class="pt-dot"></span>Korpus-/Plattenzuschnitt berechnen</li>
-            <li class="placeholder-task"><span class="pt-dot"></span>Kantenumleimer-Bedarf berechnen</li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-kantenumleimer')"><span class="pt-dot"></span>Kantenumleimer-Bedarf berechnen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-zuschnitt')"><span class="pt-dot"></span>Korpus-/Plattenzuschnitt berechnen →</li>
           </ul>
         </div>
       </div>
@@ -2145,6 +2251,65 @@
             </table>
           </div>
           <p class="note">Welche Verbindung sinnvoll ist, hängt von Belastungsrichtung, gewünschter Optik (sichtbar/unsichtbar) und Fertigungsaufwand ab — bei stark beanspruchten Möbeln (z.B. Sitzmöbel, Tische) lohnt sich eine formschlüssige Verbindung (Zapfen, Zinkung) gegenüber einer rein geklebten Stumpfverbindung.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="tischler-kantenumleimer">
+        <div class="card">
+          <h3>Kantenumleimer-Bedarf <span class="tag">Umfang je Platte × Stückzahl</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Für Korpusplatten, Regalböden oder Türfronten — wie viel Kantenband brauchst du für einen Stapel gleich großer Platten?</p>
+          <div class="row3">
+            <div class="field"><label>Plattenlänge (cm)</label><input type="number" id="keL" step="0.1"></div>
+            <div class="field"><label>Plattenbreite (cm)</label><input type="number" id="keB" step="0.1"></div>
+            <div class="field"><label>Stückzahl</label><input type="number" id="keStk" step="1" value="1"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Sicherheitszuschlag (%)</label><input type="number" id="keZuschlag" step="1" value="10"></div>
+            <div class="field"><label>Rollenlänge Kantenband (m, optional)</label><input type="number" id="keRolle" step="1" placeholder="z.B. 50"></div>
+          </div>
+          <button class="btn" onclick="calcKantenumleimer()">Berechnen</button>
+          <div class="readout" id="keOut" style="display:none;">
+            <div class="item"><div class="rlabel">Kantenlänge je Platte</div><div class="rvalue" id="keProPlatte">—</div></div>
+            <div class="item"><div class="rlabel">Gesamtlänge (inkl. Zuschlag)</div><div class="rvalue" id="keGesamt">—</div></div>
+            <div class="item" id="keRolleItem" style="display:none;"><div class="rlabel">Rollen benötigt</div><div class="rvalue" id="keRolleAnzahl">—</div></div>
+          </div>
+          <p class="note">Kantenlänge je Platte = 2 × (Länge + Breite). Der Sicherheitszuschlag deckt Verschnitt beim Ablängen, Anfahrschräge am Kantenanleimer und Ausschuss bei der Eckenbearbeitung ab — 10% ist ein üblicher Werkstatt-Richtwert, bei viel Formatvielfalt oder manueller Verarbeitung eher 15%.</p>
+        </div>
+      </div>
+
+      <div class="subsection" id="tischler-zuschnitt">
+        <div class="card">
+          <h3>Korpus-/Plattenzuschnitt <span class="tag">Schema-Verschnittoptimierung</span></h3>
+          <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Wie viele Platten brauchst du für einen Stapel Zuschnittteile, und wie legt man sie am platzsparendsten drauf? Trag dein Plattenformat und alle benötigten Teile ein.</p>
+          <div class="row3">
+            <div class="field"><label>Plattenformat</label>
+              <select id="zsPreset" onchange="zsSetPreset(this.value)">
+                <option value="2800x2070">2800 × 2070 mm (Großformat Span-/MDF-Platte)</option>
+                <option value="2500x1250">2500 × 1250 mm (Tischlerplatte-Standard)</option>
+                <option value="2440x1220">2440 × 1220 mm (Importformat, "8×4 Fuß")</option>
+                <option value="frei">Eigenes Format</option>
+              </select>
+            </div>
+            <div class="field"><label>Plattenlänge (mm)</label><input type="number" id="zsPlatteL" value="2800" oninput="zsMarkCustom()"></div>
+            <div class="field"><label>Plattenbreite (mm)</label><input type="number" id="zsPlatteB" value="2070" oninput="zsMarkCustom()"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Sägeschnittbreite / Fuge (mm)</label><input type="number" id="zsFuge" value="4" step="1"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Benötigte Zuschnittteile</h3>
+          <div id="zsTeileListe"></div>
+          <button class="btn secondary" onclick="zsAddTeil()" style="margin-bottom:4px;">+ weiteres Teil</button>
+          <button class="btn" onclick="calcZuschnitt()">Verschnitt berechnen</button>
+          <div class="readout" id="zsOut" style="display:none;">
+            <div class="item"><div class="rlabel">Benötigte Platten</div><div class="rvalue" id="zsPlattenAnzahl">—</div></div>
+            <div class="item"><div class="rlabel">Teile-Gesamtfläche</div><div class="rvalue" id="zsTeileFlaeche">—</div></div>
+            <div class="item"><div class="rlabel">Verschnitt</div><div class="rvalue" id="zsVerschnitt">—</div></div>
+          </div>
+          <div id="zsVisual"></div>
+          <p class="note">Schema-Zuschnitt nach dem Shelf-Verfahren (Teile werden zeilenweise, größtes zuerst, auf die Platte gepackt) — praxisnah und schnell, aber nicht mathematisch optimal. Ein erfahrener Zuschnittoptimierer (Software oder Auge) holt bei ungünstigen Formatmischungen oft nochmal 5–10% mehr raus. "Nicht drehbar" bei Teilen mit fester Maserungs-/Dekorrichtung ankreuzen — die App tauscht dann Länge/Breite nicht.</p>
         </div>
       </div>
     </section>
@@ -2562,6 +2727,8 @@ const toolIndex = [
   {cat:'schweisser', sub:'schweisser-uebersicht', label:'Schweißer — Übersicht', kw:'schweißer elektroschweißen wig mag e-hand mma übersicht'},
   {cat:'schweisser', sub:'w-elektroden', label:'Elektroden nach Typ', kw:'elektroden rutil basisch zellulose edelstahl guss hartauftrag typ ampere'},
   {cat:'schweisser', sub:'w-hersteller', label:'Elektroden nach Hersteller', kw:'elektroden böhler welding fox phoenix spezial d thermanit x ewm se6013 se6010 se7016 se7018 sehard lincoln electric fleetweld omnia basic jetweld e7024 ampere hersteller ohv spe cel eti sus ev50 rc bh5 mo br 300p'},
+  {cat:'schweisser', sub:'w-wig', label:'WIG (TIG): Wolframelektroden & Stromstärke', kw:'wig tig wolfram wolframelektrode farbcode grün grau gold blau weiß wp wc20 wl15 wl20 wz8 thoriert din en iso 6848 argon gleichstrom wechselstrom'},
+  {cat:'schweisser', sub:'w-magmig', label:'MAG/MIG: Drahtelektrode, Schutzgas & Parameter', kw:'mag mig schutzgasschweißen drahtelektrode massivdraht co2 mischgas m21 argon helium drahtvorschub spannung stromstärke aluminium edelstahl kurzlichtbogen sprühlichtbogen impuls'},
   {cat:'zerspaner', sub:'zerspaner-uebersicht', label:'Zerspanungsmechaniker — Übersicht', kw:'zerspaner übersicht schnittwerte vorschub passungen toleranzen'},
   {cat:'zerspaner', sub:'z-schnitt', label:'Schnittgeschwindigkeit ↔ Drehzahl', kw:'schnittgeschwindigkeit drehzahl vc n drehen fräsen'},
   {cat:'zerspaner', sub:'z-vorschub', label:'Vorschub-Rechner', kw:'vorschub vf fräsen drehen zerspanung'},
@@ -2573,7 +2740,7 @@ const toolIndex = [
   {cat:'rechner', sub:'r-flaeche', label:'Fläche (Rechteck & Kreis)', kw:'fläche rechteck quadrat kreis kreisfläche umfang m2 radius durchmesser'},
   {cat:'rechner', sub:'r-dreieck', label:'Dreieck (Winkel & Pythagoras)', kw:'dreieck winkel winkelsumme pythagoras kathete hypotenuse rechtwinklig'},
   {cat:'rechner', sub:'r-prozent', label:'Prozent-Rechner', kw:'prozent rabatt aufschlag anteil'},
-  {cat:'rechner', sub:'r-bedarfsmenge', label:'Bedarfsmenge (Fliesen, Platten, Pflaster, Tapete, Farbe)', kw:'bedarfsmenge fliesen platten rigips pflaster mauersteine tapete farbe verschnitt material menge stückzahl liter'},
+  {cat:'rechner', sub:'r-bedarfsmenge', label:'Bedarfsmenge (Fliesen, Platten, Pflaster, Tapete, Farbe)', kw:'bedarfsmenge fliesen platten rigips pflaster mauersteine tapete farbe verschnitt material menge stückzahl liter fliesenkleber kleber zahnung zahnkelle verkleidung naturstein fassade'},
   {cat:'rechner', sub:'r-volumen', label:'Volumen & Gewicht (Schüttgut, Naturstein, Glas)', kw:'volumen gewicht schüttgut kies sand splitt schotter mutterboden erde beton granit sandstein marmor glas dichte erdaushub'},
   {cat:'rechner', sub:'r-gehrung', label:'Gehrungswinkel-Rechner', kw:'gehrung gehrungswinkel sägewinkel eckwinkel vieleck rahmen leiste zimmerer tischler'},
   {cat:'rechner', sub:'r-mischung', label:'Mischungsverhältnis-Rechner (Mörtel, Beton, Verdünnung)', kw:'mischungsverhältnis mörtel beton verdünnung zement sand kies teile mischen maurer maler'},
@@ -2598,6 +2765,7 @@ const toolIndex = [
   {cat:'galabau', sub:'galabau-aufbau', label:'Pflasteraufbau-Richtwerte', kw:'pflasteraufbau tragschicht bettung fugenbreite galabau schotter splitt verdichten'},
   {cat:'glaser', sub:'glaser-uebersicht', label:'Glaser — Übersicht', kw:'glaser glaszuschnitt und gewicht glasgewicht berechnen (fläche × dicke × dichte) zuschnitt-/verschnittoptimierung'},
   {cat:'glaser', sub:'glaser-dicken', label:'Glasdicken-Faustregel', kw:'glasdicke fensterglas isolierglas din 18008 sicherheitsglas verglasung'},
+  {cat:'glaser', sub:'glaser-zuschnitt', label:'Zuschnitt-/Verschnittoptimierung', kw:'glaszuschnitt verschnittoptimierung rohglas jumbo scheibe zuschnittliste schema shelf'},
   {cat:'kfz', sub:'kfz-uebersicht', label:'KFZ-Mechatroniker — Übersicht', kw:'kfz übersicht reifengrößen anzugsdrehmomente übersetzung'},
   {cat:'kfz', sub:'kfz-reifen', label:'Reifengrößen-Rechner (Abrollumfang, Tacho)', kw:'reifengröße reifen felge abrollumfang tacho tachoabweichung durchmesser kfz'},
   {cat:'kfz', sub:'kfz-drehmoment', label:'Radschrauben-Anzugsdrehmoment', kw:'radschrauben anzugsdrehmoment felge drehmomentschlüssel kfz nm'},
@@ -2606,12 +2774,15 @@ const toolIndex = [
   {cat:'maler', sub:'maler-deckkraft', label:'Deckkraft- & Nassabriebklassen', kw:'deckkraftklasse nassabriebklasse din en 13300 farbe deckvermögen scheuerbeständig waschbeständig'},
   {cat:'maurer', sub:'maurer-uebersicht', label:'Maurer / Betonbauer — Übersicht', kw:'maurer / betonbauer mauerwerk und beton steinbedarf pro m² wand (nach steinformat) mörtel-/betonmischungsverhältnis bewehrungsbedarf, grundlagen'},
   {cat:'maurer', sub:'maurer-steinformate', label:'Mauerstein-Formate (DF, NF & Co.)', kw:'steinformate df nf mauerstein din 4172 oktameter mörtelverbrauch dünnbett'},
+  {cat:'maurer', sub:'maurer-bewehrung', label:'Bewehrungsbedarf, Grundlagen', kw:'bewehrung betonstahl stabstahl din 488 lagermatten baustahlmatten q131 q188 q257 q377 q524 betondeckung expositionsklasse xc1 xc4 xf2 xf4 statik'},
   {cat:'strassenbau', sub:'strassenbau-uebersicht', label:'Straßen- / Tiefbauer — Übersicht', kw:'straßen- / tiefbauer straßen- und tiefbau pflaster-/bordstein-bedarf berechnen schüttgutmenge für den unterbau gefälle berechnen (nutzt den gefälle-rechner unter installateur)'},
   {cat:'strassenbau', sub:'strassenbau-asphalt', label:'Asphalt-Schichtaufbau', kw:'asphalt schichtaufbau deckschicht binderschicht tragschicht rsto belastungsklasse straßenbau'},
   {cat:'steinmetz', sub:'steinmetz-uebersicht', label:'Steinmetz — Übersicht', kw:'steinmetz naturstein-bearbeitung steingewicht berechnen (volumen × gesteinsdichte) materialbedarf für verkleidungen'},
   {cat:'steinmetz', sub:'steinmetz-gestein', label:'Gesteinsarten: Dichte & Druckfestigkeit', kw:'gesteinsarten granit basalt kalkstein sandstein marmor diabas gabbro druckfestigkeit dichte naturstein'},
   {cat:'tischler', sub:'tischler-uebersicht', label:'Tischler / Schreiner — Übersicht', kw:'tischler / schreiner möbel- und innenausbau korpus-/plattenzuschnitt berechnen gehrungsschnitt-winkel berechnen kantenumleimer-bedarf berechnen'},
   {cat:'tischler', sub:'tischler-verbindungen', label:'Möbel- & Korpusverbindungen', kw:'möbelverbindungen zapfen nut feder dübel zinkung schwalbenschwanz gehrung lamello korpus'},
+  {cat:'tischler', sub:'tischler-kantenumleimer', label:'Kantenumleimer-Bedarf', kw:'kantenumleimer kantenband kantenanleimer korpus platte umfang rolle meter'},
+  {cat:'tischler', sub:'tischler-zuschnitt', label:'Korpus-/Plattenzuschnitt', kw:'plattenzuschnitt korpuszuschnitt verschnittoptimierung zuschnittliste sägeplan schema shelf guillotine maserung'},
   {cat:'trockenbau', sub:'trockenbau-uebersicht', label:'Trockenbauer — Übersicht', kw:'trockenbauer ständerwerk und beplankung rigipsplatten-bedarf berechnen (fläche ÷ plattengröße + verschnitt) ständerwerk-materialbedarf (cw-/uw-profile) dämmmaterial-bedarf berechnen'},
   {cat:'trockenbau', sub:'trockenbau-profile', label:'CW-/UW-Profile & Achsabstände', kw:'cw uw profile trockenbau ständerwerk achsabstand schraubenabstand gipskarton rigips ud cd'},
   {cat:'zimmerer', sub:'zimmerer-uebersicht', label:'Zimmerer — Übersicht', kw:'zimmerer holzkonstruktion und dachstuhl sparrenlänge & kerven berechnen gehrungsschnitt-winkel berechnen holzverschnitt / plattenaufteilung berechnen'},
@@ -3507,8 +3678,9 @@ document.getElementById('rmZustand').addEventListener('change', ()=>umrechnenRau
 // ---------- BEDARFSMENGEN-RECHNER (gewerkübergreifender Baustein) ----------
 // Jede Fläche: {l, b, matB, matH, verschnitt} — matB/matH in cm, nur relevant im Stückzahl-Modus
 let bmFlaechen = [{l:'', b:'', matB:'', matH:'', verschnitt:'10'}];
-let bmMode = 'stueck'; // 'stueck' oder 'farbe'
+let bmMode = 'stueck'; // 'stueck', 'farbe' oder 'kleber'
 let bmErgiebigkeit = '', bmSchichten = '2';
+let bmKleberVerbrauch = '';
 
 // Komma UND Punkt akzeptieren, Minus generell verbieten (Längen/Flächen sind nie negativ)
 function bmSanitize(raw){
@@ -3535,7 +3707,7 @@ function bmStueckFuerFlaeche(f){
 }
 function bmResultHtml(f){
   const m2 = bmSubtotalM2(f);
-  if(bmMode === 'farbe'){
+  if(bmMode === 'farbe' || bmMode === 'kleber'){
     return m2!==null ? m2.toFixed(2)+' m²' : '— Fläche eingeben —';
   }
   const stueck = bmStueckFuerFlaeche(f);
@@ -3553,7 +3725,7 @@ function bmRenderFlaechen(){
         <div class="field"><label>Breite (m, optional)</label><input type="text" inputmode="decimal" placeholder="z.B. 2,5" value="${f.b}" oninput="bmOnInput(${i},'b',this.value)"></div>
       </div>`;
 
-    if(bmMode === 'farbe'){
+    if(bmMode === 'farbe' || bmMode === 'kleber'){
       return `<div class="bm-flaeche-block">
         <div class="bm-fb-head"><span class="bm-fb-title">Fläche ${i+1}</span>${removeBtn}</div>
         ${langeBreite}
@@ -3623,6 +3795,26 @@ function bmRenderSummary(){
         <p class="note" style="margin-top:2px;">Richtwerte nach DIN EN 13300 (Spanne 6–8 m²/L für Standard-Dispersionsfarbe). Die verbindliche Angabe steht immer auf dem Farbeimer — bei Farbwechsel dunkel↔hell rechne eher mit 3 statt 2 Anstrichen.</p>
       </div>
     `;
+  } else if(bmMode === 'kleber'){
+    out.innerHTML = `
+      <div class="item"><div class="rlabel">Gesamtfläche</div><div class="rvalue" id="bm-total-m2">—</div></div>
+      <div class="item" style="min-width:190px;">
+        <label style="margin-bottom:3px;">Zahnung der Kelle</label>
+        <select onchange="bmKleberSet(this.value)" style="width:170px;display:inline-block;padding:6px 8px;font-size:13px;">
+          <option value="">— wählen —</option>
+          <option value="1.2">4 mm — Feinsteinzeug, Mosaik (≈1,2 kg/m²)</option>
+          <option value="1.8">6 mm — kleinformatige Fliese bis ca. 11×11 (≈1,7–2,0 kg/m²)</option>
+          <option value="2.75">8 mm — Standardformat bis ca. 30×30 (≈2,5–3,0 kg/m²)</option>
+          <option value="3.75">10 mm — großformatig bis ca. 40×40 (≈3,5–4,0 kg/m²)</option>
+          <option value="4.75">12 mm — großformatig &gt;40×40, Außenbereich (≈4,5–5,0 kg/m²)</option>
+        </select>
+      </div>
+      <div class="item" id="bm-kg-item" style="display:none;"><div class="rlabel">Benötigte Klebermenge</div><div class="rvalue" id="bm-kg-result">—</div></div>
+      <div class="item" id="bm-sack-item" style="display:none;"><div class="rlabel">≈ Säcke à 25 kg</div><div class="rvalue" id="bm-sack-result">—</div></div>
+      <div class="item" style="flex-basis:100%;min-width:100%;">
+        <p class="note" style="margin-top:2px;">Richtwerte nach DIN EN 12004, je nach Hersteller/Produkt leicht abweichend. Zahngröße richtet sich nach Fliesenformat und Untergrund-Ebenheit — bei sehr großen Formaten (&gt;60×60) zusätzlich Buttering-Floating (beidseitiges Kämmen) einplanen, das erhöht den Verbrauch nochmal um ca. 20–30%. Verbindliche Angabe steht immer auf dem Gebinde.</p>
+      </div>
+    `;
   } else {
     out.innerHTML = `
       <div class="item"><div class="rlabel">Gesamtfläche</div><div class="rvalue" id="bm-total-m2">—</div></div>
@@ -3636,6 +3828,11 @@ function bmUntergrundSet(value){
   if(!value) return;
   bmErgiebigkeit = value;
   bmRenderSummary(); // Untergrund-Wahl ist eine bewusste Auswahl, kein Tippen — voller Refresh ist hier ok
+}
+function bmKleberSet(value){
+  if(!value) return;
+  bmKleberVerbrauch = value;
+  bmRenderSummary();
 }
 
 // Leichtgewichtiges Update der Summenzahlen — fasst Eingabefelder in der Summary NICHT an
@@ -3654,6 +3851,20 @@ function bmUpdateSummaryNumbers(){
     } else if(literItem){
       literItem.style.display = 'none';
     }
+  } else if(bmMode === 'kleber'){
+    const rate = bmNum(bmKleberVerbrauch);
+    const kgItem = document.getElementById('bm-kg-item');
+    const sackItem = document.getElementById('bm-sack-item');
+    if(rate && totalM2){
+      const kg = totalM2 * rate;
+      document.getElementById('bm-kg-result').innerHTML = kg.toFixed(1) + ' <small>kg</small>';
+      document.getElementById('bm-sack-result').innerHTML = Math.ceil(kg/25) + ' <small>Sack/-säcke</small>';
+      if(kgItem) kgItem.style.display = 'block';
+      if(sackItem) sackItem.style.display = 'block';
+    } else {
+      if(kgItem) kgItem.style.display = 'none';
+      if(sackItem) sackItem.style.display = 'none';
+    }
   } else {
     const formate = [...new Set(bmFlaechen.filter(f=>bmNum(f.matB) && bmNum(f.matH)).map(f=>`${f.matB}x${f.matH}`))];
     const stueckItem = document.getElementById('bm-stueck-item');
@@ -3670,7 +3881,7 @@ function bmUpdateSummaryNumbers(){
 }
 
 function bmSetPreset(preset){
-  bmMode = (preset === 'farbe') ? 'farbe' : 'stueck';
+  bmMode = (preset === 'farbe') ? 'farbe' : (preset === 'fliesenkleber' ? 'kleber' : 'stueck');
   // Materialwerte (Format/Verschnitt) IMMER auf den neuen Anwendungsfall umstellen — Länge/Breite (Raummaße) bleiben erhalten.
   if(preset === 'fliesen'){
     bmFlaechen.forEach(f=>{ f.matB = '30'; f.matH = '30'; f.verschnitt = '10'; });
@@ -3678,6 +3889,8 @@ function bmSetPreset(preset){
     bmFlaechen.forEach(f=>{ f.matB = '125'; f.matH = '200'; f.verschnitt = '10'; });
   } else if(preset === 'pflaster'){
     bmFlaechen.forEach(f=>{ f.matB = '20'; f.matH = '10'; f.verschnitt = '8'; });
+  } else if(preset === 'verkleidung'){
+    bmFlaechen.forEach(f=>{ f.matB = '60'; f.matH = '40'; f.verschnitt = '10'; });
   } else if(preset === 'tapete'){
     bmFlaechen.forEach(f=>{ f.matB = '53'; f.matH = '1005'; f.verschnitt = '15'; });
   } else if(preset === 'dachziegel'){
@@ -3743,7 +3956,248 @@ function calcGehrungVieleck(){
   saegeEl.innerHTML = (innenwinkel/2).toFixed(2) + ' <small>°</small>';
 }
 
-// ---------- MISCHUNGSVERHÄLTNIS ----------
+// ---------- TISCHLER: KANTENUMLEIMER-BEDARF ----------
+function calcKantenumleimer(){
+  const l = parseFloat(document.getElementById('keL').value);
+  const b = parseFloat(document.getElementById('keB').value);
+  const stk = parseFloat(document.getElementById('keStk').value) || 1;
+  const zuschlag = parseFloat(document.getElementById('keZuschlag').value) || 0;
+  const rolle = parseFloat(document.getElementById('keRolle').value);
+  if(!l || !b){ alert('Bitte Plattenlänge und Plattenbreite eingeben.'); return; }
+  const umfangM = 2*(l+b)/100;
+  const gesamt = umfangM * stk * (1+zuschlag/100);
+  document.getElementById('keProPlatte').innerHTML = umfangM.toFixed(2) + ' <small>m</small>';
+  document.getElementById('keGesamt').innerHTML = gesamt.toFixed(2) + ' <small>m</small>';
+  document.getElementById('keOut').style.display='flex';
+  const rolleItem = document.getElementById('keRolleItem');
+  if(rolle){
+    document.getElementById('keRolleAnzahl').innerHTML = Math.ceil(gesamt/rolle) + ' <small>Rolle(n)</small>';
+    rolleItem.style.display='block';
+  } else {
+    rolleItem.style.display='none';
+  }
+}
+
+// ---------- TISCHLER: KORPUS-/PLATTENZUSCHNITT (Shelf-Verschnittoptimierung) ----------
+let zsTeile = [{l:'', b:'', stk:'1', fix:false}];
+const zsPresets = {'2800x2070':[2800,2070], '2500x1250':[2500,1250], '2440x1220':[2440,1220]};
+
+function zsSetPreset(preset){
+  if(preset === 'frei') return;
+  const p = zsPresets[preset];
+  if(!p) return;
+  document.getElementById('zsPlatteL').value = p[0];
+  document.getElementById('zsPlatteB').value = p[1];
+}
+function zsMarkCustom(){
+  document.getElementById('zsPreset').value = 'frei';
+}
+function zsRenderTeile(){
+  const wrap = document.getElementById('zsTeileListe');
+  wrap.innerHTML = zsTeile.map((t,i)=>{
+    const removeBtn = `<button class="bm-remove" onclick="zsRemoveTeil(${i})" ${zsTeile.length<=1?'disabled style="opacity:0.3;cursor:default;"':''}>×</button>`;
+    return `<div class="bm-flaeche-block">
+      <div class="bm-fb-head"><span class="bm-fb-title">Teil ${i+1}</span>${removeBtn}</div>
+      <div class="row3">
+        <div class="field"><label>Länge (mm)</label><input type="text" inputmode="decimal" value="${t.l}" oninput="zsOnInput(${i},'l',this.value)"></div>
+        <div class="field"><label>Breite (mm)</label><input type="text" inputmode="decimal" value="${t.b}" oninput="zsOnInput(${i},'b',this.value)"></div>
+        <div class="field"><label>Stückzahl</label><input type="text" inputmode="decimal" value="${t.stk}" oninput="zsOnInput(${i},'stk',this.value)"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-top:6px;margin-bottom:0;">
+        <input type="checkbox" style="width:auto;" ${t.fix?'checked':''} onchange="zsOnInput(${i},'fix',this.checked)"> Nicht drehbar (feste Maserungs-/Dekorrichtung entlang Länge)
+      </label>
+    </div>`;
+  }).join('');
+}
+function zsOnInput(i, field, raw){
+  zsTeile[i][field] = field==='fix' ? raw : flexNum(raw)===null ? '' : String(raw).replace(/,/g,'.');
+}
+function zsAddTeil(){
+  zsTeile.push({l:'', b:'', stk:'1', fix:false});
+  zsRenderTeile();
+}
+function zsRemoveTeil(i){
+  if(zsTeile.length<=1) return;
+  zsTeile.splice(i,1);
+  zsRenderTeile();
+}
+zsRenderTeile();
+
+const zsPalette = ['#FFC633','#6E97B3','#7BAE7F','#E8654C','#c98bd9','#e0a458','#5fb8b0','#d46a9c'];
+
+// ---------- GENERISCHER SHELF-PACKING-KERN (First-Fit Decreasing Height) ----------
+// pieces: [{w,h,ti,label}], gibt {plates, zuGross} zurück — zuGross gesetzt, wenn ein Einzelteil in
+// keiner erlaubten Ausrichtung passt. Wiederverwendet von Tischler (Platten) und Glaser (Glaszuschnitt).
+function shelfPack(pieces, plateW, plateH, fuge){
+  const zuGross = pieces.find(p => p.w > plateW || p.h > plateH);
+  if(zuGross) return {plates:null, zuGross};
+
+  const sorted = [...pieces].sort((a,b)=> b.h - a.h); // größte Höhe zuerst
+  const plates = [];
+  sorted.forEach(piece=>{
+    let placed = false;
+    for(const plate of plates){
+      for(const shelf of plate.shelves){
+        if(piece.w <= (plateW - shelf.usedWidth) && piece.h <= shelf.height){
+          shelf.items.push({...piece, x: shelf.usedWidth, y: shelf.y});
+          shelf.usedWidth += piece.w + fuge;
+          placed = true; break;
+        }
+      }
+      if(placed) break;
+      const neededHeight = (plate.shelves.length ? fuge : 0) + piece.h;
+      if(!placed && piece.w <= plateW && (plate.usedHeight + neededHeight) <= plateH){
+        const y = plate.usedHeight + (plate.shelves.length ? fuge : 0);
+        plate.shelves.push({y, height: piece.h, usedWidth: piece.w + fuge, items:[{...piece, x:0, y}]});
+        plate.usedHeight = y + piece.h;
+        placed = true;
+      }
+      if(placed) break;
+    }
+    if(!placed){
+      plates.push({usedHeight: piece.h, shelves:[{y:0, height: piece.h, usedWidth: piece.w+fuge, items:[{...piece, x:0, y:0}]}]});
+    }
+  });
+  return {plates, zuGross:null};
+}
+
+function renderZuschnittPlatte(plate, plateW, plateH, index, totalPlates){
+  const maxW = 560;
+  const scale = maxW / plateW;
+  const svgW = plateW*scale, svgH = plateH*scale;
+  let rects = '';
+  plate.shelves.forEach(shelf=>{
+    shelf.items.forEach(item=>{
+      const color = zsPalette[item.ti % zsPalette.length];
+      const x = item.x*scale, y = item.y*scale, w = item.w*scale, h = item.h*scale;
+      rects += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(w-1,0).toFixed(1)}" height="${Math.max(h-1,0).toFixed(1)}" fill="${color}" fill-opacity="0.25" stroke="${color}" stroke-width="1.5"/>`;
+      if(w > 45 && h > 18){
+        rects += `<text x="${(x+w/2).toFixed(1)}" y="${(y+h/2).toFixed(1)}" fill="#ECEAE4" font-size="10.5" font-family="JetBrains Mono, monospace" text-anchor="middle" dominant-baseline="middle">${Math.round(item.w)}×${Math.round(item.h)}</text>`;
+      }
+    });
+  });
+  return `<div style="margin-top:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Platte ${index+1} von ${totalPlates} — ${plateW}×${plateH} mm</div>
+    <div class="triangle-visual" style="justify-content:flex-start;overflow-x:auto;">
+      <svg viewBox="0 0 ${svgW.toFixed(1)} ${svgH.toFixed(1)}" width="${svgW.toFixed(1)}" height="${svgH.toFixed(1)}" style="background:var(--readout-bg);border-radius:4px;">
+        <rect x="0" y="0" width="${svgW.toFixed(1)}" height="${svgH.toFixed(1)}" fill="none" stroke="#3a3f47" stroke-width="1.5"/>
+        ${rects}
+      </svg>
+    </div>
+  </div>`;
+}
+
+// ---------- TISCHLER: dünner Wrapper um den generischen Kern ----------
+function calcZuschnitt(){
+  const plateW = flexNum(document.getElementById('zsPlatteL').value); // horizontale Achse = Plattenlänge
+  const plateH = flexNum(document.getElementById('zsPlatteB').value); // vertikale Achse (Shelf-Stapelrichtung) = Plattenbreite
+  const fuge = flexNum(document.getElementById('zsFuge').value) || 0;
+  if(!plateW || !plateH){ alert('Bitte ein gültiges Plattenformat eingeben.'); return; }
+
+  let pieces = [];
+  zsTeile.forEach((t,ti)=>{
+    const l = flexNum(t.l), b = flexNum(t.b), stk = Math.max(1, Math.round(flexNum(t.stk)||1));
+    if(!l || !b) return;
+    let w, h;
+    if(t.fix){ w = l; h = b; } // Maserung fest entlang Länge -> Länge bleibt auf der horizontalen (Länge-)Achse der Platte
+    else { w = Math.max(l,b); h = Math.min(l,b); } // frei drehbar -> lange Seite liegend, minimiert Shelf-Höhe
+    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1)});
+  });
+  if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
+
+  const result = shelfPack(pieces, plateW, plateH, fuge);
+  if(result.zuGross){ alert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Plattenformat ${plateW}×${plateH} mm.`); return; }
+  const plates = result.plates;
+
+  const teileFlaecheM2 = pieces.reduce((s,p)=> s + (p.w*p.h)/1e6, 0);
+  const plattenFlaecheM2 = plates.length * (plateW*plateH)/1e6;
+  const verschnittProz = (1 - teileFlaecheM2/plattenFlaecheM2) * 100;
+
+  document.getElementById('zsPlattenAnzahl').innerHTML = plates.length + ' <small>Stück</small>';
+  document.getElementById('zsTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2) + ' <small>m²</small>';
+  document.getElementById('zsVerschnitt').innerHTML = verschnittProz.toFixed(1) + ' <small>%</small>';
+  document.getElementById('zsOut').style.display = 'flex';
+
+  document.getElementById('zsVisual').innerHTML = plates.map((plate,i)=> renderZuschnittPlatte(plate, plateW, plateH, i, plates.length)).join('');
+}
+
+// ---------- GLASER: dünner Wrapper um denselben generischen Kern (shelfPack) ----------
+let gzTeile = [{l:'', b:'', stk:'1', fix:false}];
+const gzPresets = {'3210x2250':[3210,2250], '6000x3210':[6000,3210], '2550x1850':[2550,1850]};
+
+function gzSetPreset(preset){
+  if(preset === 'frei') return;
+  const p = gzPresets[preset];
+  if(!p) return;
+  document.getElementById('gzPlatteL').value = p[0];
+  document.getElementById('gzPlatteB').value = p[1];
+}
+function gzMarkCustom(){
+  document.getElementById('gzPreset').value = 'frei';
+}
+function gzRenderTeile(){
+  const wrap = document.getElementById('gzTeileListe');
+  wrap.innerHTML = gzTeile.map((t,i)=>{
+    const removeBtn = `<button class="bm-remove" onclick="gzRemoveTeil(${i})" ${gzTeile.length<=1?'disabled style="opacity:0.3;cursor:default;"':''}>×</button>`;
+    return `<div class="bm-flaeche-block">
+      <div class="bm-fb-head"><span class="bm-fb-title">Teil ${i+1}</span>${removeBtn}</div>
+      <div class="row3">
+        <div class="field"><label>Länge (mm)</label><input type="text" inputmode="decimal" value="${t.l}" oninput="gzOnInput(${i},'l',this.value)"></div>
+        <div class="field"><label>Breite (mm)</label><input type="text" inputmode="decimal" value="${t.b}" oninput="gzOnInput(${i},'b',this.value)"></div>
+        <div class="field"><label>Stückzahl</label><input type="text" inputmode="decimal" value="${t.stk}" oninput="gzOnInput(${i},'stk',this.value)"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-top:6px;margin-bottom:0;">
+        <input type="checkbox" style="width:auto;" ${t.fix?'checked':''} onchange="gzOnInput(${i},'fix',this.checked)"> Nicht drehbar (Muster/Beschichtung mit fester Richtung entlang Länge)
+      </label>
+    </div>`;
+  }).join('');
+}
+function gzOnInput(i, field, raw){
+  gzTeile[i][field] = field==='fix' ? raw : flexNum(raw)===null ? '' : String(raw).replace(/,/g,'.');
+}
+function gzAddTeil(){
+  gzTeile.push({l:'', b:'', stk:'1', fix:false});
+  gzRenderTeile();
+}
+function gzRemoveTeil(i){
+  if(gzTeile.length<=1) return;
+  gzTeile.splice(i,1);
+  gzRenderTeile();
+}
+gzRenderTeile();
+
+function calcGlasZuschnitt(){
+  const plateW = flexNum(document.getElementById('gzPlatteL').value);
+  const plateH = flexNum(document.getElementById('gzPlatteB').value);
+  const fuge = flexNum(document.getElementById('gzFuge').value) || 0;
+  if(!plateW || !plateH){ alert('Bitte ein gültiges Rohglasmaß eingeben.'); return; }
+
+  let pieces = [];
+  gzTeile.forEach((t,ti)=>{
+    const l = flexNum(t.l), b = flexNum(t.b), stk = Math.max(1, Math.round(flexNum(t.stk)||1));
+    if(!l || !b) return;
+    let w, h;
+    if(t.fix){ w = l; h = b; }
+    else { w = Math.max(l,b); h = Math.min(l,b); }
+    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1)});
+  });
+  if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
+
+  const result = shelfPack(pieces, plateW, plateH, fuge);
+  if(result.zuGross){ alert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Rohglasmaß ${plateW}×${plateH} mm.`); return; }
+  const plates = result.plates;
+
+  const teileFlaecheM2 = pieces.reduce((s,p)=> s + (p.w*p.h)/1e6, 0);
+  const plattenFlaecheM2 = plates.length * (plateW*plateH)/1e6;
+  const verschnittProz = (1 - teileFlaecheM2/plattenFlaecheM2) * 100;
+
+  document.getElementById('gzPlattenAnzahl').innerHTML = plates.length + ' <small>Stück</small>';
+  document.getElementById('gzTeileFlaeche').innerHTML = teileFlaecheM2.toFixed(2) + ' <small>m²</small>';
+  document.getElementById('gzVerschnitt').innerHTML = verschnittProz.toFixed(1) + ' <small>%</small>';
+  document.getElementById('gzOut').style.display = 'flex';
+
+  document.getElementById('gzVisual').innerHTML = plates.map((plate,i)=> renderZuschnittPlatte(plate, plateW, plateH, i, plates.length)).join('');
+}
 function msSetPreset(preset){
   const labelA = document.getElementById('msLabelA'), labelB = document.getElementById('msLabelB'), labelC = document.getElementById('msLabelC');
   const a = document.getElementById('msA'), b = document.getElementById('msB'), c = document.getElementById('msC');
