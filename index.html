@@ -551,7 +551,7 @@
       <div class="cat-selector-btn" id="catSelectorBtn" onclick="toggleCatDropdown()" style="flex:1;">
         <div class="csb-left">
           <span class="csb-eyebrow" id="catEyebrow">Start</span>
-          <span class="csb-name" id="catCurrentName">Alle Kategorien</span>
+          <span class="csb-name" id="catCurrentName">Alle Berufe</span>
         </div>
         <svg class="csb-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#FFC633" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
@@ -571,7 +571,7 @@
   <div class="search-global-wrap" id="searchGlobalWrap">
     <div class="search-global">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><circle cx="11" cy="11" r="7" stroke="#9AA0A6" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="#9AA0A6" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="text" id="globalSearch" placeholder="Werkzeug suchen — z.B. &quot;Sparren&quot;, &quot;Beton&quot;, &quot;Fox&quot;, &quot;M8&quot; …" oninput="handleGlobalSearch(this.value)" onfocus="handleGlobalSearch(this.value)">
+      <input type="text" id="globalSearch" placeholder="Werkzeug suchen — z.B. &quot;Sparren&quot;, &quot;Beton&quot;, &quot;Fox&quot;, &quot;M8&quot; …" oninput="handleGlobalSearch(this.value)" onfocus="handleGlobalSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div id="globalSearchResults" class="search-results"></div>
     <div id="quickBar" class="quick-bar"></div>
@@ -652,7 +652,7 @@
       <div class="subsection" id="s-schrauben">
         <div class="card">
           <h3>Schrauben-Tabelle <span class="tag">ISO Metrisch, Regelgewinde</span></h3>
-          <div class="search"><input type="text" id="schraubenSearch" placeholder="Gewinde suchen, z.B. M8 …"></div>
+          <div class="search"><input type="text" id="schraubenSearch" placeholder="Gewinde suchen, z.B. M8 …" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
           <div class="table-wrap">
             <table id="schraubenTable" class="responsive-table">
               <thead><tr><th>Gewinde</th><th>SW Sechskant</th><th>Innensechskant</th><th>Torx</th><th>Steigung</th><th>Md 8.8 (Nm)</th><th>Md 10.9 (Nm)</th></tr></thead>
@@ -682,7 +682,7 @@
         <div class="card">
           <h3>Dübel &amp; Anker nach Hersteller <span class="tag">z.B. "fischer SX" oder "8"</span></h3>
           <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;"><strong>Wichtiger Sicherheitshinweis:</strong> Anders als bei Elektroden hängt die zulässige Last eines Dübels stark vom Untergrund (Beton, Voll-/Lochstein, Porenbeton), von Rand- und Achsabständen und von der Einbautiefe ab. Deshalb zeigt diese Tabelle bewusst <strong>keine Lastwerte</strong> — für tragende oder sicherheitsrelevante Befestigungen (schwere Lasten, Überkopf, Fassaden) immer die offizielle Zulassung (ETA) bzw. das Herstellerdatenblatt des jeweiligen Produkts für den konkreten Untergrund heranziehen.</p>
-          <div class="search"><input type="text" id="duebelSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …"></div>
+          <div class="search"><input type="text" id="duebelSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
           <div class="table-wrap">
             <table class="responsive-table collapsible">
               <thead><tr><th>Hersteller</th><th>Produkt</th><th>Bohrloch-Ø</th><th>Mind. Bohrlochtiefe</th><th>Passende Schraube</th><th>Geeignete Untergründe</th></tr></thead>
@@ -696,7 +696,7 @@
       <div class="subsection" id="s-holzschrauben">
         <div class="card">
           <h3>Holzschrauben nach Hersteller <span class="tag">z.B. "SPAX" oder "ASSY"</span></h3>
-          <div class="search"><input type="text" id="holzSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …"></div>
+          <div class="search"><input type="text" id="holzSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
           <div class="table-wrap">
             <table class="responsive-table">
               <thead><tr><th>Hersteller</th><th>Produkt</th><th>Ø-Bereich</th><th>Vorbohren?</th><th>Besonderheit</th></tr></thead>
@@ -753,7 +753,7 @@
       <div class="subsection" id="w-hersteller">
         <div class="card">
           <h3>Elektroden nach Hersteller &amp; Produktname <span class="tag">z.B. "Phoenix Spezial D" oder "2,5"</span></h3>
-          <div class="search"><input type="text" id="herstellerSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …"></div>
+          <div class="search"><input type="text" id="herstellerSearch" placeholder="Hersteller, Produktname oder Durchmesser suchen …" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
           <div class="table-wrap">
             <table class="responsive-table collapsible">
               <thead><tr><th>Hersteller</th><th>Produkt</th><th>Norm / Klassifikation</th><th>Umhüllung</th><th>Verwendung</th><th>Stromstärke</th><th>Vorwärmen / Rücktrocknen</th></tr></thead>
@@ -2112,6 +2112,7 @@
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-verbindungen')"><span class="pt-dot"></span>Möbelverbindungen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'tischler')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
           </ul>
         </div>
         <div class="card">
@@ -2222,6 +2223,7 @@
           <ul class="placeholder-list">
             <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-querschnitte')"><span class="pt-dot"></span>KVH-/BSH-Standardquerschnitte →</li>
             <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-verbindungen')"><span class="pt-dot"></span>Zimmermannsverbindungen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'zimmerer')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
           </ul>
         </div>
         <div class="card">
@@ -2513,7 +2515,7 @@ function selectCategory(cat){
 function goHome(){
   currentCat = 'home';
   document.querySelectorAll('.category').forEach(c=>c.classList.toggle('active', c.dataset.cat==='home'));
-  document.getElementById('catCurrentName').textContent = 'Alle Kategorien';
+  document.getElementById('catCurrentName').textContent = 'Alle Berufe';
   document.getElementById('catEyebrow').textContent = 'Start';
   document.getElementById('rechnerToggleBtn').classList.remove('active');
   document.getElementById('catDropdown').classList.remove('show');
