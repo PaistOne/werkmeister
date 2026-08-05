@@ -456,7 +456,13 @@
     background:rgba(110,151,179,0.08);border:1px solid var(--steel-dim);border-radius:6px;
     padding:10px 12px;margin:12px 0;
   }
-  .personal-note-widget .pn-label{font-size:11px;font-weight:700;color:var(--steel);letter-spacing:0.3px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .personal-note-widget .pn-label{
+    font-size:11px;font-weight:700;color:var(--steel);letter-spacing:0.3px;
+    display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;
+  }
+  .personal-note-widget:not(.collapsed) .pn-label{margin-bottom:8px;}
+  .personal-note-widget .pn-chevron{font-size:10px;color:var(--steel);}
+  .personal-note-widget.collapsed .pn-body{display:none;}
   .personal-note-widget .pn-text{font-size:12.5px;color:var(--text-dim);white-space:pre-wrap;line-height:1.5;}
   .personal-note-widget .pn-textarea{
     width:100%;min-height:64px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);
@@ -3830,33 +3836,61 @@ function renderPersonalNoteWidget(){
   const alt = document.getElementById('personalNoteWidget');
   if(alt) alt.remove();
   if(!activeTool) return;
+  if(activeTool.sub.endsWith('-uebersicht')) return; // Übersicht ist eine reine Linkliste, kein Rechner — dort wirkt "Meine Notiz" fehl am Platz
   const catEl = document.querySelector(`.category[data-cat="${activeTool.cat}"]`);
   const section = catEl ? document.getElementById(activeTool.sub) : null;
   if(!section) return;
-  const card = section.querySelector('.card');
-  if(!card) return;
-  const key = activeTool.cat+'|'+activeTool.sub;
+  // Nur echte Rechner bekommen eine Notiz, keine reinen Nachschlagetabellen — ".readout" (die
+  // Ergebnis-Anzeige) ist dafür ein zuverlässiges Signal, das Referenztabellen (auch mit Suchfeld) nie
+  // haben. Bei mehreren Karten (z.B. Premium-gesperrt/entsperrt wie beim Kalkulationsrechner) die
+  // tatsächlich sichtbare Karte mit Readout wählen, nicht einfach die erste Karte im DOM.
+  const cardsMitReadout = [...section.querySelectorAll('.card')].filter(c => c.querySelector('.readout'));
+  if(cardsMitReadout.length === 0) return;
+  const card = cardsMitReadout.find(c => c.offsetParent !== null) || cardsMitReadout[0];
   const premium = document.body.classList.contains('premium');
+  const key = activeTool.cat+'|'+activeTool.sub;
   const bestehend = personalNotes[key] || '';
-  if(!premium && !bestehend) return; // Free ohne vorhandene Notiz: nichts anzeigen, kein Upsell-Spam auf jeder Seite
 
+  // Immer sichtbar (auch für Free — zeigt, dass es die Funktion gibt), aber standardmäßig eingeklappt.
+  // Aufklappen funktioniert nur für Premium bzw. Free-Nutzer mit einer Notiz aus einer früheren
+  // Premium-Phase (dann schreibgeschützt) — sonst kommt beim Antippen ein kurzer Premium-Hinweis.
   const widget = document.createElement('div');
   widget.id = 'personalNoteWidget';
-  widget.className = 'personal-note-widget';
-  const escaped = bestehend.replace(/</g,'&lt;');
-  if(!premium){
-    widget.innerHTML = `<div class="pn-label">📝 Meine Notiz <span class="pill warn">Premium</span></div><div class="pn-text">${escaped}</div>`;
-  } else {
-    widget.innerHTML = `<div class="pn-label">📝 Meine Notiz</div>
-      <textarea id="pnTextarea" class="pn-textarea" placeholder="Eigene Notiz zu diesem Rechner — z.B. Kundenvereinbarungen oder persönliche Faustwerte">${escaped}</textarea>
-      <div class="pn-actions">
-        <button class="btn secondary" onclick="savePersonalNoteFromWidget('${key}')">Speichern</button>
-        ${bestehend ? `<button class="btn secondary" onclick="deletePersonalNote('${key}')">Löschen</button>` : ''}
-      </div>`;
-  }
+  widget.className = 'personal-note-widget collapsed';
+  const badge = (!premium && !bestehend) ? ' <span class="pill warn">Premium</span>' : '';
+  widget.innerHTML = `<div class="pn-label" onclick="togglePersonalNoteWidget()"><span>📝 Meine Notiz${badge}</span><span class="pn-chevron">▸</span></div><div class="pn-body"></div>`;
   const heading = card.querySelector('h3, h2');
   if(heading) heading.insertAdjacentElement('afterend', widget);
   else card.insertBefore(widget, card.firstChild);
+}
+function togglePersonalNoteWidget(){
+  const widget = document.getElementById('personalNoteWidget');
+  if(!widget || !activeTool) return;
+  const premium = document.body.classList.contains('premium');
+  const key = activeTool.cat+'|'+activeTool.sub;
+  const bestehend = personalNotes[key] || '';
+  if(widget.classList.contains('collapsed')){
+    if(!premium && !bestehend){
+      alert('Persönliche Notizen sind ein Premium-Feature — damit kannst du dir z.B. Kundenvereinbarungen oder eigene Faustwerte direkt am Rechner merken.');
+      return;
+    }
+    const escaped = bestehend.replace(/</g,'&lt;');
+    if(premium){
+      widget.querySelector('.pn-body').innerHTML = `
+        <textarea id="pnTextarea" class="pn-textarea" placeholder="Eigene Notiz zu diesem Rechner — z.B. Kundenvereinbarungen oder persönliche Faustwerte">${escaped}</textarea>
+        <div class="pn-actions">
+          <button class="btn secondary" onclick="savePersonalNoteFromWidget('${key}')">Speichern</button>
+          ${bestehend ? `<button class="btn secondary" onclick="deletePersonalNote('${key}')">Löschen</button>` : ''}
+        </div>`;
+    } else {
+      widget.querySelector('.pn-body').innerHTML = `<div class="pn-text">${escaped}</div><p style="font-size:11px;color:var(--text-dim);margin-top:6px;">Nur lesbar — mit Premium wieder bearbeitbar.</p>`;
+    }
+    widget.classList.remove('collapsed');
+    widget.querySelector('.pn-chevron').textContent = '▾';
+  } else {
+    widget.classList.add('collapsed');
+    widget.querySelector('.pn-chevron').textContent = '▸';
+  }
 }
 function savePersonalNoteFromWidget(key){
   const ta = document.getElementById('pnTextarea');
