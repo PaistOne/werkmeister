@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>WERKMEISTER — Die Handwerker-App</title>
+<meta name="description" content="Nachschlagewerk & Fach-Rechner für 20 Handwerksberufe — einfach und intuitiv, ohne langes Suchen.">
+<meta name="theme-color" content="#1B1E22">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -563,6 +569,29 @@
   .theme-swatch.active-swatch{border-color:var(--yellow);box-shadow:0 0 0 2px rgba(255,198,51,0.25);}
   .theme-swatch-label{font-size:11px;color:var(--text-dim);margin-top:5px;font-family:'JetBrains Mono',monospace;}
   @media (min-width:1180px){ .ad-side{display:flex;} }
+  /* ---------- PDF-EXPORT (Premium): eigener isolierter Druckbereich statt die komplexe App-Ansicht selbst zu drucken ---------- */
+  .print-only{display:none;}
+  #printContainer .print-header{margin-bottom:16px;border-bottom:2px solid #20221a;padding-bottom:10px;}
+  #printContainer .print-header h1{font-family:'Oswald',sans-serif;font-size:20px;margin:0;letter-spacing:1px;}
+  #printContainer .print-header h2{font-family:'Oswald',sans-serif;font-size:15px;margin:4px 0 0;font-weight:500;}
+  #printContainer .print-date{font-size:11px;color:#666;margin:4px 0 0;}
+  @media print{
+    body > *:not(#printContainer){display:none !important;}
+    #printContainer{display:block !important;background:#fff;color:#111;padding:0;}
+    #printContainer table, #printContainer.table.responsive-table{width:100%;border-collapse:collapse;}
+    #printContainer table, #printContainer tbody, #printContainer tr{display:table-row-group !important;}
+    #printContainer table{display:table !important;}
+    #printContainer thead{display:table-header-group !important;}
+    #printContainer tr{display:table-row !important;}
+    #printContainer td, #printContainer th{display:table-cell !important;border-bottom:1px solid #ccc;padding:6px 8px;color:#111;white-space:normal;text-align:left;}
+    #printContainer td::before{content:none !important;}
+    #printContainer .detail-toggle{display:none !important;}
+    #printContainer td.extra-detail{display:table-cell !important;}
+    #printContainer .readout{background:#f4f4f4;border:1px solid #ccc;box-shadow:none;}
+    #printContainer .readout .rvalue{color:#111;text-shadow:none;}
+    #printContainer svg text{fill:#111 !important;}
+    #printContainer .note{color:#444;}
+  }
 </style>
 </head>
 <body>
@@ -571,10 +600,11 @@
   <header>
     <div class="brand" onclick="goHome()" style="cursor:pointer;">
       <div class="brand-mark">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M20 5L5 20M9 3l3 3-6 6-3-3 6-6zM15 21l3-3-6-6-3 3 6 6z" stroke="#FFC633" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <path d="M4.7 8.9 L8 15.9 L12 8.9 L16 16 L19.3 8.9" stroke="#FFC633" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
+
       <div>
         <h1>WERK<span>MEISTER</span> <span class="premium-pill" id="premiumHeaderBtn" style="display:none;pointer-events:none;">★ Premium</span></h1>
         <p>Die universelle Handwerks-App — Nachschlagen &amp; Rechnen, ohne Suchen</p>
@@ -1519,6 +1549,7 @@
 
           <div class="triangle-visual" id="treppeSkizze"></div>
           <div id="treppeZuschnittliste"></div>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Treppe — Zuschnittliste', ['treppeZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
           <p class="note">Grenzwerte: Steigung 140–190 mm (Gebäude allgemein) bzw. 140–200 mm (Wohngebäude ≤2 WE); Auftritt 260–370 mm (allgemein) bzw. 230–370 mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650 mm, ideal 630 mm. "Steigungen" = Anzahl der Stufen von Boden zu Boden; "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Alle Maße sind Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen (Rettungsweg, öffentliche Gebäude) zusätzlich die jeweilige Landesbauordnung prüfen.</p>
         </div>
 
@@ -1582,6 +1613,7 @@
           </div>
           <div class="triangle-visual gl-visual-wrap" id="glSkizzeWrap"><div id="glSkizze"></div></div>
           <div id="glZuschnittliste"></div>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Geländer — Zuschnittliste', ['glZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
           <p class="note">Pfosten werden ausschließlich über die reine Schräge verteilt — waagerechte Verlängerung und Handlauf-Überstand ändern die Pfostenzahl/-lage nicht. Bei Industrie max. 1500 mm Pfostenabstand (Mittellinie) einhalten. <strong>Farbcodierung der Bemaßung</strong> (fest, unabhängig vom gewählten Farbthema): Gold = Geländerhöhe, Cyan = Schräge/Winkel, Amber = waagerechte Verlängerung, Violett = Überstand, Grün = Pfostenabstände. Zeichnung mit +/− zoombar und per Fingerwisch verschiebbar (Smartphone), ersetzt aber keine Freigabezeichnung für genehmigungspflichtige Anlagen — Rohr-Ø/Kantenlängen sind vereinfachte Bauhilfe, keine statische Bemessung der Wandstärke.</p>
         </div>
 
@@ -2463,6 +2495,7 @@
             <div class="item"><div class="rlabel">Verschnitt</div><div class="rvalue" id="gzVerschnitt">—</div></div>
           </div>
           <div id="gzVisual"></div>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Glaser — Zuschnittplan', ['gzOut','gzVisual'])">🖨️ Zuschnittplan als PDF <span class="pill warn">Premium</span></button>
           <p class="note">Gleiches Schema-Verfahren wie beim Korpuszuschnitt (Tischler → Korpus-/Plattenzuschnitt): Teile werden zeilenweise, größtes zuerst, auf die Scheibe gepackt — praxisnah, aber nicht mathematisch optimal. "Nicht drehbar" bei gemustertem, bedrucktem oder beschichtetem Glas mit fester Richtung ankreuzen. <strong>Wichtig:</strong> Dieser Rechner plant nur die Flächenaufteilung — bei sicherheitsrelevanten Anwendungen (siehe Glasdicken-Faustregel oben) ersetzt das keine statische Berechnung nach DIN 18008, und Mindestrandabstände zu Bohrungen/Kanten sind hier nicht berücksichtigt.</p>
         </div>
       </div>
@@ -3069,6 +3102,7 @@
             <div class="item"><div class="rlabel">Verschnitt</div><div class="rvalue" id="zsVerschnitt">—</div></div>
           </div>
           <div id="zsVisual"></div>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Tischler — Zuschnittplan', ['zsOut','zsVisual'])">🖨️ Zuschnittplan als PDF <span class="pill warn">Premium</span></button>
           <p class="note">Schema-Zuschnitt nach dem Shelf-Verfahren (Teile werden zeilenweise, größtes zuerst, auf die Platte gepackt) — praxisnah und schnell, aber nicht mathematisch optimal. Ein erfahrener Zuschnittoptimierer (Software oder Auge) holt bei ungünstigen Formatmischungen oft nochmal 5–10% mehr raus. "Nicht drehbar" bei Teilen mit fester Maserungs-/Dekorrichtung ankreuzen — die App tauscht dann Länge/Breite nicht.</p>
         </div>
       </div>
@@ -3333,6 +3367,8 @@
   <span class="ad-label">Anzeige — Platzhalter 320×50</span>
 </div>
 <div class="ad-side"><span>Anzeige</span></div>
+
+<div id="printContainer" class="print-only"></div>
 
 <script>
 // ---------- DEUTSCHES ZAHLENFORMAT ----------
@@ -5594,35 +5630,67 @@ const zsPalette = ['#FFC633','#6E97B3','#7BAE7F','#E8654C','#c98bd9','#e0a458','
 // pieces: [{w,h,ti,label}], gibt {plates, zuGross} zurück — zuGross gesetzt, wenn ein Einzelteil in
 // keiner erlaubten Ausrichtung passt. Wiederverwendet von Tischler (Platten) und Glaser (Glaszuschnitt).
 function shelfPack(pieces, plateW, plateH, fuge){
-  const zuGross = pieces.find(p => p.w > plateW || p.h > plateH);
+  // Echtes 2D-Guillotine-Packing (Best-Area-Fit) statt einfachem Regal-Verfahren. Das alte
+  // Regal-Modell konnte die Restfläche neben einem sehr hohen Teil nur als EINZELNE Reihe nutzen
+  // (z.B. 4 statt möglicher 40 kleiner Quadrate neben einem 2200mm hohen Teil) — hier wird jede
+  // freie Fläche als echtes 2D-Rechteck geführt und bei jeder Platzierung sauber neu aufgeteilt.
+  const orientierungen = p => p.rotatable ? [[p.w,p.h],[p.h,p.w]] : [[p.w,p.h]];
+  const zuGross = pieces.find(p => !orientierungen(p).some(([w,h]) => w<=plateW && h<=plateH));
   if(zuGross) return {plates:null, zuGross};
 
-  const sorted = [...pieces].sort((a,b)=> b.h - a.h); // größte Höhe zuerst
-  const plates = [];
-  sorted.forEach(piece=>{
-    let placed = false;
-    for(const plate of plates){
-      for(const shelf of plate.shelves){
-        if(piece.w <= (plateW - shelf.usedWidth) && piece.h <= shelf.height){
-          shelf.items.push({...piece, x: shelf.usedWidth, y: shelf.y});
-          shelf.usedWidth += piece.w + fuge;
-          placed = true; break;
+  // Größte Fläche zuerst platzieren — bei echtem 2D-Packing bessere Ergebnisse als reine Höhen-Sortierung
+  const sorted = [...pieces].sort((a,b)=> (b.w*b.h) - (a.w*a.h));
+  const rohPlatten = [];
+
+  function neuePlatte(){ return {freeRects: [{x:0, y:0, w:plateW, h:plateH}], items: []}; }
+
+  function versuchePlatzierung(platte, piece){
+    const orients = orientierungen(piece);
+    let best = null;
+    platte.freeRects.forEach((rect, idx) => {
+      orients.forEach(([w,h]) => {
+        const wf = w+fuge, hf = h+fuge; // Fuge als Teil des belegten Bereichs einplanen
+        if(wf <= rect.w && hf <= rect.h){
+          const restFlaeche = rect.w*rect.h - wf*hf; // Best-Area-Fit: möglichst wenig Verschnitt im gewählten Rechteck
+          if(!best || restFlaeche < best.restFlaeche) best = {rectIdx: idx, w, h, rect, restFlaeche};
         }
-      }
-      if(placed) break;
-      const neededHeight = (plate.shelves.length ? fuge : 0) + piece.h;
-      if(!placed && piece.w <= plateW && (plate.usedHeight + neededHeight) <= plateH){
-        const y = plate.usedHeight + (plate.shelves.length ? fuge : 0);
-        plate.shelves.push({y, height: piece.h, usedWidth: piece.w + fuge, items:[{...piece, x:0, y}]});
-        plate.usedHeight = y + piece.h;
-        placed = true;
-      }
-      if(placed) break;
+      });
+    });
+    if(!best) return false;
+    const {rectIdx, w, h, rect} = best;
+    platte.items.push({w, h, x: rect.x, y: rect.y, ti: piece.ti, label: piece.label});
+
+    // Guillotine-Split: verbleibenden Platz in bis zu 2 neue freie Rechtecke teilen — die kürzere
+    // Restachse zuerst abtrennen (erhält tendenziell größere zusammenhängende Restflächen)
+    const wf = w+fuge, hf = h+fuge;
+    const restBreite = rect.w - wf, restHoehe = rect.h - hf;
+    const neu = [];
+    if(restBreite < restHoehe){
+      if(restBreite > 0.01) neu.push({x: rect.x+wf, y: rect.y, w: restBreite, h: rect.h});
+      if(restHoehe > 0.01) neu.push({x: rect.x, y: rect.y+hf, w: wf, h: restHoehe});
+    } else {
+      if(restHoehe > 0.01) neu.push({x: rect.x, y: rect.y+hf, w: rect.w, h: restHoehe});
+      if(restBreite > 0.01) neu.push({x: rect.x+wf, y: rect.y, w: restBreite, h: hf});
     }
-    if(!placed){
-      plates.push({usedHeight: piece.h, shelves:[{y:0, height: piece.h, usedWidth: piece.w+fuge, items:[{...piece, x:0, y:0}]}]});
+    platte.freeRects.splice(rectIdx, 1, ...neu);
+    return true;
+  }
+
+  sorted.forEach(piece => {
+    let platziert = false;
+    for(const platte of rohPlatten){
+      if(versuchePlatzierung(platte, piece)){ platziert = true; break; }
+    }
+    if(!platziert){
+      const neuePl = neuePlatte();
+      versuchePlatzierung(neuePl, piece);
+      rohPlatten.push(neuePl);
     }
   });
+
+  // In die bisherige Ausgabeform (plates[].shelves[].items[]) übersetzen, damit renderZuschnittPlatte
+  // und beide Aufrufer (Tischler/Glaser) unverändert weiterlaufen — hier zählt nur noch item.x/y/w/h.
+  const plates = rohPlatten.map(p => ({usedHeight: plateH, shelves: [{y:0, height:plateH, usedWidth:plateW, items: p.items}]}));
   return {plates, zuGross:null};
 }
 
@@ -5665,8 +5733,8 @@ function calcZuschnitt(){
     if(!l || !b) return;
     let w, h;
     if(t.fix){ w = l; h = b; } // Maserung fest entlang Länge -> Länge bleibt auf der horizontalen (Länge-)Achse der Platte
-    else { w = Math.max(l,b); h = Math.min(l,b); } // frei drehbar -> lange Seite liegend, minimiert Shelf-Höhe
-    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1)});
+    else { w = Math.max(l,b); h = Math.min(l,b); } // frei drehbar -> Referenz-Ausrichtung (lange Seite liegend); shelfPack probiert bei Bedarf zusätzlich gedreht
+    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1), rotatable: !t.fix});
   });
   if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
 
@@ -5744,7 +5812,7 @@ function calcGlasZuschnitt(){
     let w, h;
     if(t.fix){ w = l; h = b; }
     else { w = Math.max(l,b); h = Math.min(l,b); }
-    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1)});
+    for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1), rotatable: !t.fix});
   });
   if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
 
@@ -6075,6 +6143,34 @@ document.addEventListener('input', function(e){
 
 setupInputAutoSave();
 restoreSavedInputs();
+
+// ---------- PDF-EXPORT (Premium): nutzt die native Browser-Druckfunktion statt einer externen
+// PDF-Bibliothek — passt zum Offline-first/Single-File-Prinzip der App (keine Zusatz-Downloads,
+// funktioniert ohne Internetverbindung). Baut einen sauberen, isolierten Druckbereich aus den
+// angegebenen Quell-Elementen (Tabelle/Readout/Zeichnung), statt die komplexe App-Ansicht selbst
+// zu drucken — dadurch bleiben Navigation/Werbung/Eingabefelder im Ausdruck automatisch außen vor.
+function exportAlsPDF(titel, elementIds){
+  if(!document.body.classList.contains('premium')){
+    alert('PDF-Export ist ein Premium-Feature — damit kannst du Zuschnittlisten sauber ausdrucken oder als PDF an Kollegen weiterleiten. Mit Premium freischaltbar.');
+    return;
+  }
+  const quellen = elementIds.map(id => document.getElementById(id)).filter(Boolean);
+  if(quellen.length === 0 || quellen.every(el => !el.innerHTML.trim())){
+    alert('Erst berechnen, dann exportieren — es gibt noch nichts zum Exportieren.');
+    return;
+  }
+  const heute = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
+  const inhalt = quellen.map(el => el.outerHTML).join('\n');
+  document.getElementById('printContainer').innerHTML = `
+    <div class="print-header">
+      <h1>WERKMEISTER</h1>
+      <h2>${titel}</h2>
+      <p class="print-date">Erstellt am ${heute}</p>
+    </div>
+    ${inhalt}
+  `;
+  window.print();
+}
 
 </script>
 </body>
