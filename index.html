@@ -185,9 +185,6 @@
   }
   .color-badge-btn:hover{border-color:var(--text-dim);}
 
-  .color-settings-body{padding:0;}
-  .color-settings-body .card{margin:0;border:none;box-shadow:none;padding:0;}
-  .color-settings-body .card::before, .color-settings-body .card::after{display:none;}
   .custom-color-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;}
   .custom-color-field{display:flex;flex-direction:column;gap:6px;}
   .custom-color-field label{font-size:12px;color:var(--text-dim);}
@@ -201,18 +198,9 @@
   }
   #currentFavStar{font-size:18px;line-height:1;}
   #currentFavStar.active{color:var(--yellow);border-color:var(--yellow-dim);}
+  #currentFavStar.confirming{color:var(--danger);border-color:var(--danger);}
   .search-global-wrap{display:none;}
   .search-global-wrap.show{display:block;}
-
-  .ad-native{
-    background:var(--panel);border:1px dashed #444a52;border-radius:10px;
-    padding:16px;margin-bottom:16px;
-  }
-  .ad-native-label{
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:#6b7078;
-    text-transform:uppercase;letter-spacing:0.8px;
-  }
-  .ad-native-body{font-size:13px;color:var(--text-dim);margin-top:6px;}
 
   .detail-toggle{display:none;} /* auf dem Desktop unsichtbar — Tabelle ist dort schon kompakt genug */
 
@@ -324,6 +312,9 @@
   .quick-pill:hover{border-color:var(--steel);}
   .quick-pill > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .quick-pill .qp-star{background:none;border:none;color:#6b7078;cursor:pointer;font-size:16px;padding:8px;flex-shrink:0;}
+  .quick-pill .qp-star.confirming{color:var(--danger);}
+  .quick-pill .qp-sort{background:none;border:none;color:#6b7078;cursor:pointer;font-size:9px;line-height:1;padding:3px 6px;}
+  .quick-pill .qp-sort:hover{color:var(--yellow);}
   .quick-pill .qp-star.starred{color:var(--yellow);}
 
   main{padding:20px;}
@@ -452,7 +443,27 @@
 
   .search{margin-bottom:14px;}
   .search input{width:100%;}
-  .note{font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.5;border-left:2px solid var(--yellow-dim);padding-left:10px;}
+  .note{
+    font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.5;
+    border-left:2px solid var(--yellow-dim);padding:5px 10px;
+    cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    background:rgba(255,198,51,0.05);border-radius:0 4px 4px 0;
+  }
+  .note.expanded{white-space:normal;overflow:visible;text-overflow:clip;}
+  .note::before{content:"▸ HINWEIS  ";color:var(--yellow);font-size:10px;font-weight:700;letter-spacing:0.3px;font-family:'Inter',sans-serif;}
+  .note.expanded::before{content:"▾ HINWEIS";display:block;margin-bottom:4px;}
+  .personal-note-widget{
+    background:rgba(110,151,179,0.08);border:1px solid var(--steel-dim);border-radius:6px;
+    padding:10px 12px;margin:12px 0;
+  }
+  .personal-note-widget .pn-label{font-size:11px;font-weight:700;color:var(--steel);letter-spacing:0.3px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .personal-note-widget .pn-text{font-size:12.5px;color:var(--text-dim);white-space:pre-wrap;line-height:1.5;}
+  .personal-note-widget .pn-textarea{
+    width:100%;min-height:64px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);
+    padding:10px;border-radius:6px;font-family:'Inter',sans-serif;font-size:12.5px;resize:vertical;outline:none;
+  }
+  .personal-note-widget .pn-actions{display:flex;gap:8px;margin-top:8px;}
+  .personal-note-widget .pn-actions .btn{margin:0;font-size:11px;padding:8px 14px;}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:640px){.grid2{grid-template-columns:1fr;}}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
@@ -676,7 +687,9 @@
         <p style="font-size:12.5px;color:var(--text-dim);margin-top:6px;">Die App selbst funktioniert übrigens auch kostenlos komplett offline — bei schlechtem Baustellen-Netz soll niemand ausgesperrt sein.</p>
         <ul class="placeholder-list">
           <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Werbefrei</li>
-          <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Favoriten &amp; Verlauf (inkl. dauerhafter Speicherung)</li>
+          <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Unbegrenzt Favoriten + eigene Reihenfolge + Verlauf (kostenlos: 1 Favorit)</li>
+          <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Persönliche Notizen an Rechnern</li>
+          <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Zuschnittlisten als PDF exportieren</li>
           <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Kalkulationsrechner (Kosten, MwSt., Aufschlag, Gewinn)</li>
           <li class="placeholder-task"><span class="pt-dot" style="background:var(--yellow);border-color:var(--yellow);"></span>Anpassbares Design (Farbthemen)</li>
         </ul>
@@ -709,18 +722,18 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-duebel')"><span class="pt-dot"></span>Dübel &amp; Anker nach Hersteller →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-schrauben')"><span class="pt-dot"></span>Schraubentabelle (SW, Innensechskant) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-profile')"><span class="pt-dot"></span>Stahlprofile (IPE/HEA/HEB/UPN) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-werkstoffe')"><span class="pt-dot"></span>Blechdicken &amp; Werkstoffkennwerte →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-duebel')"><span class="pt-dot"></span><span style="flex:1;">Dübel &amp; Anker nach Hersteller</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben')"><span class="pt-dot"></span><span style="flex:1;">Holzschrauben nach Hersteller</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-schrauben')"><span class="pt-dot"></span><span style="flex:1;">Schraubentabelle (SW, Innensechskant)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-profile')"><span class="pt-dot"></span><span style="flex:1;">Stahlprofile (IPE/HEA/HEB/UPN)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-werkstoffe')"><span class="pt-dot"></span><span style="flex:1;">Blechdicken &amp; Werkstoffkennwerte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-drehmoment')"><span class="pt-dot"></span>Drehmoment-Rechner →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schlosser')"><span class="pt-dot"></span>Treppe &amp; Geländer →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-drehmoment')"><span class="pt-dot"></span><span style="flex:1;">Drehmoment-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schlosser')"><span class="pt-dot"></span><span style="flex:1;">Treppe &amp; Geländer</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -735,7 +748,7 @@
               <tbody></tbody>
             </table>
           </div>
-          <p class="note">Richtwerte für trockene, unbeschichtete Verbindungen (µ ≈ 0,14). Bei geschmierten/beschichteten Schrauben ggf. abweichend — im Zweifel Herstellerangabe prüfen. Ab M27 aufwärts: "Innensechskant: unüblich" bedeutet, dass diese Zwischengröße nach ISO 4762 (DIN 912) nicht als Standard-Innensechskantschraube gefertigt wird — dort werden praktisch immer Sechskantschrauben/-bolzen mit Außensechskant verwendet.</p>
+          <p class="note">Richtwerte für trockene, unbeschichtete Verbindungen (µ ≈ 0,14). Bei geschmierten/beschichteten Schrauben ggf. abweichend — im Zweifel Herstellerangabe prüfen. Ab M27: Innensechskant nach ISO 4762 (DIN 912) unüblich — dort werden praktisch immer Sechskantschrauben mit Außensechskant verwendet.</p>
         </div>
       </div>
 
@@ -765,7 +778,7 @@
               <tbody id="duebelBody"></tbody>
             </table>
           </div>
-          <p class="note">Machbarkeits-Beispiel mit vier Herstellern (fischer, Hilti, Würth, HECO), recherchiert aus öffentlich zugänglichen Produktdatenblättern. Erweiterbar nach demselben Schema (z.B. um Fischer-Schwerlastanker oder Hilti-Injektionsmörtel).</p>
+          <p class="note">Machbarkeits-Beispiel mit vier Herstellern (fischer, Hilti, Würth, HECO), aus öffentlichen Datenblättern. Erweiterbar nach demselben Schema.</p>
         </div>
       </div>
 
@@ -779,7 +792,7 @@
               <tbody id="holzBody"></tbody>
             </table>
           </div>
-          <p class="note">Machbarkeits-Beispiel mit drei Herstellern (SPAX, Würth ASSY, HECO), recherchiert aus öffentlich zugänglichen Produktdatenblättern. Auch hier gilt: Bei tragenden Holzverbindungen die zugehörige ETA-Zulassung und Bemessungstabelle des Herstellers für Randabstände und Tragfähigkeit beachten.</p>
+          <p class="note">Machbarkeits-Beispiel mit drei Herstellern (SPAX, Würth ASSY, HECO), aus öffentlichen Datenblättern. Bei tragenden Holzverbindungen die ETA-Zulassung und Bemessungstabelle des Herstellers für Randabstände/Tragfähigkeit beachten.</p>
         </div>
       </div>
 
@@ -820,7 +833,7 @@
               <tr><td class="mono" data-label="Nennmaß">300</td><td class="mono" data-label="HEA-Maß">290 × 300 mm</td><td class="mono" data-label="HEA-Gewicht">90,0 kg/m</td><td class="mono" data-label="HEB-Maß">300 × 300 mm</td><td class="mono" data-label="HEB-Gewicht">120,0 kg/m</td></tr>
             </table>
           </div>
-          <p class="note">HEA = leichtere Ausführung (dünnere Stege/Flansche), HEB = normale Ausführung, HEM (hier nicht gelistet) = schwere Ausführung für hochbelastete Konstruktionen. Alle Angaben Handelsgewichte für unlegierten Baustahl (S235JR).</p>
+          <p class="note">HEA = leichtere Ausführung, HEB = normale Ausführung, HEM (nicht gelistet) = schwere Ausführung für hochbelastete Konstruktionen. Angaben sind Handelsgewichte für unlegierten Baustahl (S235JR).</p>
         </div>
         <div class="card">
           <h3>UPN-Profile <span class="tag">U-Stahl, rundkantig, DIN EN 10279</span></h3>
@@ -838,7 +851,7 @@
               <tr><td class="mono" data-label="Profil">UPN 240</td><td class="mono" data-label="Höhe">240 mm</td><td class="mono" data-label="Gewicht">33,2 kg/m</td></tr>
             </table>
           </div>
-          <p class="note">Alle Profil-Tabellen sind Handelsgewichte/-maße zur Vorplanung und Materialbestellung (z.B. Gewichtsabschätzung für Transport/Kran). Für tragende Konstruktionen (Statik, Trägerauswahl nach Last/Spannweite) immer die vollständige statische Berechnung mit Trägheitsmoment/Widerstandsmoment durch einen Tragwerksplaner heranziehen — diese Tabelle liefert nur Geometrie und Gewicht.</p>
+          <p class="note">Alle Profil-Tabellen sind Handelsgewichte/-maße zur Vorplanung und Materialbestellung. Für tragende Konstruktionen immer die vollständige statische Berechnung mit Trägheitsmoment/Widerstandsmoment durch einen Tragwerksplaner heranziehen — diese Tabelle liefert nur Geometrie und Gewicht.</p>
         </div>
       </div>
 
@@ -855,7 +868,7 @@
               <tr><td class="mono">0,9</td><td class="mono">2,5</td><td class="mono">—</td><td class="mono">20,0</td></tr>
             </table>
           </div>
-          <p class="note">Übliche Lagerdicken im Stahlhandel (Richtwerte, nicht jede Dicke bei jedem Händler/Werkstoff verfügbar). Verbindliche Toleranzen für Warmband nach DIN EN 10051, für Kaltband nach DIN EN 10131/10143. Sonderdicken meist nur auf Anfrage/mit Aufpreis.</p>
+          <p class="note">Übliche Lagerdicken im Stahlhandel (Richtwerte, nicht überall verfügbar). Verbindliche Toleranzen für Warmband nach DIN EN 10051, für Kaltband nach DIN EN 10131/10143. Sonderdicken meist nur auf Anfrage.</p>
         </div>
         <div class="card">
           <h3>Werkstoffkennwerte gängiger Baustähle <span class="tag">DIN EN 10025-2</span></h3>
@@ -867,7 +880,7 @@
               <tr><td data-label="Sorte">S355JR (1.0045)</td><td class="mono" data-label="Alt">St52</td><td class="mono" data-label="Re">355 N/mm² (≤16mm)</td><td class="mono" data-label="Rm">470–630 N/mm²</td></tr>
             </table>
           </div>
-          <p class="note">Streckgrenze sinkt mit zunehmender Bauteildicke (z.B. S355 fällt bei 100–150mm auf ca. 295 N/mm²) — bei dickeren Querschnitten immer die dickenabhängige Tabelle im Werksprüfzeugnis (MTC) prüfen, nicht den Nennwert. E-Modul für alle unlegierten Baustähle ca. 210.000 N/mm², Dichte ca. 7.850 kg/m³ (nutzbar im Volumen &amp; Gewicht-Rechner). "JR" = Gütegruppe mit Mindest-Kerbschlagarbeit 27 J bei 20°C; für tiefere Einsatztemperaturen (Stahlbau im Freien, Winter) ggf. J0 (0°C) oder J2 (-20°C) wählen.</p>
+          <p class="note">Streckgrenze sinkt mit zunehmender Bauteildicke (S355 fällt bei 100–150mm auf ca. 295 N/mm²) — bei dickeren Querschnitten die dickenabhängige Tabelle im Werksprüfzeugnis prüfen. E-Modul für alle unlegierten Baustähle ca. 210.000 N/mm², Dichte ca. 7.850 kg/m³. "JR" = Mindest-Kerbschlagarbeit 27J bei 20°C; für tiefe Einsatztemperaturen ggf. J0 (0°C) oder J2 (-20°C).</p>
         </div>
       </div>
     </section>
@@ -887,33 +900,33 @@
         <div class="card">
           <h3>⚡ Elektroschweißen <span class="tag">E-Hand / MMA</span></h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-elektroden')"><span class="pt-dot"></span>Elektroden nach Typ →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-hersteller')"><span class="pt-dot"></span>Elektroden nach Hersteller →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-elektroden')"><span class="pt-dot"></span><span style="flex:1;">Elektroden nach Typ</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-hersteller')"><span class="pt-dot"></span><span style="flex:1;">Elektroden nach Hersteller</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🔥 WIG <span class="tag">TIG / Wolfram-Inertgas</span></h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-wig')"><span class="pt-dot"></span>Wolframelektroden: Farbcode & Stromstärke →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-wig')"><span class="pt-dot"></span><span style="flex:1;">Wolframelektroden: Farbcode & Stromstärke</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>⚙️ MAG / MIG <span class="tag">Schutzgas-Schweißen</span></h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-magmig')"><span class="pt-dot"></span>Drahtelektrode, Schutzgas & Parameter →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-magmig')"><span class="pt-dot"></span><span style="flex:1;">Drahtelektrode, Schutzgas & Parameter</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>📐 Nahtdarstellung &amp; Positionen</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-nahtsymbole')"><span class="pt-dot"></span>Schweißnahtsymbole &amp; Schweißpositionen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-nahtsymbole')"><span class="pt-dot"></span><span style="flex:1;">Schweißnahtsymbole &amp; Schweißpositionen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-amass')"><span class="pt-dot"></span>a-Maß-Rechner für Kehlnähte →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schweisser')"><span class="pt-dot"></span>Treppe &amp; Geländer →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('schweisser','w-amass')"><span class="pt-dot"></span><span style="flex:1;">a-Maß-Rechner für Kehlnähte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-treppe', null, 'schweisser')"><span class="pt-dot"></span><span style="flex:1;">Treppe &amp; Geländer</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -927,7 +940,7 @@
               <tbody id="elektrodenBody"></tbody>
             </table>
           </div>
-          <p class="note">Ampere-Angaben sind Richtwerte für unlegierten Baustahl. Vorwärmen des <em>Werkstücks</em> hängt zusätzlich vom Stahltyp, der Blechdicke und dem Kohlenstoffäquivalent ab — bei legierten/dickwandigen Bauteilen immer WPS prüfen. "Rücktrocknen" betrifft die Elektrode selbst vor Gebrauch, nicht das Werkstück.</p>
+          <p class="note">Ampere-Angaben sind Richtwerte für unlegierten Baustahl. Vorwärmen des <em>Werkstücks</em> hängt zusätzlich vom Stahltyp, der Blechdicke und dem Kohlenstoffäquivalent ab — bei legierten/dickwandigen Bauteilen immer WPS prüfen. "Rücktrocknen" betrifft die Elektrode, nicht das Werkstück.</p>
         </div>
       </div>
 
@@ -941,7 +954,7 @@
               <tbody id="herstellerBody"></tbody>
             </table>
           </div>
-          <p class="note">Als Machbarkeits-Beispiel bereits mit drei Herstellern befüllt — <strong>Böhler Welding</strong> (voestalpine, inkl. Produktlinien "Phoenix" und "Thermanit"), <strong>EWM</strong> und <strong>Lincoln Electric</strong> — recherchiert aus öffentlich zugänglichen Datenblättern und in eigenen Worten zusammengefasst. Bei FOX OHV, FOX CEL, FOX SPE und Phoenix Spezial D stehen bereits echte Ø-genaue Ampere-Werte drin. Bei EWM und Lincoln Electric war in den öffentlich einsehbaren Quellen nur die Klassifikation zu finden, keine Ø-genaue Stromtabelle — dort steht ehrlich "siehe Datenblatt", statt eine Zahl zu raten. Nach demselben Schema lassen sich beliebig weitere Hersteller und fehlende Werte ergänzen. Die verbindlichen Werte stehen immer auf der Verpackung der jeweiligen Elektrode.</p>
+          <p class="note">Als Machbarkeits-Beispiel mit drei Herstellern befüllt — <strong>Böhler Welding</strong>, <strong>EWM</strong>, <strong>Lincoln Electric</strong> — aus öffentlichen Datenblättern zusammengefasst. Bei FOX OHV/CEL/SPE und Phoenix Spezial D stehen echte Ø-genaue Ampere-Werte; bei EWM/Lincoln war nur die Klassifikation öffentlich einsehbar, dort steht ehrlich "siehe Datenblatt" statt geraten. Weitere Hersteller lassen sich nach demselben Schema ergänzen. Verbindlich ist immer die Angabe auf der Verpackung.</p>
         </div>
       </div>
 
@@ -958,7 +971,7 @@
               <tr><td data-label="Farbe">Weiß</td><td class="mono" data-label="Kurzz.">WZ8</td><td data-label="Zusammensetzung">W + 0,7–0,9% Zirkonoxid</td><td data-label="Stromart">AC</td><td data-label="Einsatz">Überwiegend Wechselstrom, stabile Kalotte, weniger geeignet für DC</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Thorierte Elektroden (WT10–WT40, violett/rot/gelb/orange) sind wegen ihres radioaktiven Thoriumoxid-Zusatzes (Alphastrahlung beim Schleifstaub-Einatmen) gesundheitsschädlich und in vielen Ländern nicht mehr empfohlen bzw. reglementiert — deshalb hier bewusst nicht als Kaufempfehlung gelistet. WL- oder WC-Elektroden liefern vergleichbare Schweißeigenschaften ohne dieses Risiko.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Thorierte Elektroden (WT10–WT40) enthalten radioaktives Thoriumoxid (Alphastrahlung beim Schleifstaub-Einatmen), gesundheitsschädlich und in vielen Ländern reglementiert — deshalb hier bewusst nicht gelistet. WL- oder WC-Elektroden liefern vergleichbare Schweißeigenschaften ohne dieses Risiko.</p>
         </div>
         <div class="card">
           <h3>Stromstärke nach Elektroden-Durchmesser <span class="tag">Richtwerte, Herstellerangabe Abicor Binzel</span></h3>
@@ -972,7 +985,7 @@
               <tr><td class="mono" data-label="Ø">4,0 mm</td><td class="mono" data-label="DC− Rein">180–260 A</td><td class="mono" data-label="DC− Oxidiert">310–490 A</td><td class="mono" data-label="AC Rein">180–270 A</td><td class="mono" data-label="AC Oxidiert">240–350 A</td></tr>
             </table>
           </div>
-          <p class="note">DC− (Elektrode negativ) ist die Standard-Polung für Stahl, Edelstahl, Kupfer, Titan. AC (Wechselstrom) für Aluminium und Magnesium. Faustregel Werkstückdicke: ca. 45 A/mm Wanddicke bei DC-Stahl, ca. 40 A/mm bei AC-Aluminium. Schutzgas: Argon 4.6 (99,996%), Gasmenge ca. 6–12 l/min je nach Gasdüsengröße. Wolframelektroden immer in Längsrichtung schleifen, nie im Umfang — sonst streut der Lichtbogen. Werte sind Herstellerrichtwerte für Rundspitze; bei speziellen Spitzenformen, Impulsbetrieb oder Sonderwerkstoffen können abweichende Werte gelten.</p>
+          <p class="note">DC− (Elektrode negativ) ist Standard für Stahl, Edelstahl, Kupfer, Titan. AC (Wechselstrom) für Aluminium/Magnesium. Faustregel: ca. 45 A/mm bei DC-Stahl, ca. 40 A/mm bei AC-Aluminium. Schutzgas: Argon 4.6, ca. 6–12 l/min je nach Düsengröße. Wolframelektroden immer längs schleifen, nie im Umfang — sonst streut der Lichtbogen. Werte gelten für Rundspitze; bei Sonderformen/Impulsbetrieb können sie abweichen.</p>
         </div>
       </div>
 
@@ -990,8 +1003,8 @@
               <tr><td data-label="Material">Aluminium (Ar/He, Sprüh/Impuls)</td><td class="mono" data-label="Draht-Ø">1,2 mm</td><td class="mono" data-label="Blechdicke">5–8 mm</td><td class="mono" data-label="Strom">160–220 A</td><td class="mono" data-label="Spannung">22–25 V</td><td class="mono" data-label="Vorschub">6,0–8,0 m/min</td><td class="mono" data-label="Gas">14–18 l/min</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Schutzgas-Wahl:</strong> MAG/Stahl — CO₂ (Kennung C1) ist robust und günstig, erzeugt aber mehr Spritzer; Argon-CO₂-Mischgas M21 ("82/18") gibt stabileren Lichtbogen, weniger Spritzer, besseres Nahtbild. MIG/Aluminium — Argon (I1) ist Standard; Argon-Helium-Gemisch (I3) bei dickeren Querschnitten für mehr Wärmeeintrag und tieferen Einbrand.</p>
-          <p class="note">Anders als bei WIG/E-Hand ist bei MAG/MIG die <strong>Spannung die eingestellte Größe, der Strom ergibt sich aus dem Drahtvorschub</strong> (nicht umgekehrt). Fausteinstieg: Spannungsstufe grob passend zur Blechdicke wählen, dann Drahtvorschub hochregeln bis der Lichtbogen gleichmäßig "brutzelt" statt zu zischen (zu wenig Vorschub) oder zu knistern/spritzen (zu viel Vorschub) — die hier gelisteten Werte sind Startpunkte für die Probeschweißung, keine Festwerte. Bei sicherheitsrelevanten Verbindungen die Einstellung immer anhand eines Probeblechs und ggf. eines WPS verifizieren.</p>
+          <p class="note"><strong>Schutzgas-Wahl:</strong> MAG/Stahl — CO₂ (C1) robust/günstig, mehr Spritzer; Argon-CO₂-Mischgas M21 ("82/18") stabilerer Lichtbogen, besseres Nahtbild. MIG/Aluminium — Argon (I1) Standard; Argon-Helium (I3) bei dickeren Querschnitten für mehr Wärmeeintrag.</p>
+          <p class="note">Anders als bei WIG/E-Hand ist bei MAG/MIG die <strong>Spannung eingestellt, der Strom ergibt sich aus dem Drahtvorschub</strong>. Fausteinstieg: Spannung grob zur Blechdicke wählen, dann Drahtvorschub hochregeln bis der Lichtbogen gleichmäßig "brutzelt" (zischend = zu wenig, spritzend = zu viel Vorschub) — Werte hier sind Startpunkte für die Probeschweißung. Bei sicherheitsrelevanten Verbindungen immer per Probeblech/WPS verifizieren.</p>
         </div>
       </div>
 
@@ -1010,7 +1023,7 @@
               <tr><td data-label="Nahtart">Punktnaht</td><td class="mono" data-label="Symbol">○</td><td data-label="Beschreibung">Punktuelle Verbindung, z.B. Widerstandspunktschweißen</td></tr>
             </table>
           </div>
-          <p class="note">Grundsymbol sitzt auf der durchgezogenen Bezugslinie (Pfeilseite) oder gespiegelt darunter (Gegenseite) — die Pfeilseite ist die Bauteilfläche, auf die der Pfeil direkt zeigt. Vor dem Symbol steht meist die Nahtdicke: <strong>a</strong> = Nahtdicke bei Kehlnähten, <strong>z</strong> = Schenkellänge. Diese Tabelle zeigt nur die häufigsten Grundsymbole — die vollständige Norm kennt deutlich mehr Zusatz- und Sonderformen (unterbrochene Nähte, Wurzelüberhöhung, Baustellennaht-Kennzeichnung usw.).</p>
+          <p class="note">Grundsymbol sitzt auf der durchgezogenen Bezugslinie (Pfeilseite) oder gespiegelt darunter (Gegenseite). Vor dem Symbol steht meist die Nahtdicke: <strong>a</strong> = Nahtdicke bei Kehlnähten, <strong>z</strong> = Schenkellänge. Diese Tabelle zeigt nur die häufigsten Grundsymbole — die Norm kennt deutlich mehr Zusatzformen.</p>
         </div>
         <div class="card">
           <h3>Schweißpositionen <span class="tag">DIN EN ISO 6947, PA–PG</span></h3>
@@ -1026,7 +1039,7 @@
               <tr><td class="mono" data-label="Kurzzeichen">PG</td><td data-label="Bezeichnung">Fallposition</td><td data-label="Lage">Senkrecht, von oben nach unten geschweißt — schneller, aber geringerer Einbrand als PF</td></tr>
             </table>
           </div>
-          <p class="note">Welche Position ein Schweißer beherrschen muss, hängt vom Schweißerprüfzeugnis (DIN EN ISO 9606) ab — eine Prüfung in PF deckt z.B. i.d.R. auch PA/PC ab, aber nicht automatisch PE. Bei WPS-pflichtigen Arbeiten immer prüfen, ob die vorgesehene Position vom gültigen Prüfzeugnis abgedeckt ist.</p>
+          <p class="note">Welche Position ein Schweißer beherrschen muss, hängt vom Prüfzeugnis (DIN EN ISO 9606) ab — eine Prüfung in PF deckt meist auch PA/PC ab, aber nicht automatisch PE. Bei WPS-pflichtigen Arbeiten immer prüfen, ob die Position abgedeckt ist.</p>
         </div>
       </div>
 
@@ -1043,7 +1056,7 @@
             <div class="item"><div class="rlabel">Nahtdicke a</div><div class="rvalue" id="amOutA">—</div></div>
             <div class="item"><div class="rlabel">Schenkellänge z</div><div class="rvalue" id="amOutZ">—</div></div>
           </div>
-          <p class="note">Für die rechtwinklige, gleichschenklige Kehlnaht (Standardfall, 90°-Eckverbindung mit a = z auf beiden Schenkeln): a = z × cos 45° ≈ 0,7 × z. Bei ungleichschenkligen Kehlnähten oder abweichenden Nahtwinkeln gilt diese vereinfachte Formel nicht — hier die tatsächliche Nahtgeometrie zugrunde legen. Das a-Maß ist die für die statische Nachweisführung (Kehlnahtberechnung nach Eurocode 3) maßgebliche Größe, nicht die Schenkellänge.</p>
+          <p class="note">Für die rechtwinklige, gleichschenklige Kehlnaht: a = z × cos 45° ≈ 0,7 × z. Bei ungleichschenkligen Nähten oder abweichenden Winkeln gilt diese Formel nicht — tatsächliche Nahtgeometrie zugrunde legen. Das a-Maß ist die für die Kehlnahtberechnung nach Eurocode 3 maßgebliche Größe, nicht die Schenkellänge.</p>
         </div>
       </div>
     </section>
@@ -1063,16 +1076,16 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-passungen')"><span class="pt-dot"></span>Passungen &amp; Toleranzen (H7, ISO 2768) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-gewinde')"><span class="pt-dot"></span>Kernloch-/Gewindebohrer-Tabelle →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-rauheit')"><span class="pt-dot"></span>Oberflächenrauheit Ra/Rz →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-passungen')"><span class="pt-dot"></span><span style="flex:1;">Passungen &amp; Toleranzen (H7, ISO 2768)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-gewinde')"><span class="pt-dot"></span><span style="flex:1;">Kernloch-/Gewindebohrer-Tabelle</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-rauheit')"><span class="pt-dot"></span><span style="flex:1;">Oberflächenrauheit Ra/Rz</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-schnitt')"><span class="pt-dot"></span>Schnittwerte (vc ↔ Drehzahl) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-vorschub')"><span class="pt-dot"></span>Vorschub-Rechner →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-schnitt')"><span class="pt-dot"></span><span style="flex:1;">Schnittwerte (vc ↔ Drehzahl)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('zerspaner','z-vorschub')"><span class="pt-dot"></span><span style="flex:1;">Vorschub-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -1140,7 +1153,7 @@
               <tr><td class="mono" data-label="Nenndurchmesser">&gt;80–120 mm</td><td class="mono" data-label="Unteres Grenzmaß">0 µm</td><td class="mono" data-label="Oberes Grenzmaß">+35 µm</td></tr>
             </table>
           </div>
-          <p class="note">Grenzmaße gelten für die Bohrung (Innenmaß). Für die passende Welle das gewünschte Toleranzfeld (g6, k6, p6 …) in der vollständigen ISO-286-Tabelle bzw. im Tabellenbuch Metall nachschlagen — hier bewusst nur H7 als am häufigsten benötigter Basiswert.</p>
+          <p class="note">Grenzmaße gelten für die Bohrung. Für die passende Welle das gewünschte Toleranzfeld (g6, k6, p6…) in der vollständigen ISO-286-Tabelle nachschlagen — hier bewusst nur H7 als häufigster Basiswert.</p>
         </div>
 
         <div class="card">
@@ -1158,7 +1171,7 @@
               <tr><td class="mono" data-label="Nennmaßbereich">&gt;1000–2000 mm</td><td class="mono" data-label="f">±0,50</td><td class="mono" data-label="m">±1,20</td><td class="mono" data-label="c">±3,00</td><td class="mono" data-label="v">±6,00</td></tr>
             </table>
           </div>
-          <p class="note">Werte in mm. Klasse c (grob) findet sich häufig im Stahlbau und bei geschweißten Baugruppen, Klasse v (sehr grob) bei groben Gussteilen/Rohlingen vor der spanenden Nachbearbeitung. Für Maße, bei denen es auf einen exakten Sitz ankommt (z.B. Lagersitze), reicht die Allgemeintoleranz nicht — hier ist eine Einzeltoleranz nach ISO 286 nötig (siehe Passungstabelle oben).</p>
+          <p class="note">Werte in mm. Klasse c (grob) häufig im Stahlbau/bei geschweißten Baugruppen, Klasse v (sehr grob) bei groben Gussteilen vor der Nachbearbeitung. Für Maße mit exaktem Sitz (z.B. Lagersitze) reicht die Allgemeintoleranz nicht — dort ist eine Einzeltoleranz nach ISO 286 nötig.</p>
         </div>
       </div>
 
@@ -1181,7 +1194,7 @@
               <tr><td class="mono" data-label="Gewinde">M20</td><td class="mono" data-label="Steigung">2,5 mm</td><td class="mono" data-label="Kernloch">17,5 mm</td></tr>
             </table>
           </div>
-          <p class="note">Faustformel (Näherung, für Feingewinde ebenfalls anwendbar): Kernloch ≈ Nenndurchmesser − Steigung. Beispiel M10×1 (Feingewinde, Steigung 1,0mm statt 1,5mm Regelgewinde): 10 − 1 = 9,0mm Kernloch — bewusst genauer prüfen, da die Faustformel bei größeren Steigungen ungenauer wird (z.B. M20 exakt 17,5mm, Faustformel "×0,8" würde fälschlich 16,2mm ergeben). Gewindetiefe sollte das 2- bis 3-fache des Nenndurchmessers betragen — mehr bringt keine höhere Belastbarkeit, da ohnehin nur die ersten 3–4 Gewindegänge die Hauptlast tragen.</p>
+          <p class="note">Faustformel: Kernloch ≈ Nenndurchmesser − Steigung (auch für Feingewinde). Beispiel M10×1: 10−1=9,0mm. Bei größeren Steigungen ungenauer (M20 exakt 17,5mm, Faustformel "×0,8" ergäbe fälschlich 16,2mm). Gewindetiefe sollte das 2- bis 3-fache des Nenndurchmessers betragen — mehr bringt keine höhere Belastbarkeit, da nur die ersten 3–4 Gewindegänge die Hauptlast tragen.</p>
         </div>
       </div>
 
@@ -1198,7 +1211,7 @@
               <tr><td data-label="Verfahren">Läppen, Honen</td><td class="mono" data-label="Ra">0,025–0,4</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Ra</strong> (Mittenrauwert) ist der arithmetische Mittelwert der Abweichungen vom Oberflächenprofil — der gängigste, direkt am Messgerät ablesbare Wert. <strong>Rz</strong> (gemittelte Rautiefe) ist der Mittelwert aus mehreren gemessenen Einzelrautiefen und reagiert empfindlicher auf einzelne Ausreißer (z.B. einzelne tiefe Kratzer). Faustregel zur groben Umrechnung: Rz ≈ 4–7 × Ra, genauer Faktor hängt vom Fertigungsverfahren und Oberflächenprofil ab — bei verbindlichen Angaben nicht umrechnen, sondern den in der Zeichnung geforderten Parameter direkt messen. Die tatsächlich erreichbare Rauheit hängt zusätzlich stark von Vorschub, Schnittgeschwindigkeit, Werkzeugzustand und Maschinensteifigkeit ab — die Tabelle zeigt nur die grobe Bandbreite je Verfahren.</p>
+          <p class="note"><strong>Ra</strong> (Mittenrauwert): arithmetischer Mittelwert der Profilabweichungen, gängigster Messwert. <strong>Rz</strong> (gemittelte Rautiefe): Mittelwert mehrerer Einzelrautiefen, reagiert empfindlicher auf Ausreißer. Faustregel: Rz ≈ 4–7 × Ra (Faktor je nach Verfahren) — bei verbindlichen Angaben nicht umrechnen, sondern den geforderten Parameter direkt messen. Die tatsächliche Rauheit hängt zusätzlich von Vorschub, Schnittgeschwindigkeit, Werkzeugzustand und Maschinensteifigkeit ab.</p>
         </div>
       </div>
     </section>
@@ -1218,16 +1231,16 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-kabel')"><span class="pt-dot"></span>Kabelquerschnitt-Richtwerte →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ls-drehstrom')"><span class="pt-dot"></span>LS-Schalter-Charakteristik &amp; Drehstrom-Grundlagen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-kabel')"><span class="pt-dot"></span><span style="flex:1;">Kabelquerschnitt-Richtwerte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ls-drehstrom')"><span class="pt-dot"></span><span style="flex:1;">LS-Schalter-Charakteristik &amp; Drehstrom-Grundlagen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ohm')"><span class="pt-dot"></span>Ohm'sches Gesetz &amp; Leistung →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-schaltungen')"><span class="pt-dot"></span>Schaltungen (Reihe/Parallel/Stern-Dreieck) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-spannungsfall')"><span class="pt-dot"></span>Spannungsfall-Rechner →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-ohm')"><span class="pt-dot"></span><span style="flex:1;">Ohm'sches Gesetz &amp; Leistung</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-schaltungen')"><span class="pt-dot"></span><span style="flex:1;">Schaltungen (Reihe/Parallel/Stern-Dreieck)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('elektriker','e-spannungsfall')"><span class="pt-dot"></span><span style="flex:1;">Spannungsfall-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -1312,7 +1325,7 @@
               <tr><td class="mono" data-label="Querschnitt">50 mm²</td><td class="mono" data-label="Richtwert">max. 168 A (Strombelastbarkeit)</td><td data-label="Verwendung">Große Hausanschlüsse</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Wichtig:</strong> Diese Tabelle ist eine Vorplanungs-Orientierung für Standardfälle bei ca. 25°C Umgebungstemperatur, Verlegung im Installationsrohr, ohne Häufung mehrerer Leitungen. Die tatsächlich zulässige Absicherung hängt zusätzlich von Verlegeart, Häufung, Umgebungstemperatur, Leitungslänge (Spannungsfall) und Leitungstyp ab — verbindlich geregelt in DIN VDE 0298-4 und DIN VDE 0100-520. Bei längeren Leitungen (z.B. über 18 m) oder Bündelung mehrerer Kabel immer die vollständige Berechnung durchführen, nicht nur diese Tabelle nutzen.</p>
+          <p class="note"><strong>Wichtig:</strong> Vorplanungs-Orientierung für Standardfälle (ca. 25°C, Verlegung im Installationsrohr, ohne Häufung). Die tatsächlich zulässige Absicherung hängt zusätzlich von Verlegeart, Häufung, Umgebungstemperatur, Leitungslänge und -typ ab — verbindlich in DIN VDE 0298-4 und DIN VDE 0100-520. Bei langen Leitungen oder gebündelten Kabeln immer die vollständige Berechnung durchführen.</p>
         </div>
       </div>
 
@@ -1327,7 +1340,7 @@
               <tr><td class="mono" data-label="Typ">D</td><td class="mono" data-label="Auslösung">10–20 × Iₙ</td><td data-label="Einsatz">Hohe Einschaltströme: Transformatoren, Schweißgeräte, große Motoren — in der Industrie, selten im Haushalt</td></tr>
             </table>
           </div>
-          <p class="note">Der Buchstabe (B/C/D) bestimmt nur den <strong>magnetischen</strong> Schnellauslöser (Kurzschlussschutz). Der thermische Überlastschutz (Bimetall) ist bei allen drei Typen gleich geregelt: Auslösung zwischen 1,13 und 1,45 × Iₙ. Faustregel: 90% der Wohnungs-Stromkreise brauchen Typ B — Typ C nur, wenn ein Gerät mit hohem Einschaltstrom (z.B. Waschmaschine beim Schleudern) einen B-Automaten ungewollt auslöst. Für Personenschutz zusätzlich immer FI/RCD einplanen — der LS-Schalter schützt nur die Leitung, nicht den Menschen.</p>
+          <p class="note">Der Buchstabe (B/C/D) bestimmt nur den magnetischen Schnellauslöser (Kurzschlussschutz) — der thermische Überlastschutz ist bei allen drei Typen gleich (Auslösung 1,13–1,45 × Iₙ). Faustregel: 90% der Wohnungs-Stromkreise brauchen Typ B, Typ C nur bei hohem Geräte-Einschaltstrom. Für Personenschutz zusätzlich immer FI/RCD einplanen — der LS-Schalter schützt nur die Leitung.</p>
         </div>
         <div class="card">
           <h3>Drehstrom-Grundlagen <span class="tag">230 V / 400 V</span></h3>
@@ -1338,7 +1351,7 @@
               <tr><td>Zusammenhang</td><td class="mono">U_Leiter = √3 · U_Strang ≈ 1,732 × 230 V ≈ 400 V</td></tr>
             </table>
           </div>
-          <p class="note">Einphasige Verbraucher (Steckdosen, Beleuchtung) hängen zwischen einem Außenleiter (L1/L2/L3) und dem Neutralleiter (N) → 230 V. Drehstromverbraucher (Herd, große Motoren, Wallbox 11/22 kW) nutzen alle drei Außenleiter gegeneinander → 400 V. Bei ungleicher Lastverteilung auf die drei Phasen (Schieflast) sollte der Neutralleiter-Strom im Blick behalten werden — starke Schieflast kann zu erhöhter N-Leiter-Belastung führen.</p>
+          <p class="note">Einphasige Verbraucher (Steckdosen, Beleuchtung) hängen zwischen Außenleiter und Neutralleiter → 230V. Drehstromverbraucher (Herd, große Motoren, Wallbox) nutzen alle drei Außenleiter → 400V. Bei ungleicher Lastverteilung (Schieflast) den Neutralleiter-Strom im Blick behalten.</p>
         </div>
       </div>
 
@@ -1372,7 +1385,7 @@
             <div class="item"><div class="rlabel">Spannungsfall in %</div><div class="rvalue" id="sfProzent">—</div></div>
             <div class="item"><div class="rlabel">Bewertung</div><div class="rvalue" id="sfBewertung" style="font-size:15px;">—</div></div>
           </div>
-          <p class="note">Formel: ΔU = (Faktor × L × I × cos φ) / (κ × A) — Faktor 2 einphasig, √3 (≈1,732) dreiphasig. Grenzwerte nach VDE 0100-520: max. 3% für Beleuchtungsstromkreise, max. 5% für sonstige Verbraucher (jeweils vom Zähler bis zum Verbraucher). Für Überschlagsrechnungen cos φ = 1 annehmen — bei induktiven Lasten (Motoren) liegt der reale Spannungsfall dann etwas niedriger als berechnet, die Rechnung liegt also auf der sicheren Seite.</p>
+          <p class="note">Formel: ΔU = (Faktor × L × I × cos φ)/(κ × A) — Faktor 2 einphasig, √3 (≈1,732) dreiphasig. Grenzwerte nach VDE 0100-520: max. 3% Beleuchtung, max. 5% sonstige Verbraucher. Für Überschlagsrechnungen cos φ = 1 annehmen — bei Motoren liegt der reale Spannungsfall dann etwas niedriger, die Rechnung liegt auf der sicheren Seite.</p>
         </div>
       </div>
     </section>
@@ -1544,13 +1557,13 @@
                 <option value="neu">…noch neu zu bauen — Bühne liefert die letzte Steighöhe selbst, Treppe baut eine Steigung weniger</option>
               </select>
             </div>
-            <p class="note" style="margin-top:6px;">Für Industrietreppen mit Stahl- oder Holzwangen, an die die Trittstufen bzw. Gitterroste angeschlagen werden (geschlossene Wange — Stufen seitlich über Konsolen befestigt, nicht in die Wange eingenutet). Trittflächen-Material (z.B. Gitterrost) sowie die genaue Profilart/Wandstärke werden hier bewusst nicht mitgerechnet — auf der 2D-Zeichnung ist ohnehin nicht erkennbar, ob es sich um ein U-Profil, Vierkantrohr oder Holz handelt, nur die Profilhöhe wirkt sich auf die Zeichnung aus. Die Wange läuft entlang der Treppen-Grundlinie und wird an beiden Enden senkrecht zugeschnitten — passend zur ersten und letzten Treppenkontur, wie am fertigen Bauteil. Waagerechte Verlängerung oben bildet ein Podest/eine Bühne ab (gleiches Prinzip wie beim Geländer) — für einen freistehenden Laufsteg ohne Treppe einfach den Geländer-Rechner unten separat mit schräger Länge = 0 nutzen. Wenn die Bühne bereits vorhanden ist, reicht "0" bei der waagerechten Verlängerung, sofern nichts zusätzlich neu angebaut wird. <strong>Wichtig bei neu zu bauender Bühne:</strong> genau wie ein Treppenabsatz oder der Boden, auf dem man losläuft, bereits als "Stufe" zählt und nicht zusätzlich gebaut werden muss — wenn die Bühne selbst neu gebaut wird, übernimmt ihre eigene Unterkonstruktion/Stützenhöhe die letzte Steigung, die Treppe selbst braucht dann eine Steigung weniger.</p>
+            <p class="note" style="margin-top:6px;">Für Industrietreppen mit Stahl-/Holzwangen (geschlossen — Stufen seitlich über Konsolen befestigt, nicht eingenutet). Trittflächen-Material und genaue Profilart werden bewusst nicht mitgerechnet, nur die Profilhöhe wirkt sich auf die Zeichnung aus. Wange läuft entlang der Grundlinie, an beiden Enden senkrecht zugeschnitten. Waagerechte Verlängerung oben bildet ein Podest/eine Bühne ab (0, wenn schon vorhanden; freistehender Laufsteg ohne Treppe: Geländer-Rechner separat mit schräger Länge = 0). <strong>Bei neu zu bauender Bühne:</strong> sie übernimmt wie ein Boden/Treppenabsatz die letzte Steigung selbst — die Treppe braucht dann eine Steigung weniger.</p>
           </div>
 
           <div class="triangle-visual" id="treppeSkizze"></div>
           <div id="treppeZuschnittliste"></div>
           <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Treppe — Zuschnittliste', ['treppeZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
-          <p class="note">Grenzwerte: Steigung 140–190 mm (Gebäude allgemein) bzw. 140–200 mm (Wohngebäude ≤2 WE); Auftritt 260–370 mm (allgemein) bzw. 230–370 mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650 mm, ideal 630 mm. "Steigungen" = Anzahl der Stufen von Boden zu Boden; "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Alle Maße sind Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen (Rettungsweg, öffentliche Gebäude) zusätzlich die jeweilige Landesbauordnung prüfen.</p>
+          <p class="note">Grenzwerte: Steigung 140–190mm (allgemein) bzw. 140–200mm (Wohngebäude ≤2 WE); Auftritt 260–370mm (allgemein) bzw. 230–370mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650mm, ideal 630mm. "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen zusätzlich die Landesbauordnung prüfen.</p>
         </div>
 
         <div class="card">
@@ -1578,7 +1591,7 @@
             <div class="field"><label>Handlauf-Überstand am Anfang (mm)</label><input type="number" min="0" id="glUeberstandStart" step="1" value="0" placeholder="0 = kein Überstand"></div>
             <div class="field"><label>Handlauf-Überstand am Ende (mm)</label><input type="number" min="0" id="glUeberstandEnde" step="1" value="0" placeholder="0 = kein Überstand"></div>
           </div>
-          <p class="note" style="margin-top:6px;">Reiner Handlauf-Überstand vor dem ersten bzw. hinter dem letzten Pfosten (z.B. Griffverlängerung am Treppenfuß oder überm Podest) — zählt in beiden Fällen NICHT zur Pfostenanzahl/-verteilung, kommt zusätzlich obendrauf. Eingabe jeweils horizontal gemessen (einfacher mit Wasserwaage/Maßband).</p>
+          <p class="note" style="margin-top:6px;">Reiner Handlauf-Überstand vor dem ersten bzw. hinter dem letzten Pfosten — zählt NICHT zur Pfostenanzahl/-verteilung, kommt zusätzlich obendrauf. Eingabe horizontal gemessen.</p>
 
           <div class="row3" style="margin-top:12px;">
             <div class="field"><label>Rohrart</label>
@@ -1614,7 +1627,7 @@
           <div class="triangle-visual gl-visual-wrap" id="glSkizzeWrap"><div id="glSkizze"></div></div>
           <div id="glZuschnittliste"></div>
           <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Geländer — Zuschnittliste', ['glZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
-          <p class="note">Pfosten werden ausschließlich über die reine Schräge verteilt — waagerechte Verlängerung und Handlauf-Überstand ändern die Pfostenzahl/-lage nicht. Bei Industrie max. 1500 mm Pfostenabstand (Mittellinie) einhalten. <strong>Farbcodierung der Bemaßung</strong> (fest, unabhängig vom gewählten Farbthema): Gold = Geländerhöhe, Cyan = Schräge/Winkel, Amber = waagerechte Verlängerung, Violett = Überstand, Grün = Pfostenabstände. Zeichnung mit +/− zoombar und per Fingerwisch verschiebbar (Smartphone), ersetzt aber keine Freigabezeichnung für genehmigungspflichtige Anlagen — Rohr-Ø/Kantenlängen sind vereinfachte Bauhilfe, keine statische Bemessung der Wandstärke.</p>
+          <p class="note">Pfosten werden nur über die Schräge verteilt — waagerechte Verlängerung/Überstand ändern die Pfostenzahl nicht. Bei Industrie max. 1500 mm Pfostenabstand einhalten. <strong>Farbcodierung</strong> (fest): Gold=Höhe, Cyan=Schräge/Winkel, Amber=waagerechte Verlängerung, Violett=Überstand, Grün=Pfostenabstände. Zeichnung zoombar/verschiebbar, ersetzt aber keine Freigabezeichnung — Maße sind vereinfachte Bauhilfe, keine statische Bemessung.</p>
         </div>
 
         <details class="card collapsible">
@@ -1633,8 +1646,8 @@
               <tr><td>Holmlast Handlauf</td><td class="mono" data-label="Privat/Wohnbau">—</td><td class="mono" data-label="Arbeitsstätten">—</td><td class="mono" data-label="Industrie">1,0 kN/m (Wartungszugänge: mind. 0,5 kN/m)</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Das erklärt auch, warum in der Industrie fast ausschließlich Knieleisten zu sehen sind:</strong> Bei Maschinenzugängen, Bühnen und Laufstegen nach DIN EN ISO 14122-3 ist die Knieleiste zwingend (nicht nur eine Option wie im Wohn- oder Bürobau), und die Geländerhöhe liegt mit ≥110 cm auch höher als die 90 cm im privaten Treppenbau. Die 500-mm-Abstandsregel ist in beiden Regelwerken (ASR und ISO 14122-3) fast identisch, stammt aber aus unterschiedlichen Normen mit unterschiedlichem Geltungsbereich.</p>
-          <p class="note">Öffnungen im Geländer allgemein: DIN 18065 fordert max. 12 cm Kugeldurchgang bis ca. 70 cm Höhe (wo Kinder Zugang haben), max. 6 cm direkt an der Stufen-/Podestkante. Bei genehmigungspflichtigen oder gewerblichen Anlagen vor der Ausführung immer mit Bauamt, Berufsgenossenschaft bzw. einem Sicherheitsingenieur abstimmen — diese Tabelle ersetzt keine Einzelfallprüfung.</p>
+          <p class="note"><strong>Das erklärt auch, warum in der Industrie fast nur Knieleisten zu sehen sind:</strong> Bei Maschinenzugängen, Bühnen und Laufstegen nach DIN EN ISO 14122-3 ist die Knieleiste zwingend (nicht optional wie im Wohnbau), Geländerhöhe liegt mit ≥110cm auch höher als die 90cm im privaten Treppenbau. Die 500mm-Abstandsregel ist in ASR und ISO 14122-3 fast identisch, stammt aber aus unterschiedlichen Normen.</p>
+          <p class="note">Öffnungen im Geländer: DIN 18065 fordert max. 12cm Kugeldurchgang bis ca. 70cm Höhe (Kinderzugang), max. 6cm direkt an der Stufen-/Podestkante. Bei genehmigungspflichtigen/gewerblichen Anlagen vor Ausführung mit Bauamt, Berufsgenossenschaft oder Sicherheitsingenieur abstimmen.</p>
           </div>
         </details>
 
@@ -1648,7 +1661,7 @@
             <button class="btn secondary" onclick="komplettZoomReset()" type="button">Zurücksetzen</button>
           </div>
           <div class="triangle-visual gl-visual-wrap" id="komplettSkizzeWrap"><div id="komplettSkizze"></div></div>
-          <p class="note">Setzt voraus, dass oben sowohl eine Treppen-Karte angeklickt als auch das Geländer einmal gezeichnet wurde. Die schräge Länge/Höhe des Geländers wird für diese Zeichnung automatisch von der ausgewählten Treppe übernommen, damit beide Teile exakt zueinander passen — waagerechte Verlängerung, Höhe, Pfostenanzahl und Knieleiste bleiben wie im Geländer-Rechner eingestellt. Reine Kontrollzeichnung, ob beide Teile zusammenpassen — die Bauteillisten stehen jeweils separat bei Treppe und bei Geländer oben.</p>
+          <p class="note">Setzt voraus, dass oben eine Treppen-Karte angeklickt und das Geländer einmal gezeichnet wurde. Schräge Länge/Höhe werden automatisch von der Treppe übernommen, waagerechte Verlängerung/Höhe/Pfostenanzahl/Knieleiste bleiben wie im Geländer-Rechner eingestellt. Reine Kontrollzeichnung — die Bauteillisten stehen separat bei Treppe und Geländer.</p>
         </div>
       </div>
 
@@ -1728,7 +1741,7 @@
             <div class="item"><div class="rlabel">Volumen</div><div class="rvalue" id="vgVolumen">—</div></div>
             <div class="item"><div class="rlabel">Gewicht</div><div class="rvalue" id="vgGewicht">—</div></div>
           </div>
-          <p class="note">Tipp für Glas/Platten: Länge × Breite als Fläche eingeben, Tiefe = Materialdicke (z.B. 6 mm bei Fensterglas). Schüttdichten sind Richtwerte für trockenes, loses Material — nasses oder verdichtetes Material kann 10–20% schwerer sein. Für Statik-relevante Anwendungen die Herstellerangabe bzw. einen Baustoffhändler heranziehen.</p>
+          <p class="note">Tipp für Glas/Platten: Länge × Breite als Fläche eingeben, Tiefe = Materialdicke (z.B. 6mm bei Fensterglas). Schüttdichten sind Richtwerte für trockenes, loses Material — nasses/verdichtetes Material kann 10–20% schwerer sein. Für Statik-relevante Anwendungen Herstellerangabe bzw. Baustoffhändler heranziehen.</p>
         </div>
       </div>
 
@@ -1783,7 +1796,7 @@
             <div class="item"><div class="rlabel" id="msOutLabelB">Menge B</div><div class="rvalue" id="msOutB">—</div></div>
             <div class="item" id="msOutItemC" style="display:none;"><div class="rlabel" id="msOutLabelC">Menge C</div><div class="rvalue" id="msOutC">—</div></div>
           </div>
-          <p class="note"><strong>Wichtig:</strong> "Mauermörtel 1:4" und "Beton 1:2:3" sind vereinfachte Faustformel-Verhältnisse für unkritische, nicht tragende Anwendungen (z.B. Gartenmauer, Ausbesserung). Für tragende/statisch relevante Betonbauteile immer Werksbeton (Transportbeton) nach Festigkeitsklasse (z.B. C20/25) verwenden oder die Mischungsrezeptur nach DIN 1045 vom Fachplaner vorgeben lassen — hier reicht keine Faustformel.</p>
+          <p class="note"><strong>Wichtig:</strong> "Mauermörtel 1:4" und "Beton 1:2:3" sind vereinfachte Faustformeln für unkritische, nicht tragende Anwendungen (z.B. Gartenmauer). Für tragende Betonbauteile immer Werksbeton nach Festigkeitsklasse (z.B. C20/25) verwenden oder die Rezeptur nach DIN 1045 vom Fachplaner vorgeben lassen.</p>
         </div>
       </div>
 
@@ -1839,7 +1852,7 @@
             <div class="item"><div class="rlabel">MwSt.-Betrag</div><div class="rvalue" id="kalkMwstBetrag">—</div></div>
             <div class="item"><div class="rlabel">Verkaufspreis brutto (Endpreis)</div><div class="rvalue" id="kalkBrutto">—</div></div>
           </div>
-          <p class="note">Kosten gesamt = Material + Lohn. Verkaufspreis netto = Kosten × (1 + Aufschlag/100). Gewinn = Verkaufspreis netto − Kosten. Verkaufspreis brutto = Verkaufspreis netto + MwSt. Dient der schnellen Groborientierung — für verbindliche Angebote die eigene, vollständige Kalkulation (inkl. Gemeinkosten, Wagnis, Fahrtkosten) heranziehen.</p>
+          <p class="note">Kosten gesamt = Material + Lohn. Verkaufspreis netto = Kosten × (1 + Aufschlag/100). Gewinn = Verkaufspreis netto − Kosten. Verkaufspreis brutto = netto + MwSt. Für verbindliche Angebote die eigene, vollständige Kalkulation (inkl. Gemeinkosten, Wagnis, Fahrtkosten) heranziehen.</p>
         </div>
       </div>
 
@@ -1877,15 +1890,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gewinde')"><span class="pt-dot"></span>Rohrgewinde (Whitworth / BSP) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gewinde')"><span class="pt-dot"></span><span style="flex:1;">Rohrgewinde (Whitworth / BSP)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gefaelle')"><span class="pt-dot"></span>Gefälle-Rechner →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-rohrbogen')"><span class="pt-dot"></span>Rohrbogen-Rechner →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-durchfluss')"><span class="pt-dot"></span>Durchflussmenge / Rohrquerschnitt →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gefaelle')"><span class="pt-dot"></span><span style="flex:1;">Gefälle-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-rohrbogen')"><span class="pt-dot"></span><span style="flex:1;">Rohrbogen-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-durchfluss')"><span class="pt-dot"></span><span style="flex:1;">Durchflussmenge / Rohrquerschnitt</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -1906,7 +1919,7 @@
             <div class="item"><div class="rlabel">Schenkellänge je Seite</div><div class="rvalue" id="rbSchenkel">—</div></div>
           </div>
           <div class="triangle-visual" id="rohrbogenVisual"></div>
-          <p class="note">Bogenlänge (Materialbedarf im Bogen) = R × π × α/180. Schenkellänge/Tangentenlänge (Abstand vom theoretischen Schnittpunkt der Schenkel zum Bogenanfang) = R × tan(α/2). Bei sehr engem Biegeradius (z.B. Handbiegung mit Biegefeder) verschiebt sich die neutrale Faser nach innen und das Rohr kann etwas abflachen — deshalb wird in der Praxis oft mit ca. 5% kürzerer Bogenlänge gerechnet. Mindest-Biegeradien hängen von Rohrmaterial, -durchmesser und Biegewerkzeug ab — Herstellerangabe des Biegegeräts/Rohrs beachten.</p>
+          <p class="note">Bogenlänge = R × π × α/180. Schenkellänge (Abstand vom Schnittpunkt der Schenkel zum Bogenanfang) = R × tan(α/2). Bei sehr engem Biegeradius verschiebt sich die neutrale Faser nach innen, das Rohr kann abflachen — deshalb in der Praxis oft mit ca. 5% kürzerer Bogenlänge rechnen. Mindest-Biegeradien hängen von Material, Durchmesser und Biegewerkzeug ab.</p>
         </div>
       </div>
 
@@ -1934,7 +1947,7 @@
               <tr><td>Empfohlenes Maximum (Hausanschlussleitungen)</td><td class="mono">ca. 5 % — darüber sinkt die Schleppkraft für Feststoffe ("Austrocknungseffekt")</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Wichtig:</strong> Die genauen Mindestwerte unterscheiden sich in verschiedenen Quellen leicht, je nachdem ob eine Leitung belüftet/unbelüftet ist, welcher Leitungstyp (Anschluss-, Sammel- oder Grundleitung) vorliegt und welche Norm-Ausgabe (DIN 1986-100 vs. DIN EN 12056-2) zugrunde gelegt wird. Diese Tabelle ist eine Orientierung für die Vorplanung — für die verbindliche Ausführung die aktuelle Normausgabe bzw. die Bemessungstabelle des Rohrherstellers heranziehen. Zusätzlich muss die Fließgeschwindigkeit mind. 0,5 m/s betragen, damit sich keine Ablagerungen bilden.</p>
+          <p class="note"><strong>Wichtig:</strong> Die Mindestwerte variieren leicht je Quelle, Leitungstyp und Norm-Ausgabe (DIN 1986-100 vs. DIN EN 12056-2). Diese Tabelle ist eine Orientierung für die Vorplanung — für die verbindliche Ausführung die aktuelle Normausgabe bzw. Bemessungstabelle des Rohrherstellers nutzen. Zusätzlich muss die Fließgeschwindigkeit mind. 0,5 m/s betragen, damit sich keine Ablagerungen bilden.</p>
         </div>
       </div>
 
@@ -1956,7 +1969,7 @@
               <tr><td class="mono" data-label="Bezeichnung">G 2"</td><td class="mono" data-label="Außen-Ø">59,614 mm</td><td class="mono" data-label="Kern-Ø">56,656 mm</td><td class="mono" data-label="Gänge/Zoll">11</td></tr>
             </table>
           </div>
-          <p class="note"><strong>G vs. R vs. Rp:</strong> G-Gewinde ist zylindrisch und dichtet nicht im Gewinde selbst (braucht Flachdichtung/O-Ring) — üblich bei Verschraubungen, die sich lösen lassen sollen. R-Gewinde ist konisch (Außengewinde), Rp zylindrisch (Innengewinde) — die Kombination R/Rp dichtet direkt im Gewinde (z.B. mit Hanf oder Gewindedichtmittel) und wird meist bei fest verschraubten Rohrverbindungen verwendet. Durchmesser und Steigung sind bei G, R und Rp identisch — nur die Form (zylindrisch/konisch) und Dichtwirkung unterscheiden sich.</p>
+          <p class="note"><strong>G vs. R vs. Rp:</strong> G-Gewinde ist zylindrisch, dichtet nicht im Gewinde selbst (braucht Flachdichtung/O-Ring). R-Gewinde ist konisch, Rp zylindrisch — die Kombination R/Rp dichtet direkt im Gewinde (z.B. mit Hanf), üblich bei fest verschraubten Rohrverbindungen. Durchmesser/Steigung sind bei allen dreien identisch, nur Form und Dichtwirkung unterscheiden sich.</p>
         </div>
       </div>
 
@@ -1983,7 +1996,7 @@
               <tr><td>Abwasserleitungen (min., gegen Ablagerungen)</td><td class="mono">mind. 0,5 m/s</td></tr>
             </table>
           </div>
-          <p class="note">Formel: Q = A × v, mit A = π × (d/2)². Grenzwerte für Trinkwasser-Fließgeschwindigkeit nach DIN 1988-300/DIN EN 806-3 — die maximale Geschwindigkeit ist dabei nur eine Begrenzung, nicht der eigentliche Dimensionierungsparameter (die vollständige Rohrnetzberechnung nach DIN 1988-300 berücksichtigt zusätzlich Druckverlust/Rohrreibung über die gesamte Fließstrecke). Dieser Rechner prüft nur die reine Durchfluss-Geometrie einer einzelnen Leitung, keine komplette Netzberechnung.</p>
+          <p class="note">Formel: Q = A × v, mit A = π × (d/2)². Grenzwerte für Trinkwasser-Fließgeschwindigkeit nach DIN 1988-300/DIN EN 806-3 — die maximale Geschwindigkeit ist nur eine Begrenzung, nicht der eigentliche Dimensionierungsparameter. Dieser Rechner prüft nur die Durchfluss-Geometrie einer einzelnen Leitung, keine komplette Netzberechnung.</p>
         </div>
       </div>
     </section>
@@ -2003,14 +2016,14 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('forst','forst-anschlagmittel')"><span class="pt-dot"></span>Anschlagmittel &amp; Seilzug — Grundregeln →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('forst','forst-anschlagmittel')"><span class="pt-dot"></span><span style="flex:1;">Anschlagmittel &amp; Seilzug — Grundregeln</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('forst','f-gewicht')"><span class="pt-dot"></span>Holzgewicht-Rechner →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('forst','f-raummeter')"><span class="pt-dot"></span>Raummeter ↔ Festmeter ↔ Schüttraummeter →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('forst','f-gewicht')"><span class="pt-dot"></span><span style="flex:1;">Holzgewicht-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('forst','f-raummeter')"><span class="pt-dot"></span><span style="flex:1;">Raummeter ↔ Festmeter ↔ Schüttraummeter</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2051,7 +2064,7 @@
               <tbody id="holzartenTable"></tbody>
             </table>
           </div>
-          <p class="note">Die Rohdichte von Holz hängt stark vom Wassergehalt ab: frisch geschlagenes Holz kann 60–80% Feuchte enthalten, abgelagertes/lufttrockenes Holz nur noch 12–20%. Zusätzlich schwankt die Dichte je nach Wuchsgebiet, Jahreszeit und Standort um bis zu ±15%. Werte sind Durchschnittswerte aus mehreren Fachquellen und ersetzen keine Waage.</p>
+          <p class="note">Die Rohdichte von Holz hängt stark vom Wassergehalt ab: frisch geschlagenes Holz kann 60–80% Feuchte enthalten, abgelagertes nur noch 12–20%. Zusätzlich schwankt die Dichte je nach Wuchsgebiet und Standort um bis zu ±15%. Werte sind Durchschnittswerte und ersetzen keine Waage.</p>
         </div>
       </div>
 
@@ -2104,7 +2117,7 @@
             <li class="placeholder-task"><span class="pt-dot"></span>Gespleißte Seile haben nur ca. 90% der Tragfähigkeit eines ungespleißten Seils gleicher Bauart</li>
             <li class="placeholder-task"><span class="pt-dot"></span>Neigungswinkel bis ca. 7° dürfen bei der Berechnung vernachlässigt werden, darüber wird's schnell kritisch</li>
           </ul>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Anschlagmittel und Seilzugtechnik im Forstbetrieb sind hochgefährlich bei Fehleinschätzung (Bruchstücke werden bei Seilbruch in Zugrichtung katapultiert). Die exakten Belastungstabellen für Rundstahlketten, Drahtseile, Rundschlingen und Hebebänder stehen in der DGUV Information 209-021 — dort nach Durchmesser, Strangzahl und Neigungswinkel nachschlagen, nicht schätzen. Diese Seite vermittelt nur die Grundprinzipien, ersetzt keine Unterweisung und keine Herstellerangabe.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Anschlagmittel/Seilzugtechnik sind bei Fehleinschätzung hochgefährlich (Bruchstücke werden bei Seilbruch in Zugrichtung katapultiert). Die exakten Belastungstabellen stehen in der DGUV Information 209-021 — dort nach Durchmesser, Strangzahl und Neigungswinkel nachschlagen, nicht schätzen. Diese Seite vermittelt nur Grundprinzipien, ersetzt keine Unterweisung.</p>
         </div>
       </div>
     </section>
@@ -2124,15 +2137,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('dachdecker','dachdecker-neigung')"><span class="pt-dot"></span>Mindestdachneigung je Eindeckungsart →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('dachdecker','dachdecker-neigung')"><span class="pt-dot"></span><span style="flex:1;">Mindestdachneigung je Eindeckungsart</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-trig','','dachdecker')"><span class="pt-dot"></span>Dachfläche inkl. Neigungszuschlag (Dachneigungs-Rechner) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('dachdecker','dachdecker-lattung')"><span class="pt-dot"></span>Lattenabstand berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','dachziegel','dachdecker')"><span class="pt-dot"></span>Ziegelbedarf pro m² (nach Dachneigung &amp; Lattenabstand) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-trig','','dachdecker')"><span class="pt-dot"></span><span style="flex:1;">Dachfläche inkl. Neigungszuschlag (Dachneigungs-Rechner)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('dachdecker','dachdecker-lattung')"><span class="pt-dot"></span><span style="flex:1;">Lattenabstand berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','dachziegel','dachdecker')"><span class="pt-dot"></span><span style="flex:1;">Ziegelbedarf pro m² (nach Dachneigung &amp; Lattenabstand)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2153,7 +2166,7 @@
               <tr><td data-label="Eindeckung">Flachdach mit Bitumen-/Kunststoffbahnen</td><td class="mono" data-label="Neigung">unter 5° nur mit vollflächig verschweißter Abdichtung + Notentwässerung nach DIN EN 12056-3</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Diese Werte sind grobe Richtwerte — die verbindliche Mindestneigung hängt vom konkreten Profil/Modell, der Überdeckung, den Querstößen und den Herstellervorgaben ab und ist in den Fachregeln des Deutschen Dachdeckerhandwerks bzw. der Verlegeanleitung des jeweiligen Produkts verbindlich geregelt. Unterhalb der Regeldachneigung, aber oberhalb der Mindestdachneigung, ist meist ein zusätzliches wasserdichtes Unterdach vorgeschrieben. Bei Unterschreitung der Mindestneigung des gewählten Systems muss entweder die Konstruktion angepasst oder eine andere Eindeckungsart gewählt werden — vor der Materialwahl immer prüfen, nicht erst danach.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Richtwerte — die verbindliche Mindestneigung hängt vom Profil, der Überdeckung und den Herstellervorgaben ab, geregelt in den Fachregeln des Dachdeckerhandwerks bzw. der Verlegeanleitung. Zwischen Mindest- und Regeldachneigung ist meist ein zusätzliches Unterdach vorgeschrieben. Bei Unterschreitung der Mindestneigung: Konstruktion anpassen oder andere Eindeckungsart wählen — vor der Materialwahl prüfen.</p>
         </div>
       </div>
 
@@ -2171,7 +2184,7 @@
           <div class="readout" id="laOut">
             <div class="item"><div class="rlabel">Lattenabstand</div><div class="rvalue" id="laErgebnis">—</div></div>
           </div>
-          <p class="note">Der berechnete Lattenabstand muss innerhalb der vom Ziegelhersteller angegebenen min./max. Decklänge liegen (häufig ca. 330–380 mm, je nach Modell) — sonst passt die Deckung nicht. Bei Abweichung die Sparrenlänge, den Überstand oder die Reihenzahl anpassen. Immer die Verlegeanleitung des konkret verwendeten Ziegels prüfen.</p>
+          <p class="note">Der berechnete Lattenabstand muss innerhalb der vom Hersteller angegebenen min./max. Decklänge liegen (häufig ca. 330–380mm, je nach Modell) — sonst passt die Deckung nicht. Bei Abweichung Sparrenlänge, Überstand oder Reihenzahl anpassen. Immer die Verlegeanleitung des Ziegels prüfen.</p>
         </div>
         <div class="card">
           <h3>Dachlatten-Querschnitt <span class="tag">Faustregel</span></h3>
@@ -2183,7 +2196,7 @@
               <tr><td class="mono" data-label="Querschnitt">40 × 60 mm</td><td data-label="Geeignet für">Schwere Bedachung (Beton-Dachstein, Naturschiefer) oder Sparrenabstand über 90 cm</td></tr>
             </table>
           </div>
-          <p class="note">Tragende Dachlatten benötigen Sortierklasse S10 (bei großen Sparrenabständen/schwerer Bedachung eher S13). Lattenabstand (horizontal entlang der Dachschräge) nicht mit Sparrenabstand (Achsmaß zwischen den Sparren) verwechseln — das sind zwei verschiedene Maße.</p>
+          <p class="note">Tragende Dachlatten benötigen Sortierklasse S10 (bei großen Sparrenabständen eher S13). Lattenabstand (entlang der Dachschräge) nicht mit Sparrenabstand (Achsmaß zwischen Sparren) verwechseln.</p>
         </div>
       </div>
     </section>
@@ -2203,14 +2216,14 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('estrichleger','estrichleger-trocknung')"><span class="pt-dot"></span>Trocknungszeit-Richtwerte je Estrichart →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('estrichleger','estrichleger-fugen')"><span class="pt-dot"></span>Randdämmstreifen &amp; Dehnfugen-Regeln →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('estrichleger','estrichleger-trocknung')"><span class="pt-dot"></span><span style="flex:1;">Trocknungszeit-Richtwerte je Estrichart</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('estrichleger','estrichleger-fugen')"><span class="pt-dot"></span><span style="flex:1;">Randdämmstreifen &amp; Dehnfugen-Regeln</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'zementestrich', 'estrichleger')"><span class="pt-dot"></span>Estrich-Materialbedarf nach Aufbauhöhe und Fläche →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'zementestrich', 'estrichleger')"><span class="pt-dot"></span><span style="flex:1;">Estrich-Materialbedarf nach Aufbauhöhe und Fläche</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2224,7 +2237,7 @@
               <tr><td>Anhydrit-/Fließestrich (CA)</td><td class="mono">begehbar nach 1–2 Tagen, belegreif oft schon nach ca. 14 Tagen</td></tr>
             </table>
           </div>
-          <p class="note">Werte gelten für normale Raumbedingungen (ca. 20°C, 65% relative Luftfeuchte) ohne forcierte Trocknung. Heizestrich, Schichtdicke, Belüftung und Belag beeinflussen die tatsächliche Trocknungszeit erheblich — die Belegreife sollte vor der Verlegung eines Bodenbelags immer mit einer CM-Messung (Calciumcarbid-Methode) durch den Estrichleger selbst geprüft werden, nicht nur anhand von Tabellenwerten geschätzt.</p>
+          <p class="note">Werte gelten für normale Raumbedingungen (ca. 20°C, 65% Luftfeuchte) ohne forcierte Trocknung. Heizestrich, Schichtdicke, Belüftung und Belag beeinflussen die tatsächliche Zeit erheblich — die Belegreife vor der Verlegung immer per CM-Messung prüfen, nicht nur anhand der Tabelle schätzen.</p>
         </div>
       </div>
 
@@ -2240,7 +2253,7 @@
               <tr><td data-label="Estrichart">Calciumsulfatestrich, beheizt</td><td class="mono" data-label="Seitenlänge">10 m</td><td class="mono" data-label="Feldgröße">—</td></tr>
             </table>
           </div>
-          <p class="note">Seitenverhältnis der Estrichfelder max. ca. 2:1 einhalten (stark längliche Felder reißen eher als annähernd quadratische). Fugen bei L-/U-förmigen Grundrissen immer von einspringenden Ecken ausgehen lassen — genau dort konzentriert sich die Spannung zuerst. Randdämmstreifen-Mindestdicke üblicherweise ab 8 mm (bei größeren Feldern oder starker Ausdehnung entsprechend dicker — die Herstellerangabe des jeweiligen Estrichs zugrunde legen, nicht pauschal 8 mm annehmen).</p>
+          <p class="note">Seitenverhältnis der Estrichfelder max. ca. 2:1 einhalten (längliche Felder reißen eher). Fugen bei L-/U-Grundrissen immer von einspringenden Ecken ausgehen lassen — dort konzentriert sich die Spannung zuerst. Randdämmstreifen-Mindestdicke üblich ab 8mm, bei größeren Feldern entsprechend dicker — Herstellerangabe zugrunde legen.</p>
         </div>
         <div class="card">
           <h3>Randdämmstreifen: Zweck &amp; Ausführung</h3>
@@ -2249,7 +2262,7 @@
             <li class="placeholder-task"><span class="pt-dot"></span>Bewegungsfreiheit für die Wärmeausdehnung des Estrichs (verhindert Spannungsrisse)</li>
             <li class="placeholder-task"><span class="pt-dot"></span>Trittschall-Entkopplung von Estrich/Belag zur Wand (verhindert Schallbrücken/Körperschallübertragung)</li>
           </ul>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig für die Praxis:</strong> Der Randdämmstreifen darf erst NACH dem fertigen Bodenbelag (Sockelleiste montiert) abgeschnitten werden, nicht schon direkt nach dem Estrich — sonst geht die Bewegungsfuge beim späteren Belag verloren. Bei großen fugenlosen Flächen (z.B. Hallen) kann ein doppelter Randstreifen nötig sein. Wer den Streifen fachgerecht abschneidet, ist im Zweifel vertraglich zu klären — meist der Verleger des Bodenbelags, da er die endgültige Aufbauhöhe kennt.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig für die Praxis:</strong> Der Randdämmstreifen darf erst NACH dem fertigen Bodenbelag abgeschnitten werden, nicht schon nach dem Estrich — sonst geht die Bewegungsfuge verloren. Bei großen fugenlosen Flächen kann ein doppelter Randstreifen nötig sein. Wer ihn abschneidet, meist der Verleger, da er die Aufbauhöhe kennt — im Zweifel vertraglich klären.</p>
         </div>
       </div>
     </section>
@@ -2269,15 +2282,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('fliesenleger','fliesenleger-fugen')"><span class="pt-dot"></span>Fugenbreite nach Fliesenformat →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('fliesenleger','fliesenleger-fugen')"><span class="pt-dot"></span><span style="flex:1;">Fugenbreite nach Fliesenformat</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesen','fliesenleger')"><span class="pt-dot"></span>Fliesenbedarf für eine Fläche berechnen (inkl. Verschnittzuschlag) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesenkleber','fliesenleger')"><span class="pt-dot"></span>Fliesenkleber-Bedarf berechnen (nach Zahnung) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('fliesenleger','fliesenleger-fugenmasse')"><span class="pt-dot"></span>Fugenmasse-Bedarf berechnen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesen','fliesenleger')"><span class="pt-dot"></span><span style="flex:1;">Fliesenbedarf für eine Fläche berechnen (inkl. Verschnittzuschlag)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','fliesenkleber','fliesenleger')"><span class="pt-dot"></span><span style="flex:1;">Fliesenkleber-Bedarf berechnen (nach Zahnung)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('fliesenleger','fliesenleger-fugenmasse')"><span class="pt-dot"></span><span style="flex:1;">Fugenmasse-Bedarf berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2293,7 +2306,7 @@
               <tr><td data-label="Fliesenart">Großformat-Fliesen</td><td class="mono" data-label="Kantenlänge">über 60 cm</td><td class="mono" data-label="Fugenbreite">mind. 5 mm</td></tr>
             </table>
           </div>
-          <p class="note">Bei großformatigen Fliesen (ab ca. 60×60 cm) und bei beheizten Fußböden empfiehlt sich eine durchlaufende Kreuzfuge, damit sich Ausdehnung ungestört abbauen kann — sonst drohen Risse oder Haftverbundstörungen an den Rändern. Die exakte Fugenbreite sollte vor Arbeitsbeginn mit dem Bauherrn anhand der tatsächlich verwendeten Fliesen abgestimmt werden; diese Tabelle ist eine normbasierte Orientierung, kein Ersatz für die Herstellerangabe des jeweiligen Fugenmaterials.</p>
+          <p class="note">Bei großformatigen Fliesen (ab ca. 60×60cm) und beheizten Fußböden empfiehlt sich eine durchlaufende Kreuzfuge, damit sich Ausdehnung abbauen kann — sonst drohen Risse. Fugenbreite vorab mit dem Bauherrn abstimmen; diese Tabelle ist eine normbasierte Orientierung, kein Ersatz für die Herstellerangabe.</p>
         </div>
       </div>
 
@@ -2317,7 +2330,7 @@
             <div class="item"><div class="rlabel">Gesamtbedarf</div><div class="rvalue" id="fmGesamt">—</div></div>
             <div class="item"><div class="rlabel">≈ Gebinde</div><div class="rvalue" id="fmSaecke">—</div></div>
           </div>
-          <p class="note">Formel: kg/m² = ((L+B) / (L×B)) × Fugenbreite × Fugentiefe × 1,6 — mit L, B, Fugenbreite und Fugentiefe in mm. Der Faktor 1,6 kg/dm³ ist die typische Rohdichte zementärer Fugenmörtel (Richtwert, je nach Hersteller 1,6–1,8 — auf dem Gebinde nachschauen und bei Abweichung die eigene Zahl einsetzen). Fugentiefe entspricht in der Praxis meist der Fliesendicke. Epoxidharz-Fugenmassen (Nassräume, Pools) haben eine andere Dichte — dort die Herstellerangabe verwenden statt dieser Formel.</p>
+          <p class="note">Formel: kg/m² = ((L+B) / (L×B)) × Fugenbreite × Fugentiefe × 1,6 (mm). Faktor 1,6 kg/dm³ ist typische Rohdichte zementärer Fugenmörtel (Richtwert 1,6–1,8, auf dem Gebinde nachschauen). Fugentiefe entspricht meist der Fliesendicke. Epoxidharz-Fugenmassen haben eine andere Dichte — dort die Herstellerangabe nutzen.</p>
         </div>
       </div>
     </section>
@@ -2337,17 +2350,17 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('galabau','galabau-aufbau')"><span class="pt-dot"></span>Pflasteraufbau-Richtwerte →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('galabau','galabau-pflanzung')"><span class="pt-dot"></span>Pflanzgruben &amp; Drainage-Grundlagen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('galabau','galabau-aufbau')"><span class="pt-dot"></span><span style="flex:1;">Pflasteraufbau-Richtwerte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('galabau','galabau-pflanzung')"><span class="pt-dot"></span><span style="flex:1;">Pflanzgruben &amp; Drainage-Grundlagen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span>Erdaushub-Volumen berechnen (Länge × Breite × Tiefe) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'kies', 'galabau')"><span class="pt-dot"></span>Kies-/Schüttgutmenge inkl. Gewicht nach Schüttdichte →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','galabau')"><span class="pt-dot"></span>Pflasterstein-Bedarf nach genormtem Steinformat →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'rasen', 'galabau')"><span class="pt-dot"></span>Rasen-/Substratmenge berechnen (Fläche × Schichtdicke, inkl. Gewicht) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'galabau')"><span class="pt-dot"></span><span style="flex:1;">Erdaushub-Volumen berechnen (Länge × Breite × Tiefe)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'kies', 'galabau')"><span class="pt-dot"></span><span style="flex:1;">Kies-/Schüttgutmenge inkl. Gewicht nach Schüttdichte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','galabau')"><span class="pt-dot"></span><span style="flex:1;">Pflasterstein-Bedarf nach genormtem Steinformat</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'rasen', 'galabau')"><span class="pt-dot"></span><span style="flex:1;">Rasen-/Substratmenge berechnen (Fläche × Schichtdicke, inkl. Gewicht)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2363,7 +2376,7 @@
               <tr><td data-label="Nutzung">LKW-befahren (Straße, Platz)</td><td class="mono" data-label="Tragschicht">ca. 50 cm</td></tr>
             </table>
           </div>
-          <p class="note">Die Tragschicht (meist Splitt/Schotter 0/32) wird in Lagen von max. 20 cm mit der Rüttelplatte verdichtet — eine 40-cm-Tragschicht also in zwei Schritten. Darauf folgt eine ca. 4 cm dicke Bettungsschicht (gebrochener Splitt, Körnung 0/5, bei Großsteinpflaster 0/8) — kein reiner Sand, sonst wird das Fugenmaterial ausgespült. Die Tragschicht sollte ringsum ca. 60 cm breiter als die eigentliche Fläche sein (für Randsteine/Einfassung).</p>
+          <p class="note">Tragschicht (meist Splitt/Schotter 0/32) in Lagen von max. 20cm verdichten. Darauf ca. 4cm Bettungsschicht (gebrochener Splitt 0/5, bei Großsteinpflaster 0/8) — kein reiner Sand, sonst wird das Fugenmaterial ausgespült. Tragschicht sollte ringsum ca. 60cm breiter als die Fläche sein (für Randsteine/Einfassung).</p>
         </div>
         <div class="card">
           <h3>Fugenbreite bei versiegelten Pflasterflächen</h3>
@@ -2382,7 +2395,7 @@
               <tr><td data-label="Pflanzgut">Stadtbäume (FLL-Richtlinie, verdichtete Böden)</td><td class="mono" data-label="Tiefe">mind. 1,5 m</td><td class="mono" data-label="Volumen">mind. 12 m³ nutzbarer Wurzelraum</td></tr>
             </table>
           </div>
-          <p class="note">Faustregel Durchmesser: Pflanzgrube mind. das 1,5-fache des Ballendurchmessers — je großzügiger, desto besser durchwurzelbar. Ober- und Unterboden beim Aushub getrennt lagern, Unterboden vor dem Wiederverfüllen lockern (verhindert den "Blumentopfeffekt", bei dem Wurzeln nicht über die Pflanzgrube hinauswachsen). Pflanztiefe = wie zuvor in der Baumschule, dabei die Pflanze 5–10 cm höher setzen als final gewünscht (Setzung des gelockerten Bodens einkalkulieren). Regelwerke: FLL, DIN 18920, RAS-LP 4 — bei Straßenbäumen im verdichteten Stadtboden zusätzlich Wurzelraum-Erweiterung (Rigolen, Baumsubstrat-Systeme) einplanen.</p>
+          <p class="note">Faustregel Durchmesser: mind. 1,5-faches des Ballendurchmessers. Ober-/Unterboden beim Aushub getrennt lagern, Unterboden vor dem Verfüllen lockern (verhindert den "Blumentopfeffekt" mit eingeschränktem Wurzelwachstum). Pflanztiefe wie in der Baumschule, Pflanze 5–10cm höher setzen (Setzung einkalkulieren). Regelwerke: FLL, DIN 18920, RAS-LP 4 — bei Straßenbäumen im verdichteten Stadtboden zusätzlich Wurzelraum-Erweiterung einplanen.</p>
         </div>
         <div class="card">
           <h3>Drainage-Grundlagen</h3>
@@ -2398,7 +2411,7 @@
               <tr><td>Max. Abstand paralleler Drainagestränge</td><td class="mono">5 m</td></tr>
             </table>
           </div>
-          <p class="note">Rohr wird komplett in Kies "eingebettet" (Faustregel: das Rohr schwimmt in der Kies-Hülle), darüber Filtervlies (Überlappung an Stößen mind. 10 cm), damit Feinanteile aus dem Boden die Schlitze nicht zusetzen. Ungeeignet als Kiesfüllung: Sand, Splitt, gebrochener Schotter — die enthalten zu viel Feinanteil und verschlämmen mit der Zeit. Unterhalb von 0,5 % Gefälle steht das Wasser im Rohr und die Drainage verstopft zunehmend. Einleitung ins Mischwassernetz ist in der Regel nicht zulässig — Ableitung in Sickerschacht/Rigole, Versickerungsmulde oder (mit Genehmigung) ins Regenwassernetz klären, bevor gebaut wird.</p>
+          <p class="note">Rohr komplett in Kies einbetten, darüber Filtervlies (Überlappung mind. 10cm), damit Feinanteile die Schlitze nicht zusetzen. Ungeeignet als Kiesfüllung: Sand, Splitt, gebrochener Schotter (zu viel Feinanteil, verschlämmt). Unter 0,5% Gefälle steht das Wasser im Rohr, die Drainage verstopft zunehmend. Einleitung ins Mischwassernetz idR nicht zulässig — Ableitung in Sickerschacht/Rigole oder Regenwassernetz vorab klären.</p>
         </div>
       </div>
     </section>
@@ -2418,15 +2431,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-dicken')"><span class="pt-dot"></span>Glasdicken-Faustregel →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-glasarten')"><span class="pt-dot"></span>Glasarten-Übersicht (Float/ESG/VSG) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-dicken')"><span class="pt-dot"></span><span style="flex:1;">Glasdicken-Faustregel</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-glasarten')"><span class="pt-dot"></span><span style="flex:1;">Glasarten-Übersicht (Float/ESG/VSG)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'glas', 'glaser')"><span class="pt-dot"></span>Glasgewicht berechnen (Fläche × Dicke × Dichte) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-zuschnitt')"><span class="pt-dot"></span>Zuschnitt-/Verschnittoptimierung →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'glas', 'glaser')"><span class="pt-dot"></span><span style="flex:1;">Glasgewicht berechnen (Fläche × Dicke × Dichte)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('glaser','glaser-zuschnitt')"><span class="pt-dot"></span><span style="flex:1;">Zuschnitt-/Verschnittoptimierung</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2443,7 +2456,7 @@
               <tr><td class="mono" data-label="Dicke">10–12 mm</td><td data-label="Verwendung">Sehr große Elemente, exponierte Lagen (z.B. Glasgeländer)</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Faustregel:</strong> Je größer die Fläche und je geringer die Auflage/Halterung, desto dicker das Glas. Für Schallschutz werden oft unterschiedliche Dicken kombiniert (z.B. 8 mm außen + 4 mm innen). <strong>Wichtig:</strong> Das sind grobe Orientierungswerte — bei sicherheitsrelevanten Anwendungen (Balkonverglasung, begehbares Glas, Brüstungen, Überkopfverglasung) ist eine statische Berechnung nach DIN 18008 zwingend vorgeschrieben, keine Faustregel ausreichend.</p>
+          <p class="note"><strong>Faustregel:</strong> Je größer die Fläche und je geringer die Auflage, desto dicker das Glas. Für Schallschutz oft unterschiedliche Dicken kombiniert (z.B. 8mm außen + 4mm innen). <strong>Wichtig:</strong> grobe Orientierungswerte — bei sicherheitsrelevanten Anwendungen (Balkonverglasung, begehbares Glas, Brüstungen, Überkopfverglasung) ist eine statische Berechnung nach DIN 18008 zwingend.</p>
         </div>
       </div>
 
@@ -2459,7 +2472,7 @@
               <tr><td data-label="Glasart">VSG (Verbund-Sicherheitsglas)</td><td data-label="Herstellung">Zwei oder mehr Glasscheiben mit reißfester Kunststofffolie (meist PVB) verklebt. Bei Bruch bleiben die Scherben an der Folie haften — kein Herausfallen.</td><td data-label="Einsatz">Überkopfverglasung, begehbares Glas, Brüstungen/Geländer, einbruchhemmende Verglasung, Fahrzeug-Frontscheiben</td></tr>
             </table>
           </div>
-          <p class="note">ESG lässt sich nach dem Vorspannen nicht mehr zuschneiden, bohren oder schleifen — alle Bearbeitung (Zuschnitt, Bohrungen, Kantenbearbeitung) muss vor dem thermischen Vorspannprozess erfolgen. Deshalb immer erst fertig zuschneiden/bearbeiten, dann zum Vorspannen geben. Bei sicherheitsrelevanten Anwendungen (Brüstung, Überkopf, begehbar) schreibt DIN 18008 vor, welche Glasart in welcher Kombination zulässig ist — diese Übersicht ersetzt keine Einzelfallprüfung nach der Norm.</p>
+          <p class="note">ESG lässt sich nach dem Vorspannen nicht mehr zuschneiden, bohren oder schleifen — alle Bearbeitung muss vorher erfolgen. Erst fertig zuschneiden/bearbeiten, dann zum Vorspannen geben. Bei sicherheitsrelevanten Anwendungen schreibt DIN 18008 vor, welche Glasart in welcher Kombination zulässig ist — diese Übersicht ersetzt keine Einzelfallprüfung.</p>
         </div>
       </div>
 
@@ -2496,7 +2509,7 @@
           </div>
           <div id="gzVisual"></div>
           <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Glaser — Zuschnittplan', ['gzOut','gzVisual'])">🖨️ Zuschnittplan als PDF <span class="pill warn">Premium</span></button>
-          <p class="note">Gleiches Schema-Verfahren wie beim Korpuszuschnitt (Tischler → Korpus-/Plattenzuschnitt): Teile werden zeilenweise, größtes zuerst, auf die Scheibe gepackt — praxisnah, aber nicht mathematisch optimal. "Nicht drehbar" bei gemustertem, bedrucktem oder beschichtetem Glas mit fester Richtung ankreuzen. <strong>Wichtig:</strong> Dieser Rechner plant nur die Flächenaufteilung — bei sicherheitsrelevanten Anwendungen (siehe Glasdicken-Faustregel oben) ersetzt das keine statische Berechnung nach DIN 18008, und Mindestrandabstände zu Bohrungen/Kanten sind hier nicht berücksichtigt.</p>
+          <p class="note">Gleiches Schema-Verfahren wie beim Tischler-Korpuszuschnitt: größte Teile zuerst gepackt — praxisnah, nicht mathematisch optimal. "Nicht drehbar" bei gemustertem/beschichtetem Glas mit fester Richtung. <strong>Wichtig:</strong> plant nur die Flächenaufteilung — ersetzt keine statische Berechnung nach DIN 18008, Mindestrandabstände zu Bohrungen/Kanten sind nicht berücksichtigt.</p>
         </div>
       </div>
     </section>
@@ -2517,16 +2530,16 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-drehmoment')"><span class="pt-dot"></span>Anzugsdrehmomente (Radschrauben) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-oel')"><span class="pt-dot"></span>Motoröl-Viskositätsklassen (SAE) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-reifenprofil')"><span class="pt-dot"></span>Reifen-Mindestprofiltiefe →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-drehmoment')"><span class="pt-dot"></span><span style="flex:1;">Anzugsdrehmomente (Radschrauben)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-oel')"><span class="pt-dot"></span><span style="flex:1;">Motoröl-Viskositätsklassen (SAE)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-reifenprofil')"><span class="pt-dot"></span><span style="flex:1;">Reifen-Mindestprofiltiefe</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-reifen')"><span class="pt-dot"></span>Reifengrößen-Rechner →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-uebersetzung')"><span class="pt-dot"></span>Übersetzungsverhältnis-Rechner →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-reifen')"><span class="pt-dot"></span><span style="flex:1;">Reifengrößen-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('kfz','kfz-uebersetzung')"><span class="pt-dot"></span><span style="flex:1;">Übersetzungsverhältnis-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2553,7 +2566,7 @@
             <div class="item"><div class="rlabel">Umfang-Differenz</div><div class="rvalue" id="rfDiff">—</div></div>
             <div class="item"><div class="rlabel">Tacho-Abweichung ca.</div><div class="rvalue" id="rfTacho">—</div></div>
           </div>
-          <p class="note">Faustregel für die Zulassung: Der Abrollumfang sollte um max. ±3% (manche ATU/TÜV-Quellen: ±2%) vom Originalmaß abweichen, sonst ist eine Eintragung/Einzelabnahme nötig. Diese Berechnung ist eine geometrische Näherung — für die verbindliche Zulassungsfähigkeit einer Reifen-/Felgenkombination immer das Gutachten (ABE/Teilegutachten) bzw. eine Prüforganisation (TÜV/DEKRA) heranziehen.</p>
+          <p class="note">Faustregel für die Zulassung: Der Abrollumfang sollte max. ±3% vom Originalmaß abweichen, sonst ist eine Eintragung/Einzelabnahme nötig. Geometrische Näherung — für die verbindliche Zulassungsfähigkeit einer Reifen-/Felgenkombination immer das Gutachten (ABE/Teilegutachten) bzw. TÜV/DEKRA heranziehen.</p>
         </div>
       </div>
 
@@ -2574,7 +2587,7 @@
               <tr><td>Große SUV / Transporter / schwere Limousinen</td><td class="mono">ca. 140–200 Nm</td></tr>
             </table>
           </div>
-          <p class="note">Nach einem Radwechsel die Radschrauben nach 50–100 km nochmals mit dem Drehmomentschlüssel nachziehen (Setzeffekt). Über Kreuz anziehen, Gewinde nicht fetten oder ölen (verfälscht das Drehmoment). Alufelgen reagieren empfindlicher auf zu hohes Drehmoment als Stahlfelgen — im Zweifel immer den niedrigeren Herstellerwert verwenden.</p>
+          <p class="note">Nach einem Radwechsel die Radschrauben nach 50–100km nochmals nachziehen (Setzeffekt). Über Kreuz anziehen, Gewinde nicht fetten/ölen (verfälscht das Drehmoment). Alufelgen reagieren empfindlicher auf zu hohes Drehmoment — im Zweifel den niedrigeren Herstellerwert verwenden.</p>
         </div>
       </div>
 
@@ -2592,7 +2605,7 @@
               <tr><td class="mono" data-label="Klasse">20W</td><td class="mono" data-label="Grenze">−15 °C</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Die SAE-Klasse sagt nur etwas über das Fließverhalten aus, nicht über die Freigabe für einen bestimmten Motor. Herstellerfreigaben (z.B. VW 507.00, MB 229.52, BMW LL-04) sind technische Pflichtanforderungen, keine Empfehlung — falsches Öl ohne die geforderte Freigabe kann z.B. den Partikelfilter deutlich schneller verstopfen lassen. Immer zuerst die Freigabe im Fahrzeughandbuch prüfen, danach erst nach Viskosität/Preis vergleichen. Öle unterschiedlicher Marken/Viskositätsklassen lassen sich im Notfall mischen, sollten aber möglichst bald komplett gewechselt werden.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Die SAE-Klasse beschreibt nur das Fließverhalten, nicht die Freigabe für einen Motor. Herstellerfreigaben (z.B. VW 507.00, MB 229.52, BMW LL-04) sind Pflicht, keine Empfehlung — falsches Öl kann z.B. den Partikelfilter schneller verstopfen. Erst die Freigabe im Fahrzeughandbuch prüfen, dann nach Viskosität/Preis vergleichen. Öle unterschiedlicher Marken lassen sich im Notfall mischen, sollten aber bald komplett gewechselt werden.</p>
         </div>
       </div>
 
@@ -2608,7 +2621,7 @@
               <tr><td>Neureifen (Richtwert)</td><td class="mono">ca. 7–8 mm</td></tr>
             </table>
           </div>
-          <p class="note">Gilt gleichermaßen für Sommer- und Winterreifen (§36 Abs. 3 StVZO) — gemessen am Hauptprofil (die breiten Rillen im mittleren rund 3/4 der Lauffläche), über den gesamten Reifenumfang. Bei Nässe verdrängt ein Reifen mit 3mm Restprofil nur noch ca. 80% des Wassers, an der gesetzlichen Grenze von 1,6mm nur noch ca. 55% — das gesetzliche Minimum ist bewusst kein Sicherheitsoptimum, sondern die absolute Untergrenze. Unterschreitung: Bußgeld ab ca. 60€ plus Punkt in Flensburg, bei Unfall zusätzlich Risiko der Leistungskürzung durch die Versicherung.</p>
+          <p class="note">Gilt für Sommer- und Winterreifen (§36 Abs. 3 StVZO), gemessen am Hauptprofil über den gesamten Umfang. Bei Nässe verdrängt 3mm Restprofil noch ca. 80% des Wassers, an der gesetzlichen Grenze 1,6mm nur noch ca. 55% — das Minimum ist keine Sicherheitsempfehlung, sondern die absolute Untergrenze. Unterschreitung: Bußgeld ab ca. 60€ + Punkt, bei Unfall zusätzlich Risiko der Leistungskürzung.</p>
         </div>
       </div>
 
@@ -2627,7 +2640,7 @@
             <div class="item"><div class="rlabel">Übersetzung i</div><div class="rvalue" id="uebI">—</div></div>
             <div class="item" id="uebNOutItem" style="display:none;"><div class="rlabel">Abtriebsdrehzahl</div><div class="rvalue" id="uebN2">—</div></div>
           </div>
-          <p class="note">Übersetzung i = Abtrieb ÷ Antrieb. i &gt; 1 = Übersetzung ins Langsame (mehr Drehmoment, weniger Drehzahl), i &lt; 1 = Übersetzung ins Schnelle. Gilt gleichermaßen für Getriebe, Riementriebe und Zahnradstufen im Zerspanungsbereich.</p>
+          <p class="note">Übersetzung i = Abtrieb ÷ Antrieb. i &gt; 1 = ins Langsame (mehr Drehmoment, weniger Drehzahl), i &lt; 1 = ins Schnelle. Gilt für Getriebe, Riementriebe und Zahnradstufen.</p>
         </div>
       </div>
     </section>
@@ -2647,16 +2660,16 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('maler','maler-deckkraft')"><span class="pt-dot"></span>Deckkraft- &amp; Nassabriebklassen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('maler','maler-grundierung')"><span class="pt-dot"></span>Grundierungswahl je Untergrund →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('maler','maler-deckkraft')"><span class="pt-dot"></span><span style="flex:1;">Deckkraft- &amp; Nassabriebklassen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('maler','maler-grundierung')"><span class="pt-dot"></span><span style="flex:1;">Grundierungswahl je Untergrund</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','farbe','maler')"><span class="pt-dot"></span>Farbbedarf für eine Fläche berechnen (Ergiebigkeit pro Liter) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','tapete','maler')"><span class="pt-dot"></span>Tapetenbedarf berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-mischung', null, 'maler')"><span class="pt-dot"></span>Verdünnungsverhältnis-Rechner →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','farbe','maler')"><span class="pt-dot"></span><span style="flex:1;">Farbbedarf für eine Fläche berechnen (Ergiebigkeit pro Liter)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','tapete','maler')"><span class="pt-dot"></span><span style="flex:1;">Tapetenbedarf berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-mischung', null, 'maler')"><span class="pt-dot"></span><span style="flex:1;">Verdünnungsverhältnis-Rechner</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         
@@ -2674,7 +2687,7 @@
               <tr><td class="mono" data-label="Klasse">Klasse 4</td><td class="mono" data-label="Deckvermögen">&lt; 95 %</td><td data-label="Praxis">Geringstes Deckvermögen — meist 2+ Anstriche</td></tr>
             </table>
           </div>
-          <p class="note">Wichtig: Die Klasse ist immer an eine bestimmte Ergiebigkeit (m²/Liter) gekoppelt — Klasse 1 bei 6 m²/L ist nicht direkt mit Klasse 1 bei 8 m²/L vergleichbar. Je höher die angegebene Ergiebigkeit bei gleicher Klasse, desto besser die Farbe. Bei Farbwechsel dunkel→hell oder auf stark saugendem/farbigem Untergrund braucht auch Klasse-1-Farbe oft trotzdem 2 Anstriche.</p>
+          <p class="note">Die Klasse ist immer an eine bestimmte Ergiebigkeit (m²/Liter) gekoppelt — Klasse 1 bei 6m²/L ist nicht direkt mit Klasse 1 bei 8m²/L vergleichbar. Je höher die Ergiebigkeit bei gleicher Klasse, desto besser die Farbe. Bei Farbwechsel dunkel→hell oder stark saugendem Untergrund braucht auch Klasse-1-Farbe oft 2 Anstriche.</p>
         </div>
         <div class="card">
           <h3>Nassabriebklassen <span class="tag">Strapazierfähigkeit / Reinigungsfähigkeit</span></h3>
@@ -2703,7 +2716,7 @@
               <tr><td data-label="Grundierung">Putzgrund</td><td data-label="Wofür">Bereitet die Fläche fürs Verputzen vor</td><td data-label="Untergrund">Vor dem Neuverputzen, angepasst an den geplanten Putz</td></tr>
             </table>
           </div>
-          <p class="note">Schnelltest für Saugfähigkeit/Kreiden: mit der flachen Hand über die trockene Wand reiben — wird die Hand weiß/staubig, kreidet oder sandet der Untergrund und braucht Tiefengrund. Bei stark unterschiedlicher Saugfähigkeit auf derselben Fläche (z.B. neue Gipskartonplatte mit gespachtelten und ungespachtelten Bereichen) immer vollflächig statt nur punktuell grundieren — sonst trocknet die Farbe später fleckig/streifig, weil sie ungleichmäßig einzieht. Bei glattem, gleichmäßig saugendem Untergrund kann eine separate Grundierung entfallen und stattdessen der erste Anstrich leicht verdünnt aufgetragen werden. Ist die Wand feucht, hilft keine Grundierung dauerhaft — erst die Feuchteursache klären, dann beschichten.</p>
+          <p class="note">Schnelltest: mit der flachen Hand über die trockene Wand reiben — wird sie weiß/staubig, kreidet/sandet der Untergrund und braucht Tiefengrund. Bei ungleicher Saugfähigkeit auf einer Fläche (z.B. Gipskarton mit gespachtelten/ungespachtelten Bereichen) immer vollflächig grundieren, sonst trocknet die Farbe fleckig. Bei glattem, gleichmäßig saugendem Untergrund kann die Grundierung entfallen, erster Anstrich leicht verdünnt. Feuchte Wand: erst die Ursache klären, keine Grundierung hilft dauerhaft.</p>
         </div>
       </div>
     </section>
@@ -2723,16 +2736,16 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-steinformate')"><span class="pt-dot"></span>Steinformate (DF, NF & Co.) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-bewehrung')"><span class="pt-dot"></span>Bewehrungsbedarf, Grundlagen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-betonguete')"><span class="pt-dot"></span>Betongüteklassen &amp; Mauerwerks-Druckfestigkeit →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-steinformate')"><span class="pt-dot"></span><span style="flex:1;">Steinformate (DF, NF & Co.)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-bewehrung')"><span class="pt-dot"></span><span style="flex:1;">Bewehrungsbedarf, Grundlagen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('maurer','maurer-betonguete')"><span class="pt-dot"></span><span style="flex:1;">Betongüteklassen &amp; Mauerwerks-Druckfestigkeit</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-mischung', null, 'maurer')"><span class="pt-dot"></span>Mörtel-/Betonmischungsverhältnis →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','maurer')"><span class="pt-dot"></span>Steinbedarf pro m² Wand (nach Steinformat) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-mischung', null, 'maurer')"><span class="pt-dot"></span><span style="flex:1;">Mörtel-/Betonmischungsverhältnis</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','maurer')"><span class="pt-dot"></span><span style="flex:1;">Steinbedarf pro m² Wand (nach Steinformat)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2753,7 +2766,7 @@
               <tr><td data-label="Format">12 DF</td><td class="mono" data-label="Kurzzeichen">12DF</td><td class="mono" data-label="Maße">240 × 365 × 238</td></tr>
             </table>
           </div>
-          <p class="note">Alle Formate basieren auf dem Oktameter-System (Achtelmeter-Raster) nach DIN 4172, damit Stein- und Fugenmaße im 12,5-cm-Raster aufgehen. Angegeben sind die Rohbaumaße; das tatsächliche Steinmaß liegt um die Fugendicke (meist 10–12 mm Lagerfuge, 10 mm Stoßfuge) darunter. Herstellerangaben können je nach Steinart (Ziegel, Kalksandstein, Porenbeton) leicht abweichen.</p>
+          <p class="note">Alle Formate basieren auf dem Oktameter-System nach DIN 4172, damit Stein- und Fugenmaße im 12,5cm-Raster aufgehen. Angegeben sind Rohbaumaße; das Steinmaß liegt um die Fugendicke (meist 10–12mm Lager-, 10mm Stoßfuge) darunter. Herstellerangaben können je nach Steinart leicht abweichen.</p>
         </div>
         <div class="card">
           <h3>Dünnbettmörtel-Verbrauch <span class="tag">Richtwerte je m² Wandfläche</span></h3>
@@ -2764,7 +2777,7 @@
               <tr><td data-label="Format">8DF / 10DF / 12DF (Planziegel/-steine)</td><td class="mono" data-label="Bedarf">ca. 8–12 kg/m²</td></tr>
             </table>
           </div>
-          <p class="note">Werte gelten für Dünnbettmörtel (Auftrag mit Mörtelschlitten) bei üblicher Baustellenpraxis. Je nach Wandaufbau, Saugfähigkeit des Steins und Verarbeitung können reale Verbräuche abweichen — bei größeren Mengen immer einen Sicherheitsaufschlag einplanen, siehe Bedarfsmengen-Rechner.</p>
+          <p class="note">Werte gelten für Dünnbettmörtel bei üblicher Baustellenpraxis. Je nach Wandaufbau, Saugfähigkeit und Verarbeitung können reale Verbräuche abweichen — bei größeren Mengen einen Sicherheitsaufschlag einplanen.</p>
         </div>
       </div>
 
@@ -2800,7 +2813,7 @@
               <tr><td class="mono" data-label="Typ">Q524A</td><td class="mono" data-label="Ø">10,0 mm</td><td class="mono" data-label="Fläche">5,24 cm²/m</td><td class="mono" data-label="Maschen">150 × 150 mm</td></tr>
             </table>
           </div>
-          <p class="note">Standard-Lagermatten (Ausführung "A" = mit Übergreifungsrand für Überlappungsstöße), üblich für Bodenplatten, Fundamente und einfache Flächenbewehrung. Für tragende oder statisch anspruchsvolle Bauteile die genaue Mattengröße/-lage dem Bewehrungsplan entnehmen.</p>
+          <p class="note">Standard-Lagermatten (Ausführung "A" mit Übergreifungsrand), üblich für Bodenplatten und einfache Flächenbewehrung. Für tragende Bauteile die genaue Mattengröße/-lage dem Bewehrungsplan entnehmen.</p>
         </div>
         <div class="card">
           <h3>Betondeckung — Richtwerte <span class="tag">nach Expositionsklasse, DIN EN 1992-1-1 / DIN EN 206</span></h3>
@@ -2813,7 +2826,7 @@
               <tr><td data-label="Umgebung">Erdberührt, Bodenplatte auf Sauberkeitsschicht</td><td class="mono" data-label="Klasse">XC2</td><td class="mono" data-label="Deckung">ca. 40–50 mm</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Diese Tabelle ist eine grobe Orientierung, keine Bemessungsgrundlage. Bewehrungsmenge, -durchmesser, -lage und die exakte Betondeckung (Vorhaltemaß, Verlegetoleranzen, Bauteilart, Betonfestigkeitsklasse) müssen für tragende oder sicherheitsrelevante Bauteile immer von einem Tragwerksplaner/Statiker festgelegt werden. Diese Seite ersetzt keine statische Berechnung.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtiger Sicherheitshinweis:</strong> Grobe Orientierung, keine Bemessungsgrundlage. Bewehrungsmenge, -durchmesser, -lage und die exakte Betondeckung müssen für tragende/sicherheitsrelevante Bauteile immer vom Tragwerksplaner/Statiker festgelegt werden. Diese Seite ersetzt keine statische Berechnung.</p>
         </div>
       </div>
 
@@ -2832,7 +2845,7 @@
               <tr><td class="mono" data-label="Klasse">C35/45 und höher</td><td class="mono" data-label="Festigkeit">ab 35 / 45 N/mm²</td><td data-label="Verwendung">Spezialanwendungen: hochbelastete Stützen, Brückenbau, Industrieböden</td></tr>
             </table>
           </div>
-          <p class="note">Bezeichnung C(Zylinderdruckfestigkeit)/(Würfeldruckfestigkeit) in N/mm², jeweils charakteristischer Wert nach 28 Tagen Erhärtung. Die erforderliche Festigkeitsklasse ergibt sich aus der statischen Berechnung UND der Expositionsklasse (Umwelteinwirkung, siehe Betondeckungs-Tabelle oben) — bei Frost/Tausalz kann eine höhere Klasse gefordert sein, auch wenn die reine Tragfähigkeit weniger verlangen würde. Selbst gemischter Beton auf der Baustelle erreicht normalerweise keine geprüfte Festigkeitsklasse — für alle Klassen ab C20/25 aufwärts wird praktisch immer Transportbeton (Werksbeton mit Lieferschein/Festigkeitsnachweis) verwendet.</p>
+          <p class="note">C(Zylinderdruckfestigkeit/Würfeldruckfestigkeit) in N/mm², charakteristischer Wert nach 28 Tagen. Die Klasse ergibt sich aus Statik UND Expositionsklasse — bei Frost/Tausalz kann eine höhere Klasse nötig sein, auch bei geringerer reiner Tragfähigkeit. Selbst gemischter Beton erreicht normalerweise keine geprüfte Festigkeitsklasse — ab C20/25 wird praktisch immer Transportbeton mit Lieferschein/Festigkeitsnachweis verwendet.</p>
         </div>
         <div class="card">
           <h3>Mauerwerks-Druckfestigkeitsklassen <span class="tag">DIN EN 771</span></h3>
@@ -2846,7 +2859,7 @@
               <tr><td class="mono" data-label="Klasse">28 und höher</td><td class="mono" data-label="Bereich">≥28 N/mm²</td><td data-label="Material">Vollziegel/Klinker, stark belastete tragende Wände, erdberührte Bauteile</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);">Die tatsächlich zulässige Wandtragfähigkeit ergibt sich nicht nur aus der Steinfestigkeitsklasse, sondern aus dem Zusammenspiel von Stein, Mörtelgruppe, Wanddicke, Schlankheit und Lastausmitte nach DIN EN 1996 (Eurocode 6) — diese Tabelle nennt nur die Steinklassen selbst, keine Bemessung. Bei tragenden Wänden immer die statische Berechnung des Tragwerksplaners zugrunde legen, nicht nur die Steindruckfestigkeit allein.</p>
+          <p class="note" style="border-left-color:var(--danger);">Die tatsächliche Wandtragfähigkeit ergibt sich aus dem Zusammenspiel von Stein, Mörtelgruppe, Wanddicke, Schlankheit und Lastausmitte nach DIN EN 1996 (Eurocode 6) — diese Tabelle nennt nur die Steinklassen, keine Bemessung. Bei tragenden Wänden immer die statische Berechnung des Tragwerksplaners zugrunde legen.</p>
         </div>
       </div>
     </section>
@@ -2866,15 +2879,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('strassenbau','strassenbau-asphalt')"><span class="pt-dot"></span>Asphalt-Schichtaufbau →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('strassenbau','strassenbau-asphalt')"><span class="pt-dot"></span><span style="flex:1;">Asphalt-Schichtaufbau</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gefaelle', null, 'strassenbau')"><span class="pt-dot"></span>Gefälle berechnen (nutzt den Gefälle-Rechner unter Installateur) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','strassenbau')"><span class="pt-dot"></span>Pflaster-/Bordstein-Bedarf berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'schotter', 'strassenbau')"><span class="pt-dot"></span>Schüttgutmenge für den Unterbau →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('installateur','i-gefaelle', null, 'strassenbau')"><span class="pt-dot"></span><span style="flex:1;">Gefälle berechnen (nutzt den Gefälle-Rechner unter Installateur)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','pflaster','strassenbau')"><span class="pt-dot"></span><span style="flex:1;">Pflaster-/Bordstein-Bedarf berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', 'schotter', 'strassenbau')"><span class="pt-dot"></span><span style="flex:1;">Schüttgutmenge für den Unterbau</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2891,7 +2904,7 @@
               <tr><td data-label="Schicht">Gesamtaufbau (alle Schichten)</td><td class="mono" data-label="Dicke">ca. 25–40 cm</td><td data-label="Funktion">Je nach Belastungsklasse (Bk0,3 Wohnweg bis Bk100 Autobahn)</td></tr>
             </table>
           </div>
-          <p class="note">Die genaue Dimensionierung richtet sich nach der Belastungsklasse (RStO 12, sieben Klassen von Bk0,3 bis Bk100) und der Tragfähigkeit des Untergrunds. Bei geringer Verkehrsbelastung kann auf die Binderschicht verzichtet werden. Diese Tabelle ist eine Orientierung für die Vorplanung — die verbindliche Bemessung erfolgt nach der aktuellen RStO-Tafel für den konkreten Einzelfall.</p>
+          <p class="note">Die genaue Dimensionierung richtet sich nach der Belastungsklasse (RStO 12, Bk0,3 bis Bk100) und der Tragfähigkeit des Untergrunds. Bei geringer Verkehrsbelastung kann auf die Binderschicht verzichtet werden. Orientierung für die Vorplanung — verbindliche Bemessung nach der aktuellen RStO-Tafel für den Einzelfall.</p>
         </div>
       </div>
     </section>
@@ -2911,15 +2924,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('steinmetz','steinmetz-gestein')"><span class="pt-dot"></span>Gesteinsarten-Eigenschaften →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('steinmetz','steinmetz-oberflaechen')"><span class="pt-dot"></span>Oberflächenbearbeitungsarten →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('steinmetz','steinmetz-gestein')"><span class="pt-dot"></span><span style="flex:1;">Gesteinsarten-Eigenschaften</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('steinmetz','steinmetz-oberflaechen')"><span class="pt-dot"></span><span style="flex:1;">Oberflächenbearbeitungsarten</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'steinmetz')"><span class="pt-dot"></span>Steingewicht berechnen (Volumen × Gesteinsdichte) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','verkleidung','steinmetz')"><span class="pt-dot"></span>Materialbedarf für Verkleidungen (Fläche → Plattenanzahl) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-volumen', null, 'steinmetz')"><span class="pt-dot"></span><span style="flex:1;">Steingewicht berechnen (Volumen × Gesteinsdichte)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','verkleidung','steinmetz')"><span class="pt-dot"></span><span style="flex:1;">Materialbedarf für Verkleidungen (Fläche → Plattenanzahl)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -2939,7 +2952,7 @@
               <tr><td data-label="Gestein">Marmor</td><td class="mono" data-label="Dichte">2,65–2,85 g/cm³</td><td class="mono" data-label="Druckfestigkeit">stark schwankend, je nach Varietät</td></tr>
             </table>
           </div>
-          <p class="note">Werte sind Richtwerte — Dichte und Festigkeit schwanken je nach Abbaugebiet, Verwitterungsgrad und Gefügerichtung teils erheblich (bei Sandstein z.B. ist die Druckfestigkeit quer zur Schichtung meist höher als parallel dazu). Für tragende/statisch relevante Bauteile immer das Prüfzeugnis des konkret verwendeten Steins bzw. eine Rücksprache mit dem Statiker heranziehen, nicht nur diese Tabelle.</p>
+          <p class="note">Werte sind Richtwerte — Dichte und Festigkeit schwanken je nach Abbaugebiet, Verwitterungsgrad und Gefügerichtung teils erheblich (Sandstein: Druckfestigkeit quer zur Schichtung meist höher als parallel). Für tragende Bauteile immer das Prüfzeugnis des konkreten Steins bzw. Rücksprache mit dem Statiker heranziehen.</p>
         </div>
       </div>
 
@@ -2959,7 +2972,7 @@
               <tr><td data-label="Bearbeitung">Gesägt</td><td data-label="Wirkung">Eben, aber ohne weitere Nachbearbeitung noch relativ rau/stumpf</td><td data-label="Einsatz">Rohzustand vor Weiterveredelung, oder bewusst als einfache Sichtfläche (z.B. Mauerabdeckungen)</td></tr>
             </table>
           </div>
-          <p class="note">Grobe Faustregel Rutschsicherheit: gestockt und geflammt am griffigsten, poliert am glattesten. Bei Außenflächen mit Frost-/Nässebelastung (Terrassen, Treppen, Poolumrandungen) generell eine der aufgerauten Bearbeitungen (gestockt, geflammt, gebürstet) wählen statt poliert. Nicht jede Bearbeitung ist bei jedem Gestein möglich oder sinnvoll — z.B. verändert Flammen bei manchen gelben Graniten die Farbe zu Rot, und manche Kalksteine vertragen die Hitzebehandlung beim Flammen gar nicht. Vorab am Musterstück prüfen.</p>
+          <p class="note">Grobe Faustregel Rutschsicherheit: gestockt/geflammt am griffigsten, poliert am glattesten. Bei Außenflächen mit Frost-/Nässebelastung eine aufgeraute Bearbeitung wählen statt poliert. Nicht jede Bearbeitung ist bei jedem Gestein möglich — Flammen verändert z.B. bei manchen gelben Graniten die Farbe zu Rot, manche Kalksteine vertragen die Hitze gar nicht. Vorab am Musterstück prüfen.</p>
         </div>
       </div>
     </section>
@@ -2979,18 +2992,18 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-verbindungen')"><span class="pt-dot"></span>Möbelverbindungen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-platten')"><span class="pt-dot"></span>Holzwerkstoffplatten-Übersicht →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-bohrbild')"><span class="pt-dot"></span>35mm-Bohrbild für Topfscharniere →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'tischler')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-verbindungen')"><span class="pt-dot"></span><span style="flex:1;">Möbelverbindungen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-platten')"><span class="pt-dot"></span><span style="flex:1;">Holzwerkstoffplatten-Übersicht</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-bohrbild')"><span class="pt-dot"></span><span style="flex:1;">35mm-Bohrbild für Topfscharniere</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'tischler')"><span class="pt-dot"></span><span style="flex:1;">Holzschrauben nach Hersteller</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-gehrung', null, 'tischler')"><span class="pt-dot"></span>Gehrungsschnitt-Winkel berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-kantenumleimer')"><span class="pt-dot"></span>Kantenumleimer-Bedarf berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-zuschnitt')"><span class="pt-dot"></span>Korpus-/Plattenzuschnitt berechnen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-gehrung', null, 'tischler')"><span class="pt-dot"></span><span style="flex:1;">Gehrungsschnitt-Winkel berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-kantenumleimer')"><span class="pt-dot"></span><span style="flex:1;">Kantenumleimer-Bedarf berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('tischler','tischler-zuschnitt')"><span class="pt-dot"></span><span style="flex:1;">Korpus-/Plattenzuschnitt berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -3008,7 +3021,7 @@
               <tr><td data-label="Verbindung">Gehrung mit Feder/Lamello</td><td data-label="Verwendung">Unsichtbare Eckverbindung, z.B. bei Rahmen — Feder erhöht die sonst schwache Gehrungsfestigkeit</td></tr>
             </table>
           </div>
-          <p class="note">Welche Verbindung sinnvoll ist, hängt von Belastungsrichtung, gewünschter Optik (sichtbar/unsichtbar) und Fertigungsaufwand ab — bei stark beanspruchten Möbeln (z.B. Sitzmöbel, Tische) lohnt sich eine formschlüssige Verbindung (Zapfen, Zinkung) gegenüber einer rein geklebten Stumpfverbindung.</p>
+          <p class="note">Welche Verbindung sinnvoll ist, hängt von Belastungsrichtung, Optik und Fertigungsaufwand ab — bei stark beanspruchten Möbeln lohnt sich eine formschlüssige Verbindung (Zapfen, Zinkung) gegenüber einer rein geklebten Stumpfverbindung.</p>
         </div>
       </div>
 
@@ -3025,7 +3038,7 @@
               <tr><td data-label="Plattenart">Tischlerplatte (Stäbchensperrholz)</td><td data-label="Aufbau">Mittellage aus Massivholzleisten, außen Furnierdeckschichten</td><td data-label="Einsatz">Hohe Tragfähigkeit bei geringem Gewicht, gute Schraubenhaltekraft im Kern</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Feuchtebeständigkeit (Verleimungsklasse):</strong> entscheidet, ob eine Platte für Feuchträume/Außenbereich geeignet ist — z.B. OSB/3 (feucht, tragend) statt OSB/2 (nur trocken), oder MDF-Feuchtraumqualität (oft grün eingefärbt) für Bäder. <strong>Formaldehyd-Emissionsklasse:</strong> E1 ist heute Standard und unbedenklich, E0/CARB2 für besonders emissionsarme Anwendungen (Kinderzimmer, empfindliche Räume). Bei dichten Plattenwerkstoffen (MDF, HDF) und bei Spanplatten im Plattenquerschnitt immer vorbohren bzw. Dübel/Verbinder statt direkter Verschraubung verwenden — sonst drohen Risse/Ausrisse.</p>
+          <p class="note"><strong>Feuchtebeständigkeit:</strong> entscheidet über Eignung für Feuchträume — z.B. OSB/3 (feucht, tragend) statt OSB/2 (nur trocken), MDF-Feuchtraumqualität (oft grün) für Bäder. <strong>Formaldehyd-Emissionsklasse:</strong> E1 ist Standard, E0/CARB2 für emissionsarme Anwendungen (Kinderzimmer). Bei MDF/HDF und Spanplatten im Querschnitt immer vorbohren bzw. Dübel/Verbinder statt direkter Verschraubung — sonst drohen Risse.</p>
         </div>
       </div>
 
@@ -3043,7 +3056,7 @@
               <tr><td>32mm-System, Bohrreihe zur Vorderkante (Korpus-Seitenteil)</td><td class="mono">meist 37 mm</td></tr>
             </table>
           </div>
-          <p class="note">Der Randabstand zur Türkante (3–6mm) hängt von der Anschlagart ab: aufliegend/außenliegend (Kröpfung 0mm), Mittelwandanschlag (leicht gekröpft) oder einliegend/innenliegend (Kröpfung ca. 16mm) — bei einschlagenden Türen kommt zusätzlich die Türdicke zum Randmaß dazu, Herstellerangabe (z.B. Blum: Türdicke + 1,5mm) genau prüfen. Der Lochabstand für die Befestigungsschrauben der Montageplatte ist NICHT genormt und unterscheidet sich je Hersteller (Blum/Salice/Hettich) — beim Kombinieren von Scharnier und Montageplatte unterschiedlicher Hersteller vorher unbedingt die Kompatibilität prüfen. Diese Tabelle ist eine Orientierung für die Werkstattpraxis, verbindlich ist immer das Bohrbild aus dem Beschlagskatalog des konkret verwendeten Systems.</p>
+          <p class="note">Randabstand zur Türkante (3–6mm) hängt von der Anschlagart ab: aufliegend (0mm Kröpfung), Mittelwandanschlag (leicht gekröpft), einliegend (ca. 16mm). Bei einschlagenden Türen zusätzlich die Türdicke addieren (Herstellerangabe prüfen, z.B. Blum: Türdicke + 1,5mm). Lochabstand der Montageplatte ist NICHT genormt und herstellerspezifisch — bei Mischung verschiedener Hersteller Kompatibilität prüfen. Orientierung für die Werkstattpraxis, verbindlich ist das Bohrbild des Beschlagskatalogs.</p>
         </div>
       </div>
 
@@ -3066,7 +3079,7 @@
             <div class="item"><div class="rlabel">Gesamtlänge (inkl. Zuschlag)</div><div class="rvalue" id="keGesamt">—</div></div>
             <div class="item" id="keRolleItem" style="display:none;"><div class="rlabel">Rollen benötigt</div><div class="rvalue" id="keRolleAnzahl">—</div></div>
           </div>
-          <p class="note">Kantenlänge je Platte = 2 × (Länge + Breite). Der Sicherheitszuschlag deckt Verschnitt beim Ablängen, Anfahrschräge am Kantenanleimer und Ausschuss bei der Eckenbearbeitung ab — 10% ist ein üblicher Werkstatt-Richtwert, bei viel Formatvielfalt oder manueller Verarbeitung eher 15%.</p>
+          <p class="note">Kantenlänge je Platte = 2 × (Länge + Breite). Der Sicherheitszuschlag deckt Verschnitt, Anfahrschräge und Ausschuss ab — 10% ist üblicher Richtwert, bei viel Formatvielfalt eher 15%.</p>
         </div>
       </div>
 
@@ -3103,7 +3116,7 @@
           </div>
           <div id="zsVisual"></div>
           <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Tischler — Zuschnittplan', ['zsOut','zsVisual'])">🖨️ Zuschnittplan als PDF <span class="pill warn">Premium</span></button>
-          <p class="note">Schema-Zuschnitt nach dem Shelf-Verfahren (Teile werden zeilenweise, größtes zuerst, auf die Platte gepackt) — praxisnah und schnell, aber nicht mathematisch optimal. Ein erfahrener Zuschnittoptimierer (Software oder Auge) holt bei ungünstigen Formatmischungen oft nochmal 5–10% mehr raus. "Nicht drehbar" bei Teilen mit fester Maserungs-/Dekorrichtung ankreuzen — die App tauscht dann Länge/Breite nicht.</p>
+          <p class="note">Schema-Zuschnitt nach dem Shelf-Verfahren (größte Teile zuerst) — praxisnah und schnell, aber nicht mathematisch optimal. Ein erfahrener Zuschnittoptimierer holt bei ungünstigen Formatmischungen oft nochmal 5–10% mehr raus. "Nicht drehbar" bei fester Maserungs-/Dekorrichtung ankreuzen — die App tauscht dann Länge/Breite nicht.</p>
         </div>
       </div>
     </section>
@@ -3123,15 +3136,15 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('trockenbau','trockenbau-profile')"><span class="pt-dot"></span>CW-/UW-Profile &amp; Achsabstände →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('trockenbau','trockenbau-profile')"><span class="pt-dot"></span><span style="flex:1;">CW-/UW-Profile &amp; Achsabstände</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('trockenbau','trockenbau-staenderwerk')"><span class="pt-dot"></span>Ständerwerk-Materialbedarf (CW-/UW-Profile) →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','daemmung','trockenbau')"><span class="pt-dot"></span>Dämmmaterial-Bedarf berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','platten','trockenbau')"><span class="pt-dot"></span>Rigipsplatten-Bedarf berechnen (Fläche ÷ Plattengröße + Verschnitt) →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('trockenbau','trockenbau-staenderwerk')"><span class="pt-dot"></span><span style="flex:1;">Ständerwerk-Materialbedarf (CW-/UW-Profile)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','daemmung','trockenbau')"><span class="pt-dot"></span><span style="flex:1;">Dämmmaterial-Bedarf berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','platten','trockenbau')"><span class="pt-dot"></span><span style="flex:1;">Rigipsplatten-Bedarf berechnen (Fläche ÷ Plattengröße + Verschnitt)</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
       </div>
@@ -3160,7 +3173,7 @@
             <div class="item"><div class="rlabel">CW-Gesamtlänge</div><div class="rvalue" id="swCwLaenge">—</div></div>
             <div class="item"><div class="rlabel">UW-Gesamtlänge</div><div class="rvalue" id="swUwLaenge">—</div></div>
           </div>
-          <p class="note">CW-Ständer = Wandlänge ÷ Achsabstand, aufgerundet, plus 1 (Start- und Endständer an den Wandkanten). Je Türöffnung werden pauschal 2 zusätzliche Ständer für die verstärkte Zargenbefestigung eingerechnet — bei breiten oder schweren Türen ggf. noch mehr vorsehen, das übersteigt eine pauschale Faustformel. UW-Länge = 2 × Wandlänge (Boden- und Deckenschiene). Sturz-/Schwellenprofile für die Türöffnung selbst sind hier nicht mit eingerechnet, ebenso kein Verschnittzuschlag auf die UW-Stangenlänge (Standard-Stangenlänge meist 3 oder 4 m, ggf. Reststücke einplanen).</p>
+          <p class="note">CW-Ständer = Wandlänge ÷ Achsabstand, aufgerundet, plus 1 (Start-/Endständer). Je Türöffnung pauschal 2 zusätzliche Ständer für die Zargenbefestigung — bei breiten/schweren Türen ggf. mehr. UW-Länge = 2 × Wandlänge (Boden-/Deckenschiene). Sturz-/Schwellenprofile für die Türöffnung sind nicht mit eingerechnet, ebenso kein Verschnittzuschlag auf die UW-Stangenlänge (meist 3 oder 4m).</p>
         </div>
       </div>
 
@@ -3175,7 +3188,7 @@
               <tr><td class="mono" data-label="CW-Breite">100 mm</td><td class="mono" data-label="1-lagig">ca. 125 mm</td><td class="mono" data-label="2-lagig">ca. 175 mm</td></tr>
             </table>
           </div>
-          <p class="note">UW-Profile (Boden/Decke) haben dieselbe Innenbreite wie die passenden CW-Profile (Ständer), damit sie exakt ineinandergreifen. Materialstärke meist 0,6 mm verzinktes Stahlblech. Für abgehängte Decken werden stattdessen UD-Profile (28×27 mm) und CD-Profile (60×27 mm) verwendet.</p>
+          <p class="note">UW-Profile (Boden/Decke) haben dieselbe Innenbreite wie die passenden CW-Profile, damit sie ineinandergreifen. Materialstärke meist 0,6mm verzinktes Stahlblech. Für abgehängte Decken werden UD- (28×27mm) und CD-Profile (60×27mm) verwendet.</p>
         </div>
         <div class="card">
           <h3>Achsabstand nach Plattenformat <span class="tag">Richtwerte</span></h3>
@@ -3189,7 +3202,7 @@
               <tr><td data-label="Format">200 cm Länge, quer montiert</td><td class="mono" data-label="Achsabstand">50 cm</td></tr>
             </table>
           </div>
-          <p class="note"><strong>Schraubenabstand:</strong> max. 25 cm an der Wand, max. 17 cm an der Decke. Schraubenlänge mind. 25 mm bei einlagiger, entsprechend länger bei zweilagiger Beplankung. Der Plattenstoß sollte immer mittig auf einem Profil liegen — "ungefähr alle 60 cm" führt dazu, dass der Stoß über die Wand wandert und am Ende keine ausreichende Auflage mehr hat.</p>
+          <p class="note"><strong>Schraubenabstand:</strong> max. 25cm an der Wand, max. 17cm an der Decke. Schraubenlänge mind. 25mm bei einlagiger, entsprechend länger bei zweilagiger Beplankung. Der Plattenstoß sollte immer mittig auf einem Profil liegen — sonst wandert er über die Wand und verliert am Ende die Auflage.</p>
         </div>
       </div>
     </section>
@@ -3209,18 +3222,18 @@
         <div class="card">
           <h3>📋 Nachschlagewerke</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-querschnitte')"><span class="pt-dot"></span>KVH-/BSH-Standardquerschnitte →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-verbindungen')"><span class="pt-dot"></span>Zimmermannsverbindungen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-lastzonen')"><span class="pt-dot"></span>Schnee-/Windlastzonen, grobe Übersicht →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'zimmerer')"><span class="pt-dot"></span>Holzschrauben nach Hersteller →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-querschnitte')"><span class="pt-dot"></span><span style="flex:1;">KVH-/BSH-Standardquerschnitte</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-verbindungen')"><span class="pt-dot"></span><span style="flex:1;">Zimmermannsverbindungen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('zimmerer','zimmerer-lastzonen')"><span class="pt-dot"></span><span style="flex:1;">Schnee-/Windlastzonen, grobe Übersicht</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('schlosser','s-holzschrauben', null, 'zimmerer')"><span class="pt-dot"></span><span style="flex:1;">Holzschrauben nach Hersteller</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         <div class="card">
           <h3>🧮 Rechner</h3>
           <ul class="placeholder-list">
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-gehrung', null, 'zimmerer')"><span class="pt-dot"></span>Gehrungsschnitt-Winkel berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','frei','zimmerer')"><span class="pt-dot"></span>Holzverschnitt / Plattenaufteilung berechnen →</li>
-            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-trig','','zimmerer')"><span class="pt-dot"></span>Sparrenlänge &amp; Kerven berechnen →</li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-gehrung', null, 'zimmerer')"><span class="pt-dot"></span><span style="flex:1;">Gehrungsschnitt-Winkel berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-bedarfsmenge','frei','zimmerer')"><span class="pt-dot"></span><span style="flex:1;">Holzverschnitt / Plattenaufteilung berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
+            <li class="placeholder-task clickable" onclick="goToTool('rechner','r-trig','','zimmerer')"><span class="pt-dot"></span><span style="flex:1;">Sparrenlänge &amp; Kerven berechnen</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>
           </ul>
         </div>
         
@@ -3239,7 +3252,7 @@
               <tr><td class="mono" data-label="Breite">140</td><td class="mono" data-label="Höhen">140 / 160 / 200 / 240 / 260</td></tr>
             </table>
           </div>
-          <p class="note">KVH wird meist aus Fichte/Tanne gefertigt, technisch getrocknet, gehobelt und nach DIN 4074-1 sortiert (üblich: Sortierklasse S10). Standardlängen bis 13 m. Bevorzugt für Sparren, Pfetten, Rähm, Balken und Fachwerk im Wand-, Decken- und Dachbereich. Nicht jeder Händler führt jede Kombination — bei ungewöhnlichen Maßen vorab Verfügbarkeit klären.</p>
+          <p class="note">KVH wird meist aus Fichte/Tanne gefertigt, technisch getrocknet, gehobelt und nach DIN 4074-1 sortiert (üblich: S10). Standardlängen bis 13m. Bevorzugt für Sparren, Pfetten, Rähm, Balken und Fachwerk. Bei ungewöhnlichen Maßen vorab Verfügbarkeit klären.</p>
         </div>
         <div class="card">
           <h3>BSH — Brettschichtholz <span class="tag">für größere Spannweiten</span></h3>
@@ -3251,7 +3264,7 @@
               <tr><td class="mono" data-label="Klasse">GL28c</td><td data-label="Eigenschaft">Kombinierter Aufbau (Außenlamellen höherfest) — tragfähiger, für größere Spannweiten/höhere Lasten</td></tr>
             </table>
           </div>
-          <p class="note">Sowohl KVH als auch BSH benötigen für tragende Zwecke eine CE-Kennzeichnung nach DIN EN 14081 (KVH) bzw. DIN EN 14080 (BSH) — ohne CE-Zeichen darf das Holz in Deutschland nicht tragend verbaut werden. Die konkrete Dimensionierung (welcher Querschnitt für welche Spannweite/Last) ist eine statische Berechnung und gehört in die Hände eines Tragwerksplaners, nicht in eine Faustformel.</p>
+          <p class="note">Sowohl KVH als auch BSH benötigen für tragende Zwecke eine CE-Kennzeichnung (DIN EN 14081 bzw. 14080) — ohne CE-Zeichen darf das Holz in Deutschland nicht tragend verbaut werden. Die konkrete Dimensionierung ist eine statische Berechnung und gehört in die Hände eines Tragwerksplaners, nicht in eine Faustformel.</p>
         </div>
       </div>
 
@@ -3268,7 +3281,7 @@
               <tr><td data-label="Verbindung">Stirnversatz / Fersenversatz</td><td data-label="Verwendung">Sparrenanschluss am Fußpunkt, klassisch im traditionellen Dachstuhlbau</td></tr>
             </table>
           </div>
-          <p class="note">Traditionelle Verbindungen ohne Metallverbinder werden zunehmend durch genormte Bauteilverbindungen (Balkenschuhe, Winkelverbinder) ergänzt oder ersetzt, besonders wenn eine statische Bemessung nach Eurocode 5 gefordert ist. Welche Verbindung im Einzelfall zulässig/ausreichend ist, hängt von der Belastung ab und sollte bei tragenden Bauteilen mit der Statik abgeglichen werden.</p>
+          <p class="note">Traditionelle Verbindungen ohne Metallverbinder werden zunehmend durch genormte Bauteilverbindungen ergänzt/ersetzt, besonders bei statischer Bemessung nach Eurocode 5. Welche Verbindung zulässig/ausreichend ist, hängt von der Belastung ab und sollte bei tragenden Bauteilen mit der Statik abgeglichen werden.</p>
         </div>
       </div>
 
@@ -3285,12 +3298,12 @@
               <tr><td class="mono" data-label="Zone">3</td><td data-label="Lage">Alpen und Alpenvorland, höchste Mittelgebirgslagen — höchste Schneelasten</td></tr>
             </table>
           </div>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Nur grobe Orientierung, keine verbindliche Zuordnung:</strong> Die exakte Zone hängt vom konkreten Standort (Landkreis, teils sogar Geländehöhe innerhalb einer Region) ab und muss für jedes Bauvorhaben verbindlich anhand der offiziellen DIBt-Tabelle "Zuordnung der Schneelastzonen nach Verwaltungsgrenzen" bzw. der Zonenkarte im Nationalen Anhang bestimmt werden — diese Tabelle ersetzt das nicht. Bei Höhenlagen über ca. 400 m, Hanglagen oder Standorten nahe einer Zonengrenze ist zusätzlich Rücksprache mit dem Tragwerksplaner nötig.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Nur grobe Orientierung, keine verbindliche Zuordnung:</strong> die exakte Zone hängt vom Standort ab und muss anhand der offiziellen DIBt-Tabelle bzw. Zonenkarte im Nationalen Anhang bestimmt werden. Bei Höhenlagen über ca. 400m, Hanglagen oder nahe einer Zonengrenze zusätzlich Rücksprache mit dem Tragwerksplaner.</p>
         </div>
         <div class="card">
           <h3>Windlastzonen Deutschland <span class="tag">grobe Übersicht, DIN EN 1991-1-4</span></h3>
           <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">4 Windzonen (1–4), Windlast nimmt von Zone 1 nach Zone 4 zu — grob vom Binnenland zur Küste/den Inseln hin ansteigend, zusätzlich beeinflusst durch die Geländekategorie (offenes Land vs. bebautes/bewaldetes Gebiet) am konkreten Standort. Windlastzone und Schneelastzone sind voneinander unabhängig (unterschiedliche Klimafaktoren) — ein Standort kann z.B. niedrige Schneelast, aber hohe Windlast haben.</p>
-          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Beide Tabellen sind bewusst nur eine grobe Faustorientierung für die Vorplanung (z.B. "muss ich hier überhaupt genauer hinschauen?"). Für die verbindliche Bemessung von Dachkonstruktionen, Sparren, Verbindungsmitteln und Aussteifungen sind Schnee- und Windlast immer standortgenau nach DIN EN 1991-1-3/-4 samt Nationalem Anhang zu ermitteln — das übernimmt der Tragwerksplaner, nicht diese Tabelle.</p>
+          <p class="note" style="border-left-color:var(--danger);"><strong>Wichtig:</strong> Beide Tabellen sind nur eine grobe Faustorientierung für die Vorplanung. Für die verbindliche Bemessung von Dachkonstruktionen, Sparren, Verbindungsmitteln und Aussteifungen sind Schnee- und Windlast immer standortgenau nach DIN EN 1991-1-3/-4 samt Nationalem Anhang zu ermitteln — das übernimmt der Tragwerksplaner.</p>
         </div>
       </div>
     </section>
@@ -3537,9 +3550,24 @@ function selectCategory(cat){
   toggleGlobalSearch(false); // Suche beim Wechsel in ein Gewerk wieder einklappen — weniger Rauschen
   renderCatDropdown();
   const catEl = document.querySelector(`.category[data-cat="${cat}"]`);
+  // Immer auf die Übersicht zurücksetzen (bzw. den ersten Tab bei der Werkzeugkiste, die keine
+  // eigene Übersicht hat) — statt den zuletzt geöffneten Unterreiter aus einem früheren Besuch
+  // stehen zu lassen. Betrifft nur die Auswahl über das Dropdown, nicht den "← Zurück"-Link.
+  if(catEl){
+    const alleSubtabs = [...catEl.querySelectorAll('.subtab')];
+    const standardTab = catEl.querySelector(`.subtab[data-sub="${cat}-uebersicht"]`) || alleSubtabs[0];
+    if(standardTab){
+      alleSubtabs.forEach(s=>s.classList.remove('active'));
+      catEl.querySelectorAll('.subsection').forEach(s=>s.classList.remove('active'));
+      standardTab.classList.add('active');
+      const standardSection = document.getElementById(standardTab.dataset.sub);
+      if(standardSection) standardSection.classList.add('active');
+    }
+  }
   const activeSub = catEl ? catEl.querySelector('.subtab.active') : null;
   activeTool = activeSub ? {cat, sub: activeSub.dataset.sub} : null;
   refreshFavStar();
+  renderPersonalNoteWidget();
   lastFromProfession = null; // wird von goToTool() direkt danach ggf. wieder gesetzt
   updateRechnerBackLink();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -3557,6 +3585,7 @@ function goHome(){
   renderHome();
   activeTool = null;
   refreshFavStar();
+  renderPersonalNoteWidget();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 document.addEventListener('click', (e)=>{
@@ -3578,6 +3607,7 @@ document.querySelectorAll('.category').forEach(cat=>{
       addRecent(cat.dataset.cat, st.dataset.sub);
       activeTool = {cat: cat.dataset.cat, sub: st.dataset.sub};
       refreshFavStar();
+      renderPersonalNoteWidget();
       updateRechnerBackLink();
     });
   });
@@ -3710,6 +3740,7 @@ function goToTool(cat, sub, preset, fromProfession, carrySearch){
   addRecent(cat, sub);
   activeTool = {cat, sub};
   refreshFavStar();
+  renderPersonalNoteWidget();
   if(fromProfession){ lastFromProfession = fromProfession; }
   updateRechnerBackLink();
   // Master-Suche: Suchbegriff aus der globalen Suche direkt in die lokale Listen-Suche der Zielseite übernehmen,
@@ -3751,21 +3782,27 @@ function updateRechnerBackLink(){
 function handleGlobalSearch(query){
   const results = document.getElementById('globalSearchResults');
   if(!query || query.trim().length < 1){ results.classList.remove('show'); results.innerHTML=''; return; }
-  const matches = toolIndex.filter(t => fuzzyIncludes(t.label+' '+t.kw, query));
+  const LIMIT = 15;
+  const alleTreffer = toolIndex
+    .filter(t => fuzzyIncludes(t.label+' '+t.kw, query))
+    .sort((a,b) => searchScore(b, query) - searchScore(a, query));
+  const matches = alleTreffer.slice(0, LIMIT);
   if(matches.length === 0){
     results.innerHTML = `<div class="search-result-item" style="cursor:default;"><span class="sr-label" style="color:var(--text-dim);">Keine Treffer für "${query}"</span></div>`;
   } else {
-    const premium = document.body.classList.contains('premium');
     results.innerHTML = matches.map(m=>{
       const key = m.cat+'|'+m.sub;
       const starred = favorites.has(key);
-      const starBtn = premium ? `<button class="star-btn ${starred?'starred':''}" onclick="event.stopPropagation();toggleFavorite('${m.cat}','${m.sub}')">${starred?'★':'☆'}</button>` : '';
+      const starBtn = `<button class="star-btn ${starred?'starred':''}" onclick="event.stopPropagation();toggleFavorite('${m.cat}','${m.sub}')">${starred?'★':'☆'}</button>`;
       const safeQuery = query.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       return `<div class="search-result-item" onclick="goToTool('${m.cat}','${m.sub}', null, null, '${safeQuery}')">
         <div><div class="sr-label">${m.label}</div><div class="sr-path">${catLabels[m.cat]}</div></div>
         ${starBtn}
       </div>`;
     }).join('');
+    if(alleTreffer.length > LIMIT){
+      results.innerHTML += `<div class="search-result-item" style="cursor:default;justify-content:center;"><span class="sr-path">+${alleTreffer.length-LIMIT} weitere Treffer — Suchbegriff genauer eingrenzen</span></div>`;
+    }
   }
   results.classList.add('show');
 }
@@ -3779,22 +3816,114 @@ document.addEventListener('click', (e)=>{
 let favorites = new Set();
 let recentTools = [];
 let activeTool = null;
+
+// ---------- PERSÖNLICHE NOTIZEN (Premium) ----------
+// Eigene Notiz je Rechner (z.B. Kundenvereinbarungen, persönliche Faustwerte) — echte
+// localStorage-Persistenz (nicht nur Sitzung), da hier mehr Tipp-Aufwand drinsteckt als bei
+// einem Favoriten-Stern und ein Verlust beim Neuladen besonders ärgerlich wäre.
+let personalNotes = {};
+try{ personalNotes = JSON.parse(localStorage.getItem('wk_personal_notes') || '{}'); }catch(e){}
+function savePersonalNotesToStorage(){
+  try{ localStorage.setItem('wk_personal_notes', JSON.stringify(personalNotes)); }catch(e){}
+}
+function renderPersonalNoteWidget(){
+  const alt = document.getElementById('personalNoteWidget');
+  if(alt) alt.remove();
+  if(!activeTool) return;
+  const catEl = document.querySelector(`.category[data-cat="${activeTool.cat}"]`);
+  const section = catEl ? document.getElementById(activeTool.sub) : null;
+  if(!section) return;
+  const card = section.querySelector('.card');
+  if(!card) return;
+  const key = activeTool.cat+'|'+activeTool.sub;
+  const premium = document.body.classList.contains('premium');
+  const bestehend = personalNotes[key] || '';
+  if(!premium && !bestehend) return; // Free ohne vorhandene Notiz: nichts anzeigen, kein Upsell-Spam auf jeder Seite
+
+  const widget = document.createElement('div');
+  widget.id = 'personalNoteWidget';
+  widget.className = 'personal-note-widget';
+  const escaped = bestehend.replace(/</g,'&lt;');
+  if(!premium){
+    widget.innerHTML = `<div class="pn-label">📝 Meine Notiz <span class="pill warn">Premium</span></div><div class="pn-text">${escaped}</div>`;
+  } else {
+    widget.innerHTML = `<div class="pn-label">📝 Meine Notiz</div>
+      <textarea id="pnTextarea" class="pn-textarea" placeholder="Eigene Notiz zu diesem Rechner — z.B. Kundenvereinbarungen oder persönliche Faustwerte">${escaped}</textarea>
+      <div class="pn-actions">
+        <button class="btn secondary" onclick="savePersonalNoteFromWidget('${key}')">Speichern</button>
+        ${bestehend ? `<button class="btn secondary" onclick="deletePersonalNote('${key}')">Löschen</button>` : ''}
+      </div>`;
+  }
+  const heading = card.querySelector('h3, h2');
+  if(heading) heading.insertAdjacentElement('afterend', widget);
+  else card.insertBefore(widget, card.firstChild);
+}
+function savePersonalNoteFromWidget(key){
+  const ta = document.getElementById('pnTextarea');
+  if(!ta) return;
+  const val = ta.value.trim();
+  if(val) personalNotes[key] = val; else delete personalNotes[key];
+  savePersonalNotesToStorage();
+  renderPersonalNoteWidget();
+}
+function deletePersonalNote(key){
+  delete personalNotes[key];
+  savePersonalNotesToStorage();
+  renderPersonalNoteWidget();
+}
 function refreshFavStar(){
   const btn = document.getElementById('currentFavStar');
   if(!btn) return;
-  if(!document.body.classList.contains('premium') || !activeTool){ btn.style.display = 'none'; return; }
+  if(!activeTool){ btn.style.display = 'none'; return; }
   btn.style.display = 'flex';
-  const starred = favorites.has(activeTool.cat+'|'+activeTool.sub);
-  btn.textContent = starred ? '★' : '☆';
+  const key = activeTool.cat+'|'+activeTool.sub;
+  const starred = favorites.has(key);
+  const armed = pendingRemoveFav === key;
+  btn.textContent = armed ? '✕' : (starred ? '★' : '☆');
+  btn.title = armed ? 'Nochmal tippen zum Entfernen' : (starred ? 'Favorit entfernen' : 'Als Favorit merken');
   btn.classList.toggle('active', starred);
+  btn.classList.toggle('confirming', armed);
 }
 function toggleFavoriteCurrent(){
-  if(!document.body.classList.contains('premium') || !activeTool) return;
+  if(!activeTool) return;
   toggleFavorite(activeTool.cat, activeTool.sub);
+}
+let pendingRemoveFav = null;
+let pendingRemoveFavTimer = null;
+function moveFavorite(key, dir){
+  const arr = [...favorites];
+  const i = arr.indexOf(key);
+  const j = i + dir;
+  if(i < 0 || j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  favorites = new Set(arr); // Sets erhalten die Einfüge-Reihenfolge -> Neuaufbau reicht zum Umsortieren
+  renderQuickBar();
 }
 function toggleFavorite(cat, sub){
   const key = cat+'|'+sub;
-  if(favorites.has(key)) favorites.delete(key); else favorites.add(key);
+  const premium = document.body.classList.contains('premium');
+  if(!favorites.has(key) && !premium && favorites.size >= 1){
+    alert('Kostenlos ist 1 Favorit möglich — mit Premium beliebig viele Favoriten plus Verlauf. Tipp: entferne erst deinen aktuellen Favoriten (★ antippen), um einen anderen zu pinnen.');
+    return;
+  }
+  if(favorites.has(key)){
+    // Zweistufige Bestätigung im UI statt window.confirm() — native Bestätigungsdialoge werden in
+    // manchen mobilen WebViews/eingebetteten Ansichten stillschweigend blockiert (liefern sofort
+    // "abgebrochen" ohne sichtbar zu werden), was das Entfernen dann wirkungslos aussehen lässt.
+    if(pendingRemoveFav !== key){
+      pendingRemoveFav = key;
+      clearTimeout(pendingRemoveFavTimer);
+      pendingRemoveFavTimer = setTimeout(()=>{ pendingRemoveFav = null; renderQuickBar(); refreshFavStar(); }, 3000);
+      renderQuickBar();
+      refreshFavStar();
+      return;
+    }
+    clearTimeout(pendingRemoveFavTimer);
+    pendingRemoveFav = null;
+    favorites.delete(key);
+  } else {
+    favorites.add(key);
+  }
   renderQuickBar();
   handleGlobalSearch(document.getElementById('globalSearch').value);
   refreshFavStar();
@@ -3807,36 +3936,55 @@ function addRecent(cat, sub){
 }
 function findTool(cat, sub){ return toolIndex.find(t=>t.cat===cat && t.sub===sub); }
 function buildQuickBarHtml(){
-  if(!document.body.classList.contains('premium')){
-    return `<div class="quick-row" style="text-align:center;">
-      <p style="font-size:12.5px;color:var(--text-dim);margin:0;">★ Favoriten &amp; Verlauf sind ein Premium-Feature.</p>
-      <button class="btn secondary" style="margin-top:8px;" onclick="handlePremiumHeaderClick()">Mehr erfahren</button>
-    </div>`;
-  }
+  const premium = document.body.classList.contains('premium');
   let html = '';
   if(favorites.size > 0){
-    const favPills = [...favorites].map(key=>{
+    const alleFavKeys = [...favorites];
+    // Ohne Premium wird nur der erste Favorit angezeigt (die übrigen bleiben im Hintergrund
+    // gespeichert und erscheinen sofort wieder, sobald Premium aktiviert wird) — verhindert, dass
+    // nach einem Premium-Ablauf mehr als der kostenlose 1 Favorit sichtbar/nutzbar bleibt.
+    const favKeys = premium ? alleFavKeys : alleFavKeys.slice(0,1);
+    const favPills = favKeys.map((key,i)=>{
       const [cat,sub] = key.split('|');
       const t = findTool(cat,sub);
       if(!t) return '';
+      const sortBtns = premium ? `<span style="display:flex;flex-direction:column;flex-shrink:0;">
+          <button class="qp-sort" style="${i===0?'visibility:hidden;':''}" onclick="event.stopPropagation();moveFavorite('${key}',-1)" title="Nach oben">▲</button>
+          <button class="qp-sort" style="${i===favKeys.length-1?'visibility:hidden;':''}" onclick="event.stopPropagation();moveFavorite('${key}',1)" title="Nach unten">▼</button>
+        </span>` : '';
+      const armed = pendingRemoveFav === key;
       return `<div class="quick-pill" onclick="goToTool('${cat}','${sub}')">
-        <span>${t.label}</span>
-        <button class="qp-star starred" onclick="event.stopPropagation();toggleFavorite('${cat}','${sub}')">★</button>
+        <button class="qp-star starred ${armed?'confirming':''}" onclick="event.stopPropagation();toggleFavorite('${cat}','${sub}')">${armed?'✕':'★'}</button>
+        <span style="flex:1;">${armed ? 'Wirklich entfernen? Nochmal tippen' : t.label}</span>
+        ${sortBtns}
       </div>`;
     }).join('');
-    html += `<div class="quick-row" data-kind="fav"><span class="quick-row-label">★ Favoriten</span>${favPills}</div>`;
+    html += `<div class="quick-row" data-kind="fav"><span class="quick-row-label">★ Favoriten${premium ? '' : ' (1 kostenlos)'}</span>${favPills}</div>`;
+    if(!premium && alleFavKeys.length > 1){
+      html += `<div class="quick-row" style="text-align:center;"><p style="font-size:12px;color:var(--text-dim);margin:0;">+${alleFavKeys.length-1} weitere gespeichert — werden mit Premium wieder sichtbar</p></div>`;
+    }
   }
-  const recentFiltered = recentTools.filter(r => !favorites.has(r.cat+'|'+r.sub));
-  if(recentFiltered.length > 0){
-    const recentPills = recentFiltered.map(r=>{
-      const t = findTool(r.cat, r.sub);
-      if(!t) return '';
-      return `<div class="quick-pill" onclick="goToTool('${r.cat}','${r.sub}')">
-        <span>${t.label}</span>
-        <button class="qp-star" onclick="event.stopPropagation();toggleFavorite('${r.cat}','${r.sub}')">☆</button>
-      </div>`;
-    }).join('');
-    html += `<div class="quick-row" data-kind="recent"><span class="quick-row-label">🕓 Zuletzt</span>${recentPills}</div>`;
+  if(premium){
+    const recentFiltered = recentTools.filter(r => !favorites.has(r.cat+'|'+r.sub));
+    if(recentFiltered.length > 0){
+      const recentPills = recentFiltered.map(r=>{
+        const t = findTool(r.cat, r.sub);
+        if(!t) return '';
+        return `<div class="quick-pill" onclick="goToTool('${r.cat}','${r.sub}')">
+          <span>${t.label}</span>
+          <button class="qp-star" onclick="event.stopPropagation();toggleFavorite('${r.cat}','${r.sub}')">☆</button>
+        </div>`;
+      }).join('');
+      html += `<div class="quick-row" data-kind="recent"><span class="quick-row-label">🕓 Zuletzt</span>${recentPills}</div>`;
+    }
+  } else if(favorites.size === 0){
+    html += `<div class="quick-row" style="text-align:center;"><p style="font-size:12.5px;color:var(--text-dim);margin:0;">Tippe irgendwo auf ★, um 1 Werkzeug kostenlos anzupinnen.</p></div>`;
+  }
+  if(!premium){
+    html += `<div class="quick-row" style="text-align:center;">
+      <p style="font-size:12.5px;color:var(--text-dim);margin:0;">Mit Premium: beliebig viele Favoriten + eigene Reihenfolge + Verlauf der zuletzt genutzten Werkzeuge.</p>
+      <button class="btn secondary" style="margin-top:8px;" onclick="handlePremiumHeaderClick()">Mehr erfahren</button>
+    </div>`;
   }
   if(!html){
     html = `<div class="quick-row" style="text-align:center;"><p style="font-size:12.5px;color:var(--text-dim);margin:0;">Noch keine Favoriten — tippe irgendwo auf ★, um ein Werkzeug anzupinnen.</p></div>`;
@@ -3865,7 +4013,7 @@ const homePopularPicks = [
 function renderHome(){
   renderQuickBar();
   document.getElementById('homePopular').innerHTML = homePopularPicks.map(p=>
-    `<li class="placeholder-task clickable" onclick="goToTool('${p.cat}','${p.sub}')"><span class="pt-dot"></span>${p.label} →</li>`
+    `<li class="placeholder-task clickable" onclick="goToTool('${p.cat}','${p.sub}')"><span class="pt-dot"></span><span style="flex:1;">${p.label}</span><span style="flex-shrink:0;color:var(--text-dim);">→</span></li>`
   ).join('');
 }
 
@@ -3952,6 +4100,20 @@ function fuzzyIncludes(haystack, query){
     const maxDist = qw.length <= 4 ? 1 : (qw.length <= 7 ? 2 : 3);
     return hayWords.some(hw => Math.abs(hw.length-qw.length) <= maxDist && levenshtein(qw,hw) <= maxDist);
   });
+}
+function searchScore(t, query){
+  // Höher = relevanter. Exakter Label-Treffer > Label beginnt mit Suchbegriff > Label enthält ihn >
+  // einzelnes Wort exakt im Label > Wort beginnt so > nur über Keywords/Fuzzy gefunden.
+  const label = (t.label||'').toLowerCase();
+  const q = query.toLowerCase().trim();
+  if(label === q) return 100;
+  if(label.startsWith(q)) return 80;
+  if(label.includes(q)) return 60;
+  const qWords = q.split(/\s+/).filter(Boolean);
+  const labelWords = label.split(/[^a-z0-9äöüß]+/).filter(Boolean);
+  if(qWords.every(qw => labelWords.some(lw => lw===qw))) return 50;
+  if(qWords.every(qw => labelWords.some(lw => lw.startsWith(qw)))) return 40;
+  return 10;
 }
 
 // ---------- DÜBEL & ANKER NACH HERSTELLER ----------
@@ -4622,7 +4784,7 @@ function buildTreppenZuschnittlisteHtml(d){
     <td class="detail-toggle" onclick="toggleTableRow('treppen-zuschnitt-row-${i}', this)">Mehr Details ▾</td>
   </tr>`).join('');
   const buehnenHinweis = d.buehnenStuetzhoeheMM > 0
-    ? `<p class="note" style="border-left-color:var(--amber, var(--yellow));">Bühnenstütze/Unterkonstruktion muss ${d.buehnenStuetzhoeheMM.toFixed(0).wmZahl()} mm zusätzliche Höhe liefern (nicht in dieser Liste, da bauartabhängig) — die Treppe selbst baut deshalb eine Steigung weniger als die volle DIN-Berechnung, weil das Podest wie ein bereits vorhandener Boden die letzte Steigung übernimmt.</p>`
+    ? `<p class="note" style="border-left-color:var(--amber, var(--yellow));">Bühnenstütze/Unterkonstruktion muss ${d.buehnenStuetzhoeheMM.toFixed(0).wmZahl()} mm zusätzliche Höhe liefern (nicht in dieser Liste, bauartabhängig) — die Treppe baut deshalb eine Steigung weniger, weil das Podest wie ein vorhandener Boden die letzte Steigung übernimmt.</p>`
     : '';
   return `<div class="table-wrap" style="margin-top:14px;">
     <table class="responsive-table collapsible">
@@ -4631,7 +4793,7 @@ function buildTreppenZuschnittlisteHtml(d){
     </table>
   </div>
   ${buehnenHinweis}
-  <p class="note">Trittflächen (Stufen/Auftritte) sind hier bewusst nicht mit aufgeführt — bei Industrietreppen mit Stahlwangen oft Gitterroste, deren Material/Maß separat je nach Roststeg-System gewählt wird. Diese Liste erfasst nur die beiden Wangen (Streben), an denen die Stufen befestigt werden.</p>`;
+  <p class="note">Trittflächen sind hier bewusst nicht aufgeführt — bei Industrietreppen oft Gitterroste, deren Material separat je nach Roststeg-System gewählt wird. Diese Liste erfasst nur die beiden Wangen.</p>`;
 }
 let treppeAktuellN=0, treppeAktuellS=0, treppeAktuellA=0;
 function trToggleWangenFelder(){
@@ -5357,7 +5519,7 @@ function bmRenderSummary(){
       <div class="item" id="bm-kg-item" style="display:none;"><div class="rlabel">Benötigte Klebermenge</div><div class="rvalue" id="bm-kg-result">—</div></div>
       <div class="item" id="bm-sack-item" style="display:none;"><div class="rlabel">≈ Säcke à 25 kg</div><div class="rvalue" id="bm-sack-result">—</div></div>
       <div class="item" style="flex-basis:100%;min-width:100%;">
-        <p class="note" style="margin-top:2px;">Richtwerte nach DIN EN 12004, je nach Hersteller/Produkt leicht abweichend. Zahngröße richtet sich nach Fliesenformat und Untergrund-Ebenheit — bei sehr großen Formaten (&gt;60×60) zusätzlich Buttering-Floating (beidseitiges Kämmen) einplanen, das erhöht den Verbrauch nochmal um ca. 20–30%. Verbindliche Angabe steht immer auf dem Gebinde.</p>
+        <p class="note" style="margin-top:2px;">Richtwerte nach DIN EN 12004, je nach Hersteller leicht abweichend. Zahngröße richtet sich nach Fliesenformat und Untergrund-Ebenheit — bei sehr großen Formaten (&gt;60×60) zusätzlich Buttering-Floating einplanen, erhöht den Verbrauch um ca. 20–30%. Verbindliche Angabe steht auf dem Gebinde.</p>
       </div>
     `;
   } else {
@@ -6139,6 +6301,14 @@ document.addEventListener('input', function(e){
   if(e.target.matches('input[type="number"][min="0"]') && e.target.value !== '' && parseFloat(e.target.value) < 0){
     e.target.value = '';
   }
+});
+
+// Hinweistexte (.note) sind standardmäßig einzeilig eingeklappt (CSS) — ein Klick klappt sie auf,
+// nochmal klappt wieder ein. Delegierter Listener statt Einzel-Handler pro Hinweis, greift dadurch
+// automatisch für alle 78+ vorhandenen und auch künftig per JS erzeugten Hinweistexte.
+document.addEventListener('click', function(e){
+  const note = e.target.closest('.note');
+  if(note) note.classList.toggle('expanded');
 });
 
 setupInputAutoSave();
