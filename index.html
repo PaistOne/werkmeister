@@ -232,6 +232,22 @@
       background:var(--panel);border:1px solid var(--border);border-radius:6px;
       color:var(--yellow);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;
     }
+    /* Zuschnittlisten (Bauteil/Anzahl/Maß): Anzahl+Maß nebeneinander statt zwei volle Zeilen — spart auf
+       dem Handy deutlich Höhe, da diese beiden Werte meist kurz sind und viel Leerraum sonst ungenutzt bliebe */
+    table.responsive-table.collapsible td[data-label="Anzahl"]{
+      display:inline-flex;width:46%;box-sizing:border-box;justify-content:flex-start;gap:6px;
+    }
+    table.responsive-table.collapsible td[data-label="Maß"]{
+      display:inline-flex;width:46%;box-sizing:border-box;justify-content:flex-start;gap:6px;text-align:left;
+    }
+    /* "Nach Hersteller"-Tabellen (Dübel, Holzschrauben, Elektroden): Hersteller+Produkt nebeneinander,
+       da beide meist kurz sind — Verwendung/Details bleiben eigene volle Zeile (oft längerer Text) */
+    table.responsive-table.collapsible td[data-label="Hersteller"]{
+      display:inline-flex;width:46%;box-sizing:border-box;justify-content:flex-start;gap:6px;
+    }
+    table.responsive-table.collapsible td[data-label="Produkt"]{
+      display:inline-flex;width:46%;box-sizing:border-box;justify-content:flex-start;gap:6px;
+    }
   }
 
   /* SUBNAV */
@@ -313,8 +329,10 @@
   .quick-pill > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .quick-pill .qp-star{background:none;border:none;color:#6b7078;cursor:pointer;font-size:16px;padding:8px;flex-shrink:0;}
   .quick-pill .qp-star.confirming{color:var(--danger);}
-  .quick-pill .qp-sort{background:none;border:none;color:#6b7078;cursor:pointer;font-size:9px;line-height:1;padding:3px 6px;}
-  .quick-pill .qp-sort:hover{color:var(--yellow);}
+  .quick-pill .qp-pos{
+    width:40px;min-height:36px;flex-shrink:0;text-align:center;padding:4px 2px;
+    font-size:13px;background:var(--panel-2);border:1px solid var(--border);color:var(--yellow);
+  }
   .quick-pill .qp-star.starred{color:var(--yellow);}
 
   main{padding:20px;}
@@ -381,6 +399,9 @@
     padding-right:34px;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFC633' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right 12px center;
+  }
+  input[type=checkbox]{
+    width:22px;height:22px;min-width:22px;flex-shrink:0;accent-color:var(--yellow);cursor:pointer;
   }
   input:focus, select:focus{border-color:var(--yellow);}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;align-items:end;}
@@ -473,7 +494,14 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:640px){.grid2{grid-template-columns:1fr;}}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-  @media (max-width:760px){.grid3{grid-template-columns:1fr;}}
+  @media (max-width:760px){
+    .grid3{
+      display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;
+      gap:10px;padding-bottom:6px;margin:0 -20px;padding-left:20px;padding-right:20px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .grid3 > *{flex:0 0 82%;scroll-snap-align:start;}
+  }
 
   .triangle-visual{
     background:var(--readout-bg);border:1px solid #000;border-radius:8px;
@@ -1549,7 +1577,7 @@
           <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">👆 Auf eine Karte klicken, um die Treppe maßstäblich als Skizze anzuzeigen. Passendes Geländer weiter unten eigenständig konfigurierbar.</p>
 
           <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-top:14px;margin-bottom:0;">
-            <input type="checkbox" id="trWangenAn" style="width:auto;" onchange="trToggleWangenFelder(); redrawTreppeMitWangen();"> Wangenmaterial &amp; Podest/Bühne mit einzeichnen (Industrietreppe mit Stahl-/Holzwangen)
+            <input type="checkbox" id="trWangenAn" onchange="trToggleWangenFelder(); redrawTreppeMitWangen();"> Wangenmaterial &amp; Podest/Bühne mit einzeichnen (Industrietreppe mit Stahl-/Holzwangen)
           </label>
           <div id="trWangenFelder" style="display:none;margin-top:8px;">
             <div class="row3">
@@ -1611,7 +1639,7 @@
           </div>
 
           <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-bottom:0;margin-top:6px;">
-            <input type="checkbox" id="glKnieleisteAn" style="width:auto;" onchange="glToggleKnie()"> Knieleiste
+            <input type="checkbox" id="glKnieleisteAn" onchange="glToggleKnie()"> Knieleiste
           </label>
           <div class="row" id="glKnieleisteFields" style="display:none;margin-top:8px;">
             <div class="field"><label>Kniehöhe (mm)</label><input type="number" min="0" id="glKniehoehe" step="1" value="450"></div>
@@ -1917,7 +1945,7 @@
             <div class="field"><label>Biegewinkel α (°)</label><input type="number" min="0" id="rbWinkel" step="0.1" placeholder="z.B. 90"></div>
           </div>
           <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-bottom:12px;">
-            <input type="checkbox" id="rbHandbiegung" style="width:auto;"> Handbiegung / enger Radius — Bogen ca. 5% kürzer (Faustregel: 1,5·R statt 1,571·R bei 90°)
+            <input type="checkbox" id="rbHandbiegung"> Handbiegung / enger Radius — Bogen ca. 5% kürzer (Faustregel: 1,5·R statt 1,571·R bei 90°)
           </label>
           <button class="btn" onclick="calcRohrbogen()">Berechnen</button>
           <div class="readout" id="rbOut" style="display:none;">
@@ -3924,12 +3952,15 @@ function toggleFavoriteCurrent(){
 }
 let pendingRemoveFav = null;
 let pendingRemoveFavTimer = null;
-function moveFavorite(key, dir){
+function moveFavoriteToPosition(key, neuePositionStr){
   const arr = [...favorites];
-  const i = arr.indexOf(key);
-  const j = i + dir;
-  if(i < 0 || j < 0 || j >= arr.length) return;
-  [arr[i], arr[j]] = [arr[j], arr[i]];
+  const alt = arr.indexOf(key);
+  if(alt < 0) return;
+  let neu = parseInt(neuePositionStr, 10) - 1; // Eingabe ist 1-basiert, Array ist 0-basiert
+  if(isNaN(neu)){ renderQuickBar(); return; } // ungültige Eingabe -> unverändert neu zeichnen
+  neu = Math.max(0, Math.min(arr.length-1, neu));
+  arr.splice(alt, 1);
+  arr.splice(neu, 0, key);
   favorites = new Set(arr); // Sets erhalten die Einfüge-Reihenfolge -> Neuaufbau reicht zum Umsortieren
   renderQuickBar();
 }
@@ -3982,15 +4013,12 @@ function buildQuickBarHtml(){
       const [cat,sub] = key.split('|');
       const t = findTool(cat,sub);
       if(!t) return '';
-      const sortBtns = premium ? `<span style="display:flex;flex-direction:column;flex-shrink:0;">
-          <button class="qp-sort" style="${i===0?'visibility:hidden;':''}" onclick="event.stopPropagation();moveFavorite('${key}',-1)" title="Nach oben">▲</button>
-          <button class="qp-sort" style="${i===favKeys.length-1?'visibility:hidden;':''}" onclick="event.stopPropagation();moveFavorite('${key}',1)" title="Nach unten">▼</button>
-        </span>` : '';
+      const posFeld = premium && favKeys.length > 1 ? `<input type="number" class="qp-pos" min="1" max="${favKeys.length}" value="${i+1}" title="Position ändern" onclick="event.stopPropagation();" onchange="event.stopPropagation();moveFavoriteToPosition('${key}', this.value)">` : '';
       const armed = pendingRemoveFav === key;
       return `<div class="quick-pill" onclick="goToTool('${cat}','${sub}')">
         <button class="qp-star starred ${armed?'confirming':''}" onclick="event.stopPropagation();toggleFavorite('${cat}','${sub}')">${armed?'✕':'★'}</button>
         <span style="flex:1;">${armed ? 'Wirklich entfernen? Nochmal tippen' : t.label}</span>
-        ${sortBtns}
+        ${posFeld}
       </div>`;
     }).join('');
     html += `<div class="quick-row" data-kind="fav"><span class="quick-row-label">★ Favoriten${premium ? '' : ' (1 kostenlos)'}</span>${favPills}</div>`;
@@ -4892,10 +4920,25 @@ function glUpdateRohrartLabels(){
   document.getElementById('glPfostenGroesseLabel').textContent = 'Pfosten ' + einheit;
   document.getElementById('glKnieleisteGroesseLabel').textContent = 'Knieleiste ' + einheit;
 }
+// Liefert die für ein zur Treppe passendes Geländer korrekte schräge Länge/Höhe — bei aktiver Wange
+// aus der Wangen-eigenen Neigung (s/a) abgeleitet (Pfosten stehen auf der Wangen-Oberfläche), sonst
+// die rohe Geschosshöhe/-länge. Zentral an einer Stelle, damit calcKomplettSet() und
+// glAusTreppeUebernehmen() nie wieder unabhängig voneinander abweichen können.
+function treppenSchraegeFuerGelaender(nBau){
+  const wangenOpts = treppenWangenOpts();
+  if(wangenOpts.wangenHoeheMM > 0){
+    return {schraegL: (nBau-1) * treppeAktuellA, schraegH: (nBau-1) * treppeAktuellS};
+  }
+  return {schraegL: treppeL, schraegH: treppeH};
+}
 function glAusTreppeUebernehmen(){
   if(!treppeAktuellN){ alert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
-  document.getElementById('glSchraegL').value = treppeL;
-  document.getElementById('glSchraegH').value = treppeH;
+  const wangenOpts = treppenWangenOpts();
+  const buehneNeu = wangenOpts.waagerechtL > 0 && wangenOpts.buehneStatus === 'neu';
+  const nBau = buehneNeu ? Math.max(treppeAktuellN-1, 1) : treppeAktuellN;
+  const {schraegL, schraegH} = treppenSchraegeFuerGelaender(nBau);
+  document.getElementById('glSchraegL').value = Math.round(schraegL);
+  document.getElementById('glSchraegH').value = Math.round(schraegH);
 }
 function glMaterialLabel(groesse, rohrart){
   return rohrart === 'vierkant' ? `${groesse}×${groesse} mm Vierkant` : `Ø ${groesse} mm Rundrohr`;
@@ -4992,6 +5035,28 @@ function glBerechneZahlen(p){
   const lichterPfostenabstandMM = pfostenabstandMM - p.pfostenGroesse;
   return {schraegLaengeMM, winkelGrad, ueberstandStartDiagonalMM, ueberstandEndeDiagonalMM, endeAnWaagerecht, handlaufSchraegGesamtMM, handlaufWaagerechtGesamtMM, gesamtLaengeMM, pfostenabstandMM, pfostenlaengeMM, lichterPfostenabstandMM};
 }
+function massKetteAbsolut(punkte, achse, zielWert, farbe){
+  // Wie massKette, aber mit einer FESTEN Ziel-Koordinate für die Maßlinie (z.B. eine feste Y-Höhe für
+  // eine wirklich waagerechte Kette) statt eines relativen Versatzes je Punkt — wichtig, wenn die
+  // Ausgangspunkte selbst nicht auf gleicher Höhe liegen (z.B. Pfosten entlang einer Schräge): mit einem
+  // gemeinsamen relativen Versatz würde die Maßlinie sonst leicht schräg statt wirklich waagerecht werden.
+  let svg = '';
+  const gap = 3, overshoot = 3;
+  const zielPunkte = punkte.map(p => achse==='y' ? [p[0], zielWert] : [zielWert, p[1]]);
+  punkte.forEach((p,i)=>{
+    const z = zielPunkte[i];
+    const dx=z[0]-p[0], dy=z[1]-p[1];
+    const len = Math.hypot(dx,dy) || 1;
+    const ux=dx/len, uy=dy/len;
+    const x1=p[0]+ux*gap, y1=p[1]+uy*gap;
+    const x2=z[0]+ux*overshoot, y2=z[1]+uy*overshoot;
+    svg += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${farbe}" stroke-width="0.6" opacity="0.55"/>`;
+  });
+  const d0=zielPunkte[0], d1=zielPunkte[zielPunkte.length-1];
+  svg += `<line x1="${d0[0].toFixed(1)}" y1="${d0[1].toFixed(1)}" x2="${d1[0].toFixed(1)}" y2="${d1[1].toFixed(1)}" stroke="${farbe}" stroke-width="1"/>`;
+  zielPunkte.forEach(z=>{ svg += massTick(z[0], z[1], d1[0]-d0[0], d1[1]-d0[1], farbe); });
+  return svg;
+}
 function massKette(punkte, perpX, perpY, versatz, farbe){
   // Wie massLinie, aber für mehrere Punkte in einer Reihe (z.B. Pfostenabstände): eine durchgehende
   // Maßlinie mit Tick-Marks an JEDEM Punkt, nicht nur an den beiden Enden.
@@ -5063,9 +5128,8 @@ function drawGelaenderSkizze(opts, treppeObj){
     ueberstandEndeSvg = `<line x1="${rxEnd.toFixed(1)}" y1="${ryEnd.toFixed(1)}" x2="${rxEndSichtbar.toFixed(1)}" y2="${ryEndSichtbar.toFixed(1)}" stroke="${COL_GEO}" stroke-width="3"/>`;
     if(!endeAnWaagerecht){
       ueberstandEndeBraucht = true;
-      const off = 22, eperpX = euy, eperpY = -eux;
-      ueberstandEndeSvg += massLinie(rxEnd,ryEnd, rxEndSichtbar,ryEndSichtbar, eperpX,eperpY, off, COL_UEBERSTAND) +
-        `<text x="${((rxEnd+rxEndSichtbar)/2 + eperpX*off).toFixed(1)}" y="${((ryEnd+ryEndSichtbar)/2 + eperpY*off - 6).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandEndeMM.toFixed(0).wmZahl()}</text>`;
+      ueberstandEndeSvg += massKetteAbsolut([[rxEnd,ryEnd],[rxEndSichtbar,ryEndSichtbar]], 'y', y0+60, COL_UEBERSTAND) +
+        `<text x="${((rxEnd+rxEndSichtbar)/2).toFixed(1)}" y="${(y0+60-8).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandEndeMM.toFixed(0).wmZahl()}</text>`;
     }
   }
 
@@ -5163,14 +5227,13 @@ function drawGelaenderSkizze(opts, treppeObj){
     }
   }
 
-  // ---------- Pfostenabstände: horizontale Kettenbemaßung, grün — Überstand Anfang (falls vorhanden) als weiteres Kettenglied davor ----------
-  const bemLineY = y0 + (waagerechtL>0 ? 55 : 40);
+  // ---------- Pfostenabstände: echte waagerechte Kettenbemaßung, ganz unten im Bild, grün ----------
+  const bemLineY = y0 + 60;
   let pfostenBemassung = '';
   if(postXs.length >= 2){
     const punkte = postXs.map((px,i)=>[px, postYs[i]]);
     if(ueberstandStart > 0) punkte.unshift([rx0Sichtbar, ry0Sichtbar]);
-    const versatzY = bemLineY - postYs[0];
-    pfostenBemassung = massKette(punkte, 0, 1, versatzY, COL_PFOSTEN);
+    pfostenBemassung = massKetteAbsolut(punkte, 'y', bemLineY, COL_PFOSTEN);
     if(ueberstandStart > 0){
       const midX = (rx0Sichtbar+postXs[0])/2;
       pfostenBemassung += `<text x="${midX.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandStart.toFixed(0).wmZahl()}</text>`;
@@ -5182,7 +5245,7 @@ function drawGelaenderSkizze(opts, treppeObj){
         pfostenBemassung += `<text x="${midX.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_PFOSTEN}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">${segMM.toFixed(0).wmZahl()}</text>`;
       }
     });
-    pfostenBemassung += `<text x="${(ueberstandStart>0?rx0Sichtbar:postXs[0]).toFixed(1)}" y="${(bemLineY+27).toFixed(1)}" fill="${COL_NEUTRAL}" font-size="9.5" font-family="JetBrains Mono, monospace">Pfostenabstände, horizontal (mm)</text>`;
+    pfostenBemassung += `<text x="${(ueberstandStart>0?rx0Sichtbar:postXs[0]).toFixed(1)}" y="${(bemLineY+27).toFixed(1)}" fill="${COL_NEUTRAL}" font-size="9.5" font-family="JetBrains Mono, monospace">Pfostenabstände (mm)</text>`;
   }
 
   // ---------- Höhe: vertikale Kettenbemaßung, gold ----------
@@ -5213,8 +5276,10 @@ function calcKomplettSet(){
   const buehneNeu = wangenOpts.waagerechtL > 0 && wangenOpts.buehneStatus === 'neu';
   const nBau = buehneNeu ? Math.max(treppeAktuellN-1, 1) : treppeAktuellN;
   const treppeObj = {n:nBau, s:treppeAktuellS, a:treppeAktuellA, wangenHoeheMM:wangenOpts.wangenHoeheMM};
-  // Schräge Maße für die Kombi-Zeichnung immer von der ausgewählten Treppe übernehmen, damit beide Teile exakt zueinander passen
-  const opts = Object.assign({}, letzteGelaenderParams, {schraegL: treppeL, schraegH: treppeH});
+  // Wenn eine Wange gezeichnet wird, stehen die Geländer-Pfosten normalerweise AUF der Wangen-Oberfläche —
+  // das Geländer muss dann exakt der wangen-eigenen Neigung folgen, nicht der reinen Boden-Diagonale.
+  const {schraegL: schraegLFuerGelaender, schraegH: schraegHFuerGelaender} = treppenSchraegeFuerGelaender(nBau);
+  const opts = Object.assign({}, letzteGelaenderParams, {schraegL: schraegLFuerGelaender, schraegH: schraegHFuerGelaender});
   document.getElementById('komplettSkizze').innerHTML = drawGelaenderSkizze(opts, treppeObj);
   document.getElementById('komplettZoomControls').style.display = 'flex';
   komplettZoomReset();
@@ -5801,7 +5866,7 @@ function zsRenderTeile(){
         <div class="field"><label>Stückzahl</label><input type="text" inputmode="decimal" value="${t.stk}" oninput="zsOnInput(${i},'stk',this.value)"></div>
       </div>
       <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-top:6px;margin-bottom:0;">
-        <input type="checkbox" style="width:auto;" ${t.fix?'checked':''} onchange="zsOnInput(${i},'fix',this.checked)"> Nicht drehbar (feste Maserungs-/Dekorrichtung entlang Länge)
+        <input type="checkbox" ${t.fix?'checked':''} onchange="zsOnInput(${i},'fix',this.checked)"> Nicht drehbar (feste Maserungs-/Dekorrichtung entlang Länge)
       </label>
     </div>`;
   }).join('');
@@ -5976,7 +6041,7 @@ function gzRenderTeile(){
         <div class="field"><label>Stückzahl</label><input type="text" inputmode="decimal" value="${t.stk}" oninput="gzOnInput(${i},'stk',this.value)"></div>
       </div>
       <label style="display:flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:normal;font-size:13px;color:var(--text-dim);margin-top:6px;margin-bottom:0;">
-        <input type="checkbox" style="width:auto;" ${t.fix?'checked':''} onchange="gzOnInput(${i},'fix',this.checked)"> Nicht drehbar (Muster/Beschichtung mit fester Richtung entlang Länge)
+        <input type="checkbox" ${t.fix?'checked':''} onchange="gzOnInput(${i},'fix',this.checked)"> Nicht drehbar (Muster/Beschichtung mit fester Richtung entlang Länge)
       </label>
     </div>`;
   }).join('');
