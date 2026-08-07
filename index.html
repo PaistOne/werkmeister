@@ -81,14 +81,14 @@
   .header-tagline{margin:0;font-size:12.5px;color:var(--text-dim);letter-spacing:0.2px;line-height:1.4;}
   .brand{display:flex;align-items:center;gap:14px;min-width:0;}
   .brand-mark{
-    width:46px;height:46px;border-radius:8px;
+    width:52px;height:52px;border-radius:8px;
     background:linear-gradient(145deg,#33383f,#1c1f23);
     border:1px solid var(--border);
     display:flex;align-items:center;justify-content:center;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 6px rgba(0,0,0,0.4);
     flex-shrink:0;
   }
-  .brand h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:26px;letter-spacing:1px;margin:0;color:var(--text);display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;}
+  .brand h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:31px;letter-spacing:1px;margin:0;color:var(--text);display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;}
   .brand h1 .premium-pill{font-size:11px;padding:4px 10px;}
   .brand h1 span{color:#FFC633;} /* Markenfarbe bewusst fest — Logo ändert sich NICHT mit dem Farbthema */
   /* Mobile-Overrides MÜSSEN nach den Basis-Regeln stehen, die sie überschreiben sollen — sonst
@@ -144,7 +144,7 @@
   }
   .cat-selector-btn .csb-left{display:flex;align-items:baseline;gap:7px;min-width:0;flex:1;}
   .cat-selector-btn .csb-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.8px;flex-shrink:0;}
-  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:0.4px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:0.4px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
   .cat-selector-btn .csb-chevron{transition:transform .2s ease;color:var(--yellow);}
   .cat-selector-btn.open .csb-chevron{transform:rotate(180deg);}
   .cat-dropdown{
@@ -166,9 +166,10 @@
   .cat-dropdown-item .cdi-check{color:var(--yellow);font-size:14px;}
 
   .search-toggle-btn{
-    flex-shrink:0;padding:0 14px;height:48px;background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    flex-shrink:0;padding:0 16px;height:48px;background:var(--panel);border:1px solid var(--border);border-radius:10px;
     color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
     font-family:'Inter',sans-serif;font-size:12.5px;white-space:nowrap;
+    box-sizing:border-box;
   }
   .search-toggle-btn:hover, .search-toggle-btn.active{color:var(--yellow);border-color:var(--yellow-dim);}
   /* Wenn man bereits in der Werkzeugkiste ist, zeigt das Dropdown links schon "Werkzeugkiste" —
@@ -651,7 +652,7 @@
     <div class="header-top">
       <div class="brand" onclick="goHome()" style="cursor:pointer;">
         <div class="brand-mark">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
             <path d="M4.7 8.9 L8 15.9 L12 8.9 L16 16 L19.3 8.9" stroke="#FFC633" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
