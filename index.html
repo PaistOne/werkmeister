@@ -137,9 +137,9 @@
     background:var(--panel);border:1px solid var(--border);border-radius:10px;
     padding:15px 16px;cursor:pointer;min-height:48px;
   }
-  .cat-selector-btn .csb-left{display:flex;align-items:center;gap:10px;}
+  .cat-selector-btn .csb-left{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1;}
   .cat-selector-btn .csb-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:block;}
-  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:17px;letter-spacing:0.4px;color:var(--text);}
+  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:17px;letter-spacing:0.4px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .cat-selector-btn .csb-chevron{transition:transform .2s ease;color:var(--yellow);}
   .cat-selector-btn.open .csb-chevron{transform:rotate(180deg);}
   .cat-dropdown{
@@ -1559,6 +1559,7 @@
         <div class="card">
           <h3>Treppen-Rechner <span class="tag">nach DIN 18065</span></h3>
           <p style="font-size:13px;color:var(--text-dim);margin-top:-6px;">Geschosshöhe und verfügbare Lauflänge eingeben — der Rechner zeigt dir die optimale Lösung, plus die beste Alternative mit weniger und mit mehr Stufen.</p>
+          <p style="font-size:11.5px;color:var(--steel);margin-top:4px;font-family:'JetBrains Mono',monospace;">Formel: s = H÷n · a = L÷(n−1) · Schrittmaß = 2s+a (ideal 630mm)</p>
           <div class="row">
             <div class="field"><label>Geschosshöhe (mm)</label><input type="number" min="0" id="trGeschoss" step="1" placeholder="z.B. 1200"></div>
             <div class="field"><label>Verfügbare Lauflänge (mm)</label><input type="number" min="0" id="trLauflaenge" step="1" placeholder="z.B. 2000"></div>
@@ -1597,7 +1598,7 @@
           <div class="triangle-visual" id="treppeSkizze"></div>
           <div id="treppeZuschnittliste"></div>
           <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Treppe — Zuschnittliste', ['treppeZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
-          <p class="note">Grenzwerte: Steigung 140–190mm (allgemein) bzw. 140–200mm (Wohngebäude ≤2 WE); Auftritt 260–370mm (allgemein) bzw. 230–370mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650mm, ideal 630mm. "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen zusätzlich die Landesbauordnung prüfen.</p>
+          <p class="note"><strong>Formel:</strong> Steigung s = Geschosshöhe ÷ Anzahl Steigungen (n); Auftritt a = Lauflänge ÷ (n−1). Schrittmaß = 2s + a — "Optimal" ist die Stufenzahl mit dem kleinsten Abstand zum Schrittmaß-Idealwert 630mm. Grenzwerte: Steigung 140–190mm (allgemein) bzw. 140–200mm (Wohngebäude ≤2 WE); Auftritt 260–370mm (allgemein) bzw. 230–370mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650mm. "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen zusätzlich die Landesbauordnung prüfen.</p>
         </div>
 
         <div class="card">
