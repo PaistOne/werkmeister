@@ -71,18 +71,15 @@
   }
 
   header{
-    padding:22px 20px 16px;
+    padding:20px 20px 14px;
     border-bottom:1px solid var(--border);
     background: linear-gradient(180deg, rgba(255,198,51,0.05), transparent 70%), var(--bg-alt);
-    display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+    display:flex;flex-direction:column;gap:8px;
   }
-  @media (max-width:480px){
-    header{padding:16px 16px 14px;gap:10px;}
-    .brand{gap:10px;}
-    .brand h1{font-size:20px;gap:8px;}
-    .brand p{font-size:11.5px;}
-  }
-  .brand{display:flex;align-items:center;gap:14px;}
+  .header-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .header-mode-group{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:30px;padding:4px;flex-shrink:0;}
+  .header-tagline{margin:0;font-size:12.5px;color:var(--text-dim);letter-spacing:0.2px;line-height:1.4;}
+  .brand{display:flex;align-items:center;gap:14px;min-width:0;}
   .brand-mark{
     width:46px;height:46px;border-radius:8px;
     background:linear-gradient(145deg,#33383f,#1c1f23);
@@ -91,10 +88,18 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 6px rgba(0,0,0,0.4);
     flex-shrink:0;
   }
-  .brand h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:26px;letter-spacing:1px;margin:0;color:var(--text);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .brand h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:26px;letter-spacing:1px;margin:0;color:var(--text);display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;}
   .brand h1 .premium-pill{font-size:11px;padding:4px 10px;}
   .brand h1 span{color:#FFC633;} /* Markenfarbe bewusst fest — Logo ändert sich NICHT mit dem Farbthema */
-  .brand p{margin:2px 0 0;font-size:13px;color:var(--text-dim);letter-spacing:0.3px;}
+  /* Mobile-Overrides MÜSSEN nach den Basis-Regeln stehen, die sie überschreiben sollen — sonst
+     gewinnt bei gleicher Spezifität die spätere Basis-Regel und die Mobile-Anpassung kommt nie an
+     (genau das ist hier vorher passiert: h1 blieb auf dem Handy fälschlich bei voller Desktop-Größe). */
+  @media (max-width:480px){
+    header{padding:14px 16px 12px;}
+    .brand{gap:10px;}
+    .brand h1{font-size:22px;gap:6px;letter-spacing:0.5px;}
+    .header-tagline{font-size:11px;}
+  }
 
   .premium-pill{
     font-family:'Oswald',sans-serif;font-size:12.5px;letter-spacing:0.4px;text-transform:uppercase;
@@ -135,11 +140,11 @@
   .cat-selector-btn{
     display:flex;align-items:center;justify-content:space-between;
     background:var(--panel);border:1px solid var(--border);border-radius:10px;
-    padding:15px 16px;cursor:pointer;min-height:48px;
+    padding:0 16px;cursor:pointer;height:48px;box-sizing:border-box;
   }
-  .cat-selector-btn .csb-left{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1;}
-  .cat-selector-btn .csb-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:block;}
-  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:17px;letter-spacing:0.4px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cat-selector-btn .csb-left{display:flex;align-items:baseline;gap:7px;min-width:0;flex:1;}
+  .cat-selector-btn .csb-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.8px;flex-shrink:0;}
+  .cat-selector-btn .csb-name{font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:0.4px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
   .cat-selector-btn .csb-chevron{transition:transform .2s ease;color:var(--yellow);}
   .cat-selector-btn.open .csb-chevron{transform:rotate(180deg);}
   .cat-dropdown{
@@ -643,26 +648,26 @@
 <div class="app">
 
   <header>
-    <div class="brand" onclick="goHome()" style="cursor:pointer;">
-      <div class="brand-mark">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-          <path d="M4.7 8.9 L8 15.9 L12 8.9 L16 16 L19.3 8.9" stroke="#FFC633" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div>
+    <div class="header-top">
+      <div class="brand" onclick="goHome()" style="cursor:pointer;">
+        <div class="brand-mark">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M4.7 8.9 L8 15.9 L12 8.9 L16 16 L19.3 8.9" stroke="#FFC633" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h1>WERK<span>MEISTER</span> <span class="premium-pill" id="premiumHeaderBtn" style="display:none;pointer-events:none;">★ Premium</span></h1>
-        <p>Die universelle Handwerks-App — Nachschlagen &amp; Rechnen, ohne Suchen</p>
+      </div>
+      <div class="header-mode-group">
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleLightMode()" title="Hell/Dunkel-Modus">
+          <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12.5A9 9 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:none;"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button class="color-badge-btn" id="colorBadge" onclick="openColorSettings()" title="Farben anpassen"></button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleLightMode()" title="Hell/Dunkel-Modus">
-        <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12.5A9 9 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" style="display:none;"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      <button class="color-badge-btn" id="colorBadge" onclick="openColorSettings()" title="Farben anpassen"></button>
-    </div>
+    <p class="header-tagline">Die universelle Handwerks-App —<br>Nachschlagen &amp; Rechnen, ohne Suchen</p>
   </header>
+
 
   <div class="cat-selector-wrap">
     <div class="cat-selector-row">
