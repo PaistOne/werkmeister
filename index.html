@@ -5003,8 +5003,10 @@ function buildZuschnittlisteHtml(d){
   if(d.zeigeKnie){
     rows.push(['Knieleiste, schräg', `${d.pfostenAnzahl-1} Stück`, `${d.lichterPfostenabstandMM.toFixed(0).wmZahl()} mm`, `lichtes Maß zw. Pfosten · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
     if(d.waagerechtL > 0){
-      const knieWaagerechtMM = Math.max(d.waagerechtL - d.pfostenGroesse/2, 0);
-      rows.push(['Knieleiste, waagerecht', '1 Stück', `${knieWaagerechtMM.toFixed(0).wmZahl()} mm`, `Eckpfosten bis Wandhalter — halbe Pfostenbreite am Übergang abgezogen, wandseitig ggf. anpassen · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
+      // Identisch zur waagerechten Verlängerung (auch so in der Kettenbemaßung der Zeichnung) —
+      // keine Verkürzung um halbe Pfostenbreite mehr, da die Knieleiste bündig mit dem Handlauf
+      // bis zum gleichen Endpunkt läuft. Wandseitiger Zuschnitt bleibt vor Ort anzupassen.
+      rows.push(['Knieleiste, waagerecht', '1 Stück', `${d.waagerechtL.toFixed(0).wmZahl()} mm`, `= waagerechte Verlängerung, wandseitig ggf. anpassen · ${glMaterialLabel(d.knieleisteGroesse, d.rohrart)}`]);
     }
   }
   const rowsHtml = rows.map((r,i)=>`<tr id="zuschnitt-row-${i}">
@@ -5255,25 +5257,17 @@ function drawGelaenderSkizze(opts, treppeObj){
     <text x="${labelX.toFixed(1)}" y="${labelY.toFixed(1)}" fill="${COL_SCHRAEG}" font-size="12" font-family="JetBrains Mono, monospace" text-anchor="middle" font-weight="600">α=${winkelGrad.toFixed(1).wmZahl()}°</text>`;
   }
 
-  // ---------- Waagerechte Verlängerung: eigene Kettenbemaßung, amber — Überstand Ende (falls an Podest hängend) als weiteres Kettenglied ----------
-  let waagerechtBemassung = '';
-  if(waagerechtL > 0){
-    const wOff = 22;
-    const wPunkte = [[xKnick,yKnick],[xEnd,yEnd]];
-    if(ueberstandEndeMM > 0 && endeAnWaagerecht) wPunkte.push([rxEndSichtbar,ryEndSichtbar]);
-    waagerechtBemassung = massKette(wPunkte, 0,1, wOff, COL_WAAGERECHT);
-    waagerechtBemassung += `<text x="${((xKnick+xEnd)/2).toFixed(1)}" y="${(yKnick+wOff+14).toFixed(1)}" fill="${COL_WAAGERECHT}" font-size="10.5" font-family="JetBrains Mono, monospace" text-anchor="middle">${waagerechtL.toFixed(0).wmZahl()}</text>`;
-    if(ueberstandEndeMM > 0 && endeAnWaagerecht){
-      waagerechtBemassung += `<text x="${((xEnd+rxEndSichtbar)/2).toFixed(1)}" y="${(yKnick+wOff+14).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="10.5" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandEndeMM.toFixed(0).wmZahl()}</text>`;
-    }
-  }
-
-  // ---------- Pfostenabstände: echte waagerechte Kettenbemaßung, ganz unten im Bild, grün ----------
+  // ---------- Pfostenabstände + waagerechte Verlängerung: EINE durchgehende Kettenbemaßung ganz unten
+  // im Bild — Überstand-Start, Pfostenabstände und die waagerechte Verlängerung (= Knieleistenlänge,
+  // da beide identisch lang sind) hängen als ein Kettenglied aneinander statt als separate Maßketten. ----------
   const bemLineY = y0 + 60;
   let pfostenBemassung = '';
-  if(postXs.length >= 2){
+  {
     const punkte = postXs.map((px,i)=>[px, postYs[i]]);
     if(ueberstandStart > 0) punkte.unshift([rx0Sichtbar, ry0Sichtbar]);
+    if(waagerechtL > 0) punkte.push([xEnd, yEnd]);
+    if(ueberstandEndeMM > 0 && endeAnWaagerecht) punkte.push([rxEndSichtbar, ryEndSichtbar]);
+    if(punkte.length >= 2){
     pfostenBemassung = massKetteAbsolut(punkte, 'y', bemLineY, COL_PFOSTEN);
     if(ueberstandStart > 0){
       const midX = (rx0Sichtbar+postXs[0])/2;
@@ -5286,7 +5280,18 @@ function drawGelaenderSkizze(opts, treppeObj){
         pfostenBemassung += `<text x="${midX.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_PFOSTEN}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">${segMM.toFixed(0).wmZahl()}</text>`;
       }
     });
-    pfostenBemassung += `<text x="${(ueberstandStart>0?rx0Sichtbar:postXs[0]).toFixed(1)}" y="${(bemLineY+27).toFixed(1)}" fill="${COL_NEUTRAL}" font-size="9.5" font-family="JetBrains Mono, monospace">Pfostenabstände (mm)</text>`;
+    if(waagerechtL > 0){
+      const lastPfostenX = postXs.length ? postXs[postXs.length-1] : (ueberstandStart>0 ? rx0Sichtbar : x0);
+      const midX = (lastPfostenX+xEnd)/2;
+      pfostenBemassung += `<text x="${midX.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_WAAGERECHT}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">${waagerechtL.toFixed(0).wmZahl()}</text>`;
+      if(ueberstandEndeMM > 0 && endeAnWaagerecht){
+        const midX2 = (xEnd+rxEndSichtbar)/2;
+        pfostenBemassung += `<text x="${midX2.toFixed(1)}" y="${(bemLineY+14).toFixed(1)}" fill="${COL_UEBERSTAND}" font-size="9.5" font-family="JetBrains Mono, monospace" text-anchor="middle">+${ueberstandEndeMM.toFixed(0).wmZahl()}</text>`;
+      }
+    }
+    const labelAnkerX = ueberstandStart>0 ? rx0Sichtbar : (postXs.length ? postXs[0] : xKnick);
+    pfostenBemassung += `<text x="${labelAnkerX.toFixed(1)}" y="${(bemLineY+27).toFixed(1)}" fill="${COL_NEUTRAL}" font-size="9.5" font-family="JetBrains Mono, monospace">Pfostenabstände (mm)${waagerechtL>0 ? ' — inkl. waagerechter Verlängerung (= Knieleistenlänge)' : ''}</text>`;
+    }
   }
 
   // ---------- Höhe: vertikale Kettenbemaßung, gold ----------
@@ -5306,7 +5311,6 @@ function drawGelaenderSkizze(opts, treppeObj){
     ${schraegBemassung}
     ${winkelSvg}
     ${hoeheSvg}
-    ${waagerechtBemassung}
     <text x="${x0.toFixed(1)}" y="16" fill="${COL_NEUTRAL}" font-size="11" font-family="JetBrains Mono, monospace">${pfostenAnzahl} Pfosten — genaue Zuschnittmaße s. Liste unten</text>
   </svg>`;
 }
@@ -6470,7 +6474,13 @@ function exportAlsPDF(titel, elementIds){
     return;
   }
   const heute = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
-  const inhalt = quellen.map(el => el.outerHTML).join('\n');
+  // Quell-Elemente klonen und darin enthaltene Hinweistexte (▸ HINWEIS, z.B. bei der Treppen-
+  // Wangenliste) vor dem Export entfernen — die sind für die App-Ansicht gedacht, nicht fürs PDF.
+  const inhalt = quellen.map(el => {
+    const klon = el.cloneNode(true);
+    klon.querySelectorAll('.note').forEach(n => n.remove());
+    return klon.outerHTML;
+  }).join('\n');
   document.getElementById('printContainer').innerHTML = `
     <div class="print-header">
       <h1>WERKMEISTER</h1>
