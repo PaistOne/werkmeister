@@ -643,9 +643,24 @@
     #printContainer svg text{fill:#111 !important;}
     #printContainer .note{color:#444;}
   }
+  /* IN-APP-TOAST (ersetzt window.appAlert()) — native appAlert()-Dialoge werden in manchen mobilen
+     WebViews/eingebetteten Ansichten stillschweigend geschluckt (kein Fehler, aber auch keine
+     sichtbare Meldung), genau wie zuvor bei window.confirm() beobachtet. Deshalb eigene, garantiert
+     sichtbare In-App-Meldung statt des nativen Dialogs. */
+  #appToastHost{position:fixed;left:16px;right:16px;bottom:16px;z-index:500;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+  .app-toast{
+    background:var(--panel-2);border:1px solid var(--border);border-left:4px solid var(--yellow);
+    border-radius:10px;padding:13px 16px;box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    color:var(--text);font-size:13.5px;line-height:1.45;pointer-events:auto;
+    animation:appToastIn .18s ease-out;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;
+  }
+  @keyframes appToastIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .app-toast.hide{animation:appToastOut .18s ease-in forwards;}
+  @keyframes appToastOut{to{opacity:0;transform:translateY(8px);}}
 </style>
 </head>
 <body>
+<div id="appToastHost"></div>
 <div class="app">
 
   <header>
@@ -1603,7 +1618,7 @@
 
           <div class="triangle-visual" id="treppeSkizze"></div>
           <div id="treppeZuschnittliste"></div>
-          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Treppe — Zuschnittliste', ['treppeZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Treppe — Zuschnittliste', ['treppeSkizze','treppeZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
           <p class="note"><strong>Formel:</strong> Steigung s = Geschosshöhe ÷ Anzahl Steigungen (n); Auftritt a = Lauflänge ÷ (n−1). Schrittmaß = 2s + a — "Optimal" ist die Stufenzahl mit dem kleinsten Abstand zum Schrittmaß-Idealwert 630mm. Grenzwerte: Steigung 140–190mm (allgemein) bzw. 140–200mm (Wohngebäude ≤2 WE); Auftritt 260–370mm (allgemein) bzw. 230–370mm (Wohngebäude). Schrittmaßregel-Zielbereich 590–650mm. "Auftritte" = Steigungen − 1, da die letzte Steigung direkt auf die obere Etage führt. Planungswerte nach DIN 18065:2020-08 — bei genehmigungspflichtigen Treppen zusätzlich die Landesbauordnung prüfen.</p>
         </div>
 
@@ -1667,7 +1682,7 @@
           </div>
           <div class="triangle-visual gl-visual-wrap" id="glSkizzeWrap"><div id="glSkizze"></div></div>
           <div id="glZuschnittliste"></div>
-          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Geländer — Zuschnittliste', ['glZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
+          <button class="btn secondary" style="margin-top:10px;" onclick="exportAlsPDF('Geländer — Zuschnittliste', ['glSkizzeWrap','glZuschnittliste'])">🖨️ Zuschnittliste als PDF <span class="pill warn">Premium</span></button>
           <p class="note">Pfosten werden nur über die Schräge verteilt — waagerechte Verlängerung/Überstand ändern die Pfostenzahl nicht. Bei Industrie max. 1500 mm Pfostenabstand einhalten. <strong>Farbcodierung</strong> (fest): Gold=Höhe, Cyan=Schräge/Winkel, Amber=waagerechte Verlängerung, Violett=Überstand, Grün=Pfostenabstände. Zeichnung zoombar/verschiebbar, ersetzt aber keine Freigabezeichnung — Maße sind vereinfachte Bauhilfe, keine statische Bemessung.</p>
         </div>
 
@@ -3425,6 +3440,25 @@
 <div id="printContainer" class="print-only"></div>
 
 <script>
+// In-App-Ersatz für window.appAlert() — siehe CSS-Kommentar bei #appToastHost. Gleiches Aufruf-
+// Signatur wie appAlert(msg), damit sich alle bisherigen Stellen 1:1 ersetzen lassen.
+function appAlert(msg){
+  const host = document.getElementById('appToastHost');
+  if(!host){ console.warn('appAlert:', msg); return; }
+  const el = document.createElement('div');
+  el.className = 'app-toast';
+  el.textContent = msg;
+  host.appendChild(el);
+  const timer = setTimeout(()=>{
+    el.classList.add('hide');
+    setTimeout(()=> el.remove(), 200);
+  }, 4200);
+  el.addEventListener('click', ()=>{
+    clearTimeout(timer);
+    el.classList.add('hide');
+    setTimeout(()=> el.remove(), 200);
+  });
+}
 // ---------- DEUTSCHES ZAHLENFORMAT ----------
 // Wandelt das Ergebnis von X.toFixed(N) in deutsche Schreibweise um: Komma statt Punkt als
 // Dezimaltrenner, Punkt als Tausendertrenner, überflüssige Nachkommanullen entfernt
@@ -3906,7 +3940,7 @@ function togglePersonalNoteWidget(){
   const bestehend = personalNotes[key] || '';
   if(widget.classList.contains('collapsed')){
     if(!premium && !bestehend){
-      alert('Persönliche Notizen sind ein Premium-Feature — damit kannst du dir z.B. Kundenvereinbarungen oder eigene Faustwerte direkt am Rechner merken.');
+      appAlert('Persönliche Notizen sind ein Premium-Feature — damit kannst du dir z.B. Kundenvereinbarungen oder eigene Faustwerte direkt am Rechner merken.');
       return;
     }
     const escaped = bestehend.replace(/</g,'&lt;');
@@ -3975,7 +4009,7 @@ function toggleFavorite(cat, sub){
   const key = cat+'|'+sub;
   const premium = document.body.classList.contains('premium');
   if(!favorites.has(key) && !premium && favorites.size >= 1){
-    alert('Kostenlos ist 1 Favorit möglich — mit Premium beliebig viele Favoriten plus Verlauf. Tipp: entferne erst deinen aktuellen Favoriten (★ antippen), um einen anderen zu pinnen.');
+    appAlert('Kostenlos ist 1 Favorit möglich — mit Premium beliebig viele Favoriten plus Verlauf. Tipp: entferne erst deinen aktuellen Favoriten (★ antippen), um einen anderen zu pinnen.');
     return;
   }
   if(favorites.has(key)){
@@ -4130,7 +4164,7 @@ document.getElementById('schraubenSearch').addEventListener('input', e=>renderSc
 function calcDrehmoment(){
   const md = parseFloat(document.getElementById('dmMoment').value);
   const l = parseFloat(document.getElementById('dmHebel').value);
-  if(!md || !l){ alert('Bitte Drehmoment und Hebelarm eingeben.'); return; }
+  if(!md || !l){ appAlert('Bitte Drehmoment und Hebelarm eingeben.'); return; }
   const kraftN = md / (l/100);
   document.getElementById('dmKraft').innerHTML = kraftN.toFixed(1).wmZahl() + ' <small>N</small>';
   document.getElementById('dmOut').style.display='flex';
@@ -4348,7 +4382,7 @@ document.getElementById('herstellerSearch').addEventListener('input', e=>renderH
 function calcDrehzahl(){
   const d = parseFloat(document.getElementById('zDurchmesser').value);
   const vc = parseFloat(document.getElementById('zVc').value);
-  if(!d || !vc){ alert('Bitte Durchmesser und vc eingeben.'); return; }
+  if(!d || !vc){ appAlert('Bitte Durchmesser und vc eingeben.'); return; }
   const n = (vc*1000)/(Math.PI*d);
   document.getElementById('zOutN').innerHTML = n.toFixed(0).wmZahl() + ' <small>1/min</small>';
   document.getElementById('zOut1').style.display='flex'; document.getElementById('zOut2').style.display='none';
@@ -4356,7 +4390,7 @@ function calcDrehzahl(){
 function calcVc(){
   const d = parseFloat(document.getElementById('zDurchmesser').value);
   const n = parseFloat(document.getElementById('zN').value);
-  if(!d || !n){ alert('Bitte Durchmesser und Drehzahl eingeben.'); return; }
+  if(!d || !n){ appAlert('Bitte Durchmesser und Drehzahl eingeben.'); return; }
   const vc = (Math.PI*d*n)/1000;
   document.getElementById('zOutVc').innerHTML = vc.toFixed(1).wmZahl() + ' <small>m/min</small>';
   document.getElementById('zOut2').style.display='flex'; document.getElementById('zOut1').style.display='none';
@@ -4365,7 +4399,7 @@ function calcVorschub(){
   const f = parseFloat(document.getElementById('vfF').value);
   const n = parseFloat(document.getElementById('vfN').value);
   const z = parseFloat(document.getElementById('vfZ').value);
-  if(!f || !n){ alert('Bitte f und n eingeben.'); return; }
+  if(!f || !n){ appAlert('Bitte f und n eingeben.'); return; }
   const vf = z ? f*n*z : f*n;
   document.getElementById('vfOutVal').innerHTML = vf.toFixed(1).wmZahl() + ' <small>mm/min</small>';
   document.getElementById('vfOut').style.display='flex';
@@ -4378,7 +4412,7 @@ function calcOhm(){
   let R = parseFloat(document.getElementById('ohmR').value);
   let P = parseFloat(document.getElementById('ohmP').value);
   const given = [!isNaN(U), !isNaN(I), !isNaN(R), !isNaN(P)].filter(Boolean).length;
-  if(given < 2){ alert('Bitte mindestens zwei Werte eingeben.'); return; }
+  if(given < 2){ appAlert('Bitte mindestens zwei Werte eingeben.'); return; }
   if(!isNaN(U) && !isNaN(I)){ R = U/I; P = U*I; }
   else if(!isNaN(U) && !isNaN(R)){ I = U/R; P = U*I; }
   else if(!isNaN(U) && !isNaN(P)){ I = P/U; R = U/I; }
@@ -4402,14 +4436,14 @@ function parseWiderstandsliste(raw){
 }
 function calcReihe(){
   const vals = parseWiderstandsliste(document.getElementById('rsWerte').value);
-  if(vals.length===0){ alert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
+  if(vals.length===0){ appAlert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
   const sum = vals.reduce((a,b)=>a+b,0);
   document.getElementById('rsErgebnis').innerHTML = sum.toFixed(3).wmZahl() + ' <small>Ω</small>';
   document.getElementById('rsOut').style.display='flex';
 }
 function calcParallel(){
   const vals = parseWiderstandsliste(document.getElementById('psWerte').value);
-  if(vals.length===0){ alert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
+  if(vals.length===0){ appAlert('Bitte mindestens einen gültigen Widerstandswert eingeben.'); return; }
   const kehrwertSumme = vals.reduce((a,b)=>a+1/b,0);
   const rges = 1/kehrwertSumme;
   document.getElementById('psErgebnis').innerHTML = rges.toFixed(3).wmZahl() + ' <small>Ω</small>';
@@ -4431,7 +4465,7 @@ function calcSternDreieck(){
   const r1 = parseFloat(document.getElementById('sdR1').value);
   const r2 = parseFloat(document.getElementById('sdR2').value);
   const r3 = parseFloat(document.getElementById('sdR3').value);
-  if(!r1 || !r2 || !r3){ alert('Bitte alle drei Widerstände eingeben.'); return; }
+  if(!r1 || !r2 || !r3){ appAlert('Bitte alle drei Widerstände eingeben.'); return; }
   const dir = document.getElementById('sdRichtung').value;
   let out1, out2, out3, lbl1, lbl2, lbl3;
   if(dir === 'sternZuDreieck'){
@@ -4460,7 +4494,7 @@ function calcSpannungsfall(){
   const kappa = parseFloat(document.getElementById('sfMaterial').value);
   const faktor = parseFloat(document.getElementById('sfPhase').value);
   const cosPhi = parseFloat(document.getElementById('sfCosPhi').value) || 1;
-  if(!L || !I || !A){ alert('Bitte Leitungslänge, Stromstärke und Querschnitt eingeben.'); return; }
+  if(!L || !I || !A){ appAlert('Bitte Leitungslänge, Stromstärke und Querschnitt eingeben.'); return; }
   const deltaU = (faktor * L * I * cosPhi) / (kappa * A);
   const nennspannung = faktor === 2 ? 230 : 400;
   const prozent = (deltaU / nennspannung) * 100;
@@ -4481,7 +4515,7 @@ function calcSpannungsfall(){
 function calcFlaeche(){
   const l = parseFloat(document.getElementById('flLaenge').value);
   const b = parseFloat(document.getElementById('flBreite').value);
-  if(!l || !b){ alert('Bitte Länge und Breite eingeben.'); return; }
+  if(!l || !b){ appAlert('Bitte Länge und Breite eingeben.'); return; }
   document.getElementById('flOutVal').innerHTML = (l*b).toFixed(2).wmZahl() + ' <small>m²</small>';
   document.getElementById('flOut').style.display='flex';
   document.getElementById('rechteckVisual').innerHTML = drawRechteck(l, b);
@@ -4503,7 +4537,7 @@ function drawRechteck(l, b){
 function calcKreis(){
   let r = parseFloat(document.getElementById('krRadius').value);
   let d = parseFloat(document.getElementById('krDurchmesser').value);
-  if(!r && !d){ alert('Bitte Radius oder Durchmesser eingeben.'); return; }
+  if(!r && !d){ appAlert('Bitte Radius oder Durchmesser eingeben.'); return; }
   if(!r) r = d/2;
   if(!d) d = r*2;
   const flaeche = Math.PI * r * r;
@@ -4566,9 +4600,9 @@ document.getElementById('triRight').innerHTML = drawTriangleRight(3,4,5,false);
 function calcWinkel(){
   const a = parseFloat(document.getElementById('wA').value);
   const b = parseFloat(document.getElementById('wB').value);
-  if(isNaN(a) || isNaN(b)){ alert('Bitte beide Winkel eingeben.'); return; }
+  if(isNaN(a) || isNaN(b)){ appAlert('Bitte beide Winkel eingeben.'); return; }
   const g = 180 - a - b;
-  if(g<=0){ alert('Diese Winkel ergeben kein gültiges Dreieck.'); return; }
+  if(g<=0){ appAlert('Diese Winkel ergeben kein gültiges Dreieck.'); return; }
   document.getElementById('wOutVal').innerHTML = g.toFixed(1).wmZahl() + ' <small>°</small>';
   document.getElementById('wOut').style.display='flex';
   document.getElementById('triGeneral').innerHTML = drawTriangleGeneral(a,b,g,true);
@@ -4579,9 +4613,9 @@ function calcPythagoras(){
   const c = parseFloat(document.getElementById('pytC').value);
   let result, label, fa=a, fb=b, fc=c;
   if(!isNaN(a) && !isNaN(b)){ result = Math.sqrt(a*a+b*b); label='Hypotenuse c'; fc=result; }
-  else if(!isNaN(a) && !isNaN(c)){ if(c<=a){alert('c muss größer als a sein.');return;} result = Math.sqrt(c*c-a*a); label='Kathete b'; fb=result; }
-  else if(!isNaN(b) && !isNaN(c)){ if(c<=b){alert('c muss größer als b sein.');return;} result = Math.sqrt(c*c-b*b); label='Kathete a'; fa=result; }
-  else { alert('Bitte genau zwei Seiten eingeben.'); return; }
+  else if(!isNaN(a) && !isNaN(c)){ if(c<=a){appAlert('c muss größer als a sein.');return;} result = Math.sqrt(c*c-a*a); label='Kathete b'; fb=result; }
+  else if(!isNaN(b) && !isNaN(c)){ if(c<=b){appAlert('c muss größer als b sein.');return;} result = Math.sqrt(c*c-b*b); label='Kathete a'; fa=result; }
+  else { appAlert('Bitte genau zwei Seiten eingeben.'); return; }
   document.getElementById('pytOutVal').innerHTML = result.toFixed(2).wmZahl() + ' <small>(' + label + ')</small>';
   document.getElementById('pytOut').style.display='flex';
   document.getElementById('triRight').innerHTML = drawTriangleRight(fa,fb,fc,true);
@@ -4591,7 +4625,7 @@ function calcPythagoras(){
 function calcProzent(){
   const g = parseFloat(document.getElementById('pzGrund').value);
   const p = parseFloat(document.getElementById('pzProzent').value);
-  if(isNaN(g) || isNaN(p)){ alert('Bitte Grundwert und Prozentsatz eingeben.'); return; }
+  if(isNaN(g) || isNaN(p)){ appAlert('Bitte Grundwert und Prozentsatz eingeben.'); return; }
   const wert = g*p/100;
   document.getElementById('pzWert').innerHTML = wert.toFixed(2).wmZahl();
   document.getElementById('pzPlus').innerHTML = (g+wert).toFixed(2).wmZahl();
@@ -4601,7 +4635,7 @@ function calcProzent(){
 function calcProzentAnteil(){
   const a = parseFloat(document.getElementById('pzA').value);
   const b = parseFloat(document.getElementById('pzB').value);
-  if(!a || !b){ alert('Bitte beide Werte eingeben.'); return; }
+  if(!a || !b){ appAlert('Bitte beide Werte eingeben.'); return; }
   document.getElementById('pzAnteilVal').innerHTML = (a/b*100).toFixed(2).wmZahl() + ' <small>%</small>';
   document.getElementById('pzOut2').style.display='flex';
 }
@@ -4609,7 +4643,7 @@ function calcProzentAnteil(){
 // ---------- TRIGONOMETRIE ----------
 function calcTrig(){
   const deg = parseFloat(document.getElementById('trigWinkel').value);
-  if(isNaN(deg)){ alert('Bitte einen Winkel eingeben.'); return; }
+  if(isNaN(deg)){ appAlert('Bitte einen Winkel eingeben.'); return; }
   const rad = deg*Math.PI/180;
   document.getElementById('trigSin').textContent = Math.sin(rad).toFixed(4).wmZahl();
   document.getElementById('trigCos').textContent = Math.cos(rad).toFixed(4).wmZahl();
@@ -4620,7 +4654,7 @@ function calcTrig(){
 function calcSteigung(){
   const deg = parseFloat(document.getElementById('steigWinkel').value);
   const ank = parseFloat(document.getElementById('steigAnkathete').value);
-  if(isNaN(deg) || !ank){ alert('Bitte Winkel und Ankathete eingeben.'); return; }
+  if(isNaN(deg) || !ank){ appAlert('Bitte Winkel und Ankathete eingeben.'); return; }
   const rad = deg*Math.PI/180;
   const gegen = ank*Math.tan(rad);
   const hyp = ank/Math.cos(rad);
@@ -4635,7 +4669,7 @@ function calcTreppe(){
   const H = parseFloat(document.getElementById('trGeschoss').value);
   const L = parseFloat(document.getElementById('trLauflaenge').value);
   const art = document.getElementById('trGebaeudeart').value;
-  if(!H || !L){ alert('Bitte Geschosshöhe und Lauflänge eingeben.'); return; }
+  if(!H || !L){ appAlert('Bitte Geschosshöhe und Lauflänge eingeben.'); return; }
   treppeH = H; treppeL = L;
 
   const sMin = 140, sMax = art === 'wohn' ? 200 : 190;
@@ -4939,7 +4973,7 @@ function treppenSchraegeFuerGelaender(nBau){
   return {schraegL: treppeL, schraegH: treppeH};
 }
 function glAusTreppeUebernehmen(){
-  if(!treppeAktuellN){ alert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
+  if(!treppeAktuellN){ appAlert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
   const wangenOpts = treppenWangenOpts();
   const buehneNeu = wangenOpts.waagerechtL > 0 && wangenOpts.buehneStatus === 'neu';
   const nBau = buehneNeu ? Math.max(treppeAktuellN-1, 1) : treppeAktuellN;
@@ -5005,8 +5039,8 @@ function glReadForm(){
 }
 function calcGelaender(){
   const p = glReadForm();
-  if(!p.schraegL && !p.waagerechtL){ alert('Bitte mindestens die schräge Länge oder eine waagerechte Verlängerung eingeben.'); return; }
-  if(p.schraegL && !p.schraegH){ alert('Bitte bei schräger Länge auch die schräge Höhe/Steigung eingeben.'); return; }
+  if(!p.schraegL && !p.waagerechtL){ appAlert('Bitte mindestens die schräge Länge oder eine waagerechte Verlängerung eingeben.'); return; }
+  if(p.schraegL && !p.schraegH){ appAlert('Bitte bei schräger Länge auch die schräge Höhe/Steigung eingeben.'); return; }
 
   letzteGelaenderParams = p;
   const zahlen = glBerechneZahlen(p);
@@ -5277,8 +5311,8 @@ function drawGelaenderSkizze(opts, treppeObj){
   </svg>`;
 }
 function calcKomplettSet(){
-  if(!treppeAktuellN){ alert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
-  if(!letzteGelaenderParams){ alert('Bitte zuerst das Geländer weiter oben konfigurieren und auf "Geländer zeichnen" klicken.'); return; }
+  if(!treppeAktuellN){ appAlert('Bitte zuerst oben im Treppen-Rechner eine Lösung berechnen und anklicken.'); return; }
+  if(!letzteGelaenderParams){ appAlert('Bitte zuerst das Geländer weiter oben konfigurieren und auf "Geländer zeichnen" klicken.'); return; }
   const wangenOpts = treppenWangenOpts();
   const buehneNeu = wangenOpts.waagerechtL > 0 && wangenOpts.buehneStatus === 'neu';
   const nBau = buehneNeu ? Math.max(treppeAktuellN-1, 1) : treppeAktuellN;
@@ -5340,7 +5374,7 @@ function calcRohrbogen(){
   const R = parseFloat(document.getElementById('rbRadius').value);
   const alpha = parseFloat(document.getElementById('rbWinkel').value);
   const hand = document.getElementById('rbHandbiegung').checked;
-  if(!R || !alpha){ alert('Bitte Biegeradius und Biegewinkel eingeben.'); return; }
+  if(!R || !alpha){ appAlert('Bitte Biegeradius und Biegewinkel eingeben.'); return; }
   let bogenlaenge = R * Math.PI * alpha / 180;
   if(hand) bogenlaenge *= 0.955; // ~5% kürzer, entspricht 1,5R statt 1,571R bei 90°
   const schenkellaenge = R * Math.tan((alpha/2) * Math.PI/180);
@@ -5373,7 +5407,7 @@ function drawRohrbogen(R, alpha){
 function calcGefaelle(){
   const l = parseFloat(document.getElementById('gfLaenge').value);
   const h = parseFloat(document.getElementById('gfHoehe').value);
-  if(!l || !h){ alert('Bitte Länge und Höhenunterschied eingeben.'); return; }
+  if(!l || !h){ appAlert('Bitte Länge und Höhenunterschied eingeben.'); return; }
   const prozent = (h / (l*1000)) * 100;
   document.getElementById('gfProzent').innerHTML = prozent.toFixed(2).wmZahl() + ' <small>%</small>';
   document.getElementById('gfVerhaeltnis').innerHTML = '1 : ' + (100/prozent).toFixed(0).wmZahl();
@@ -5385,7 +5419,7 @@ function calcDurchfluss(){
   const qEl = document.getElementById('dfQ'), dEl = document.getElementById('dfD'), vEl = document.getElementById('dfV');
   const q = parseFloat(qEl.value), d = parseFloat(dEl.value), v = parseFloat(vEl.value);
   const anzahl = [q,d,v].filter(x => !isNaN(x) && x>0).length;
-  if(anzahl < 2){ alert('Bitte mindestens zwei der drei Werte eingeben.'); return; }
+  if(anzahl < 2){ appAlert('Bitte mindestens zwei der drei Werte eingeben.'); return; }
 
   let qRes = q, dRes = d, vRes = v;
   if(!(q>0)){
@@ -5436,7 +5470,7 @@ function calcHolzgewicht(){
   const zustand = document.getElementById('fzZustand').value;
   const d = parseFloat(document.getElementById('fzDurchmesser').value);
   const l = parseFloat(document.getElementById('fzLaenge').value);
-  if(!d || !l){ alert('Bitte Durchmesser und Länge eingeben.'); return; }
+  if(!d || !l){ appAlert('Bitte Durchmesser und Länge eingeben.'); return; }
   const art = holzarten.find(h=>h.name===artName);
   const dichte = zustand === 'frisch' ? art.frisch : art.trocken;
   const rM = d/2/100; // cm -> m Radius
@@ -5790,7 +5824,7 @@ function calcKantenumleimer(){
   const stk = parseFloat(document.getElementById('keStk').value) || 1;
   const zuschlag = parseFloat(document.getElementById('keZuschlag').value) || 0;
   const rolle = parseFloat(document.getElementById('keRolle').value);
-  if(!l || !b){ alert('Bitte Plattenlänge und Plattenbreite eingeben.'); return; }
+  if(!l || !b){ appAlert('Bitte Plattenlänge und Plattenbreite eingeben.'); return; }
   const umfangM = 2*(l+b)/100;
   const gesamt = umfangM * stk * (1+zuschlag/100);
   document.getElementById('keProPlatte').innerHTML = umfangM.toFixed(2).wmZahl() + ' <small>m</small>';
@@ -5812,7 +5846,7 @@ function calcFugenmasse(){
   const fugenbreite = parseFloat(document.getElementById('fmFugenbreite').value);
   const fugentiefe = parseFloat(document.getElementById('fmFugentiefe').value);
   const gebinde = parseFloat(document.getElementById('fmGebinde').value) || 5;
-  if(!l || !b || !fugenbreite || !fugentiefe){ alert('Bitte Fliesenmaß, Fugenbreite und Fugentiefe eingeben.'); return; }
+  if(!l || !b || !fugenbreite || !fugentiefe){ appAlert('Bitte Fliesenmaß, Fugenbreite und Fugentiefe eingeben.'); return; }
   const dichte = 1.6; // kg/dm³, typische Rohdichte zementärer Fugenmörtel
   const kgProM2 = ((l+b)/(l*b)) * fugenbreite * fugentiefe * dichte;
   document.getElementById('fmVerbrauch').innerHTML = kgProM2.toFixed(2).wmZahl() + ' <small>kg/m²</small>';
@@ -5836,7 +5870,7 @@ function calcStaenderwerk(){
   const wandhoehe = parseFloat(document.getElementById('swWandhoehe').value);
   const achsabstandCm = parseFloat(document.getElementById('swAchsabstand').value);
   const tueren = Math.max(0, Math.round(parseFloat(document.getElementById('swTueren').value) || 0));
-  if(!wandlaenge || !wandhoehe){ alert('Bitte Wandlänge und Wandhöhe eingeben.'); return; }
+  if(!wandlaenge || !wandhoehe){ appAlert('Bitte Wandlänge und Wandhöhe eingeben.'); return; }
   const achsabstandM = achsabstandCm / 100;
   const cwAnzahl = Math.ceil(wandlaenge / achsabstandM) + 1 + tueren*2;
   const cwLaenge = cwAnzahl * wandhoehe;
@@ -5993,7 +6027,7 @@ function calcZuschnitt(){
   const plateW = flexNum(document.getElementById('zsPlatteL').value); // horizontale Achse = Plattenlänge
   const plateH = flexNum(document.getElementById('zsPlatteB').value); // vertikale Achse (Shelf-Stapelrichtung) = Plattenbreite
   const fuge = flexNum(document.getElementById('zsFuge').value) || 0;
-  if(!plateW || !plateH){ alert('Bitte ein gültiges Plattenformat eingeben.'); return; }
+  if(!plateW || !plateH){ appAlert('Bitte ein gültiges Plattenformat eingeben.'); return; }
 
   let pieces = [];
   zsTeile.forEach((t,ti)=>{
@@ -6004,10 +6038,10 @@ function calcZuschnitt(){
     else { w = Math.max(l,b); h = Math.min(l,b); } // frei drehbar -> Referenz-Ausrichtung (lange Seite liegend); shelfPack probiert bei Bedarf zusätzlich gedreht
     for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1), rotatable: !t.fix});
   });
-  if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
+  if(pieces.length === 0){ appAlert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
 
   const result = shelfPack(pieces, plateW, plateH, fuge);
-  if(result.zuGross){ alert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Plattenformat ${plateW}×${plateH} mm.`); return; }
+  if(result.zuGross){ appAlert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Plattenformat ${plateW}×${plateH} mm.`); return; }
   const plates = result.plates;
 
   const teileFlaecheM2 = pieces.reduce((s,p)=> s + (p.w*p.h)/1e6, 0);
@@ -6071,7 +6105,7 @@ function calcGlasZuschnitt(){
   const plateW = flexNum(document.getElementById('gzPlatteL').value);
   const plateH = flexNum(document.getElementById('gzPlatteB').value);
   const fuge = flexNum(document.getElementById('gzFuge').value) || 0;
-  if(!plateW || !plateH){ alert('Bitte ein gültiges Rohglasmaß eingeben.'); return; }
+  if(!plateW || !plateH){ appAlert('Bitte ein gültiges Rohglasmaß eingeben.'); return; }
 
   let pieces = [];
   gzTeile.forEach((t,ti)=>{
@@ -6082,10 +6116,10 @@ function calcGlasZuschnitt(){
     else { w = Math.max(l,b); h = Math.min(l,b); }
     for(let k=0;k<stk;k++) pieces.push({w, h, ti, label:'Teil '+(ti+1), rotatable: !t.fix});
   });
-  if(pieces.length === 0){ alert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
+  if(pieces.length === 0){ appAlert('Bitte mindestens ein Teil mit Länge und Breite eingeben.'); return; }
 
   const result = shelfPack(pieces, plateW, plateH, fuge);
-  if(result.zuGross){ alert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Rohglasmaß ${plateW}×${plateH} mm.`); return; }
+  if(result.zuGross){ appAlert(`${result.zuGross.label} (${result.zuGross.w}×${result.zuGross.h} mm) passt in keiner Ausrichtung auf das Rohglasmaß ${plateW}×${plateH} mm.`); return; }
   const plates = result.plates;
 
   const teileFlaecheM2 = pieces.reduce((s,p)=> s + (p.w*p.h)/1e6, 0);
@@ -6282,7 +6316,7 @@ function calcUebersetzung(){
 function calcAMass(){
   const zEl = document.getElementById('amZ'), aEl = document.getElementById('amA');
   const z = parseFloat(zEl.value), a = parseFloat(aEl.value);
-  if(!(z>0) && !(a>0)){ alert('Bitte Schenkellänge z oder Nahtdicke a eingeben.'); return; }
+  if(!(z>0) && !(a>0)){ appAlert('Bitte Schenkellänge z oder Nahtdicke a eingeben.'); return; }
   let aRes = a, zRes = z;
   if(!(a>0)){
     aRes = z * Math.cos(45 * Math.PI/180);
@@ -6427,12 +6461,12 @@ restoreSavedInputs();
 // zu drucken — dadurch bleiben Navigation/Werbung/Eingabefelder im Ausdruck automatisch außen vor.
 function exportAlsPDF(titel, elementIds){
   if(!document.body.classList.contains('premium')){
-    alert('PDF-Export ist ein Premium-Feature — damit kannst du Zuschnittlisten sauber ausdrucken oder als PDF an Kollegen weiterleiten. Mit Premium freischaltbar.');
+    appAlert('PDF-Export ist ein Premium-Feature — damit kannst du Zuschnittlisten sauber ausdrucken oder als PDF an Kollegen weiterleiten. Mit Premium freischaltbar.');
     return;
   }
   const quellen = elementIds.map(id => document.getElementById(id)).filter(Boolean);
   if(quellen.length === 0 || quellen.every(el => !el.innerHTML.trim())){
-    alert('Erst berechnen, dann exportieren — es gibt noch nichts zum Exportieren.');
+    appAlert('Erst berechnen, dann exportieren — es gibt noch nichts zum Exportieren.');
     return;
   }
   const heute = new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'});
